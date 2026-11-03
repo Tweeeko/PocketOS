@@ -1,0 +1,14 @@
+PocketOS
+
+This project depends on, and is informed by, the following third-party work:
+
+- Waveshare "esp32_s3_touch_amoled_1_75c" Board Support Package
+  https://github.com/waveshareteam/Waveshare-ESP32-components (bsp/esp32_s3_touch_amoled_1_75c)
+  Licensed under the Apache License, Version 2.0. Used as an ESP-IDF component dependency.
+
+- Waveshare ESP32-S3-Touch-AMOLED-1.75C examples
+  https://github.com/waveshareteam/ESP32-S3-Touch-AMOLED-1.75C
+  Licensed under the Apache License, Version 2.0. AXP2101 register addresses and
+  status-bit meanings in firmware/main/pmu.c follow the 01_AXP2101 example.
+
+- LVGL (MIT), ESP-IDF (Apache-2.0), espressif/mdns (Apache-2.0), cJSON (MIT, bundled with ESP-IDF).
