@@ -120,8 +120,7 @@
   let n = 0;
   function build(el) {
     const k = n++;
-    const ring = el.hasAttribute('data-ring') ? `<svg class="ring" viewBox="0 0 200 200" aria-hidden="true"><defs><path id="rim${k}" d="M100 100m-95 0a95 95 0 1 1 190 0a95 95 0 1 1-190 0"/></defs><text><textPath href="#rim${k}" textLength="592" lengthAdjust="spacing">PocketOS ◦ a tiny companion for your whole home ◦ created by Leeko ◦</textPath></text></svg>` : '';
-    el.innerHTML = ring + `<span class="key k1"></span><span class="key k2"></span><div class="screen">
+    el.innerHTML = `<span class="key k1"></span><span class="key k2"></span><div class="screen">
       <div class="scr s-companion"><div class="status">${icon.wifi}<span>78%</span></div><div class="clock">08:24</div>
         <div class="orbx"><div class="orb"><svg class="face" viewBox="10 15 80 80" aria-hidden="true"></svg></div></div>
         <div class="cap"><i class="cap-dot"></i><span class="cap-text">Good morning</span></div></div>
@@ -214,6 +213,16 @@
     g.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
     g.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
   }, { passive: true });
+
+  // Header: firmer glass once the page scrolls; the menu opens a drawer on phones
+  const bar = $('.topbar'), menu = $('.menu'), drawer = $('#drawer');
+  if (bar) { const f = () => bar.classList.toggle('scrolled', scrollY > 8); f(); addEventListener('scroll', f, { passive: true }); }
+  if (menu && drawer) {
+    const set = open => { menu.setAttribute('aria-expanded', String(open)); drawer.hidden = !open; };
+    menu.addEventListener('click', () => set(drawer.hidden));
+    $$('a', drawer).forEach(a => a.addEventListener('click', () => set(false)));
+    addEventListener('keydown', e => { if (e.key === 'Escape' && !drawer.hidden) { set(false); menu.focus(); } });
+  }
 
   // The film plays only when asked, with sound
   const v = $('#film'), p = $('#film-play');

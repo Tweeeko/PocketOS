@@ -13,25 +13,30 @@
 </head><body>
 <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
 <a class="skip" href="#main">Skip to content</a>
-<nav class="nav glass" aria-label="Site">
-  <a class="mark" href="./" aria-current="page"><b aria-hidden="true"></b><span>PocketOS</span></a>
-  <a href="install.html">Install</a><a href="help.html">Help</a><a href="changes.html">What’s new</a>
-</nav>
+<header class="topbar" id="top">
+  <div class="bar">
+    <a class="brand" href="./" aria-current="page"><img src="assets/icon.png" alt="" width="30" height="30"><span>PocketOS</span></a>
+    <nav class="links" aria-label="Main"><a href="./#features">Features</a><a href="./#film">Film</a><a href="./#privacy">Privacy</a><a href="help.html">Help</a><a href="changes.html">What’s new</a></nav>
+    <a class="btn small cta" href="install.html">Install</a>
+    <button class="menu" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menu"><i></i><i></i></button>
+  </div>
+  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="./#features">Features</a><a href="./#film">Film</a><a href="./#privacy">Privacy</a><a href="help.html">Help</a><a href="changes.html">What’s new</a><a href="install.html">Install</a></nav>
+</header>
 
 <main id="main">
   <section class="hero">
     <div class="copy">
       <h1>Your whole home, in the palm of your hand.</h1>
       <p class="lead lede">PocketOS is a round glass screen with a little companion who lives inside it. It watches over your lights, heating and music, and lets you change them with one finger.</p>
-      <div class="row"><a class="btn" href="#story-start">See how it works</a><a class="btn ghost" href="install.html">Install</a></div>
+      <div class="row"><a class="btn" href="#features">See how it works</a><a class="btn ghost" href="install.html">Install</a></div>
     </div>
     <div class="stage">
-      <div class="pocket" data-build data-ring></div>
+      <div class="pocket" data-build></div>
       <p class="hint">Go on, tap it.</p>
     </div>
   </section>
 
-  <div class="chapters" id="story-start">
+  <div class="chapters" id="features">
     <div class="pin"><div class="pocket" id="story" data-build></div></div>
     <div>
       <article class="chapter" data-screen="companion">
@@ -73,7 +78,7 @@
     </div>
   </div>
 
-  <section class="film">
+  <section class="film" id="film">
     <div class="head"><h2>Watch the film.</h2><p class="dim" style="margin:0">Thirty seconds, with sound.</p></div>
     <div class="frame glass"><div>
       <video id="film" playsinline preload="none" poster="media/poster.jpg"><source src="media/promo.mp4" type="video/mp4"></video>
@@ -81,7 +86,7 @@
     </div></div>
   </section>
 
-  <section class="promise">
+  <section class="promise" id="privacy">
     <h2>It talks to your home. <span>Nobody else.</span></h2>
     <div class="facts">
       <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg></div><div><h3>No account, no cloud</h3><p>No sign-up, no subscription, no advertising or analytics. Your devices and settings stay on PocketOS and your Wi-Fi.</p></div></div>

@@ -54,14 +54,32 @@ a:hover{color:#fff}
 /* a thin bright lip on the top edge, like light caught by curved glass */
 .glass::after{content:"";position:absolute;left:12%;right:12%;top:0;height:1px;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(255,255,255,.9),transparent);opacity:.7}
 
-/* ---------- navigation: a floating glass capsule ---------- */
-.nav{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:20;display:flex;align-items:center;gap:4px;padding:6px;border-radius:999px;width:max-content;max-width:calc(100% - 24px)}
-.nav a{color:var(--mist);text-decoration:none;font:500 15px var(--text);padding:9px 15px;border-radius:999px;white-space:nowrap}
-.nav a:hover{color:var(--ink);background:rgba(255,255,255,.08)}
-.nav a[aria-current]{color:var(--ink);background:rgba(255,255,255,.14)}
-.nav .mark{display:flex;align-items:center;gap:9px;color:var(--ink);font:600 15px var(--display);letter-spacing:-.02em;padding-right:16px}
-.nav .mark b{width:24px;height:24px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#3a4a8a,#0b1030 70%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.25);display:grid;place-items:center}
-.nav .mark b::before{content:"";width:12px;height:5px;background:radial-gradient(circle,var(--eye) 45%,transparent 50%) 0 0/5px 5px repeat-x}
+/* ---------- header: a full-width glass bar, like a product page ---------- */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:30;
+  background:linear-gradient(180deg,rgba(13,20,48,.62),rgba(7,11,28,.48));
+  -webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);
+  border-bottom:1px solid rgba(255,255,255,.1);box-shadow:inset 0 -1px 0 rgba(0,0,0,.3),0 10px 30px -18px rgba(0,0,0,.8);transition:background .3s}
+.topbar::after{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent)}
+.topbar.scrolled{background:linear-gradient(180deg,rgba(13,20,48,.86),rgba(7,11,28,.78))}
+.bar{max-width:1240px;margin:0 auto;padding:0 28px;height:66px;display:flex;align-items:center;gap:28px}
+.brand{display:flex;align-items:center;gap:11px;color:var(--ink);text-decoration:none;font:600 19px var(--display);letter-spacing:-.03em}
+.brand:hover{color:#fff}
+.brand img{width:30px;height:30px;border-radius:9px;box-shadow:0 0 0 1px rgba(255,255,255,.18),0 0 18px rgba(106,167,255,.35)}
+.links{display:flex;gap:2px;margin:0 auto}
+.links a,.drawer a{color:var(--mist);text-decoration:none;font:500 15px var(--text);padding:9px 14px;border-radius:999px;white-space:nowrap}
+.links a:hover{color:var(--ink);background:rgba(255,255,255,.07)}
+.links a[aria-current],.drawer a[aria-current]{color:var(--ink);background:rgba(255,255,255,.12)}
+.btn.small{padding:10px 18px;font-size:15px}
+.menu{display:none;width:44px;height:44px;border:0;border-radius:50%;cursor:pointer;place-items:center;align-content:center;gap:6px;
+  background:rgba(255,255,255,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),inset 0 0 0 1px rgba(255,255,255,.12)}
+.menu i{display:block;width:18px;height:2px;border-radius:2px;background:var(--ink);transition:transform .25s}
+.menu[aria-expanded=true] i:first-child{transform:translateY(4px) rotate(45deg)}
+.menu[aria-expanded=true] i:last-child{transform:translateY(-4px) rotate(-45deg)}
+.drawer{display:grid;gap:4px;padding:10px 20px 22px;max-width:1240px;margin:0 auto}
+.drawer[hidden]{display:none}
+.drawer a{font-size:18px;padding:13px 16px;border-radius:18px}
+.drawer a:hover{background:rgba(255,255,255,.07);color:var(--ink)}
+section[id],.chapters[id]{scroll-margin-top:72px}
 
 /* ---------- type ---------- */
 h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:-.035em;margin:0;text-wrap:balance}
@@ -151,10 +169,6 @@ p{margin:0 0 1em}
 .ctls svg{width:5cqw;height:5cqw;fill:currentColor}
 .back{position:absolute;bottom:11%;font-size:4cqw;color:var(--mist)}
 
-/* the name around the rim */
-.ring{position:absolute;left:-9%;top:-9%;width:118%;height:118%;max-width:none;pointer-events:none;overflow:visible;animation:turn 90s linear infinite}
-.ring text{font:500 7.4px var(--display);letter-spacing:.06em;fill:rgba(238,242,255,.55)}
-@keyframes turn{to{transform:rotate(360deg)}}
 
 /* ---------- home page ---------- */
 .hero{overflow-x:clip;min-height:100svh;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:clamp(30px,5vw,80px);max-width:1240px;margin:0 auto;padding:110px 28px 60px}
@@ -162,7 +176,7 @@ p{margin:0 0 1em}
 .hero h1{margin-bottom:26px}
 .hero .lede{margin-bottom:34px}
 .stage{display:grid;place-items:center;position:relative}
-.stage .hint{position:absolute;bottom:-78px;font-size:14px;color:var(--haze)}
+.stage .hint{position:absolute;bottom:-44px;font-size:14px;color:var(--haze)}
 
 .chapters{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,6vw,90px);max-width:1240px;margin:0 auto;padding:40px 28px 80px}
 .pin{position:sticky;top:0;height:100svh;display:grid;place-items:center}
@@ -249,6 +263,7 @@ footer.end strong{color:var(--ink);font:600 15px var(--display);letter-spacing:-
 
 /* ---------- small screens ---------- */
 @media (max-width:900px){
+  .links,.cta{display:none}.menu{display:grid;margin-left:auto}.bar{height:60px;padding:0 18px}
   .hero{grid-template-columns:1fr;text-align:center;padding-top:100px;gap:60px}
   .hero .copy{margin:0 auto}.hero .lede{margin-left:auto;margin-right:auto}.hero .row{justify-content:center}
   .hero .stage{order:-1}
@@ -262,8 +277,6 @@ footer.end strong{color:var(--ink);font:600 15px var(--display);letter-spacing:-
 }
 @media (max-width:560px){
   body{font-size:17px}
-  .nav a{padding:9px 11px;font-size:14px}.nav .mark span{display:none}.nav .mark{padding-right:6px}
-  .ring{left:-12%;top:-12%;width:124%;height:124%}
   .prose td:first-child{white-space:normal}
 }
 @media (prefers-reduced-motion:reduce){

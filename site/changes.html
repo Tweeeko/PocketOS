@@ -12,10 +12,15 @@
 </head><body>
 <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
 <a class="skip" href="#main">Skip to content</a>
-<nav class="nav glass" aria-label="Site">
-  <a class="mark" href="./"><b aria-hidden="true"></b><span>PocketOS</span></a>
-  <a href="install.html">Install</a><a href="help.html">Help</a><a href="changes.html" aria-current="page">What’s new</a>
-</nav>
+<header class="topbar" id="top">
+  <div class="bar">
+    <a class="brand" href="./"><img src="assets/icon.png" alt="" width="30" height="30"><span>PocketOS</span></a>
+    <nav class="links" aria-label="Main"><a href="./#features">Features</a><a href="./#film">Film</a><a href="./#privacy">Privacy</a><a href="help.html">Help</a><a href="changes.html" aria-current="page">What’s new</a></nav>
+    <a class="btn small cta" href="install.html">Install</a>
+    <button class="menu" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menu"><i></i><i></i></button>
+  </div>
+  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="./#features">Features</a><a href="./#film">Film</a><a href="./#privacy">Privacy</a><a href="help.html">Help</a><a href="changes.html" aria-current="page">What’s new</a><a href="install.html">Install</a></nav>
+</header>
 <main id="main" class="page">
   <header>
     <h1>What’s new.</h1>
