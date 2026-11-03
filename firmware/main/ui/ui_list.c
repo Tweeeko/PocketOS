@@ -1,6 +1,7 @@
 // Scrolling glass lists. The row nearest the centre is highlighted and the rest fade towards the
 // round edge. Rows: rooms, devices in a room or category, favourites, More, device info, companion.
 #include "ui_priv.h"
+#include "portable.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,7 +10,7 @@
 typedef enum { R_ENTITY, R_ALL, R_ROOM, R_TILE, R_SCREEN, R_INFO, R_SETTING } row_kind_t;
 typedef struct { row_kind_t kind; char id[ID_LEN]; char label[48]; char sub[80]; bool on; } row_t;
 
-static row_t rows[MAX_ROWS];
+PSRAM_BSS static row_t rows[MAX_ROWS];   // ~13 KB
 static int nrows;
 static lv_obj_t *scroller, *row_obj[MAX_ROWS], *sub_obj[MAX_ROWS], *empty_lbl;
 static scr_ref_t *ref;
