@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 #pragma once
 // Home Assistant WebSocket client (esp_websocket_client + core/ha_proto).
 #include <stdbool.h>

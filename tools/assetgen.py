@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 """Generate PocketOS UI assets as LVGL 9 C sources (no LVGL tools needed).
 
   - Inter fonts (SIL Open Font License) at the sizes the UI uses, 4 bpp, LVGL fmt_txt format

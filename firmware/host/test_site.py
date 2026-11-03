@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 """End-to-end test of the settings website against mock_device.py, in a phone-sized Chromium.
 
   python3 firmware/host/test_site.py [--shots DIR]

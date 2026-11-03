@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 #pragma once
 // Central device state shared by the UI, web API, Home Assistant client, voice and power tasks.
 // Implements ui_app.h for the on-screen UI.

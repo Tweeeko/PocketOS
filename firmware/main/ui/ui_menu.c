@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 // Main menu: pages of four glass tiles, swipe up/down. Settings (QR code) is always first so the
 // settings website can always be reached; tiles come from the user's choices on the website and
 // only appear when the home actually has that kind of device.

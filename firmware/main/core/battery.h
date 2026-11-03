@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 #pragma once
 // Battery history and "how long will it last" estimate. Portable C (unit-tested on a PC).
 // The device records a sample every 10 minutes (and whenever it's plugged in or unplugged),

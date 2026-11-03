@@ -1,5 +1,7 @@
 # PocketOS
 
+**Created by Leeko.**
+
 A pocket-sized smart-home companion: a round 1.75" AMOLED screen with an animated
 character, controlled by touch and two side buttons, configured from a phone over
 the home Wi-Fi. Local-first: no PocketOS account, cloud, subscription or tracking.
@@ -82,6 +84,9 @@ python3 firmware/host/mock_device.py       # try the website by hand at http://l
 ```
 
 ## Credits
+
+PocketOS is created and written by Leeko. Copyright (c) 2026 Leeko.
+
 
 Board support from Waveshare's `esp32_s3_touch_amoled_1_75c` component (Apache-2.0),
 pulled in as a dependency, not copied. AXP2101 register usage follows Waveshare's

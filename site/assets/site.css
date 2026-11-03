@@ -1,3 +1,4 @@
+/* PocketOS, created by Leeko. Copyright (c) 2026 Leeko. */
 /* PocketOS website. Dark "liquid glass", matching the device and its settings website. */
 :root{--bg:#05060b;--bg2:#0b0d18;--ink:#f1f3ff;--dim:#8b91ae;--faint:#5d6280;--blue:#6aa7ff;--vio:#9b7bff;--ok:#7be3a4;--warn:#ffd166;--line:rgba(255,255,255,.13);--glass:rgba(255,255,255,.06);color-scheme:dark}
 *{box-sizing:border-box}
@@ -50,7 +51,7 @@ section{padding:70px 0}
 .feature.flip .shot{order:2}
 .shot{position:relative;justify-self:center;width:min(420px,100%)}
 .shot::before{content:"";position:absolute;inset:12%;border-radius:50%;background:radial-gradient(circle,rgba(106,167,255,.32),transparent 70%);filter:blur(30px)}
-.shot img{position:relative;border-radius:50%}
+.shot img{position:relative;border-radius:50%;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover}
 .feature ul{padding-left:20px;color:var(--dim);margin:0}.feature li{margin:6px 0}
 .feature p{color:var(--dim);margin:0 0 14px}
 

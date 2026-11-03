@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 #pragma once
 #if defined(__GNUC__)
 #pragma GCC diagnostic ignored "-Wunused-variable"

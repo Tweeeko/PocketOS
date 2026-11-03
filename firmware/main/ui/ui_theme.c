@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 // Liquid Glass styling for LVGL: frosted gradient panels, fine bright borders, soft glows.
 // Real blur is too expensive on the ESP32-S3, so "glass" is a translucent white gradient over a
 // pre-rendered glowing background image.
