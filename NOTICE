@@ -24,3 +24,6 @@ This project depends on, and is informed by, the following third-party work:
   fonts in firmware/main/ui/assets by tools/assetgen.py.
 
 - ESP Web Tools by ESPHome (Apache-2.0), loaded by the website's install page.
+
+- Unbounded (The Unbounded Project Authors) and Onest (The Onest Project Authors), SIL Open
+  Font License 1.1, self-hosted by the website in site/fonts (licences alongside).
