@@ -40,6 +40,16 @@
     <div class="stage"><div class="pocket" data-build></div></div>
   </section>
 
+  <section class="glance" aria-label="PocketOS at a glance">
+    <div class="glance-grid">
+      <div><span class="k">What it is</span><b>A remote for your whole home.</b><p>A round touchscreen you can carry from room to room, with a friendly companion that shows how things are at home.</p></div>
+      <div><span class="k">How it works</span><b>Powered by Home Assistant.</b><p>PocketOS joins your Wi-Fi and connects to Home Assistant, so every device you’ve added there appears on PocketOS, sorted by room.</p></div>
+      <div><span class="k">Why it’s private</span><b>Your home stays at home.</b><p>No PocketOS account, subscription, advertising or tracking. Your commands and voice go only to your own Home Assistant.</p></div>
+    </div>
+    <div class="controls-row" aria-label="What it controls"><span>Lights, warmth and colour</span><span>Heating</span><span>Speakers and TVs</span><span>Locks</span><span>Blinds</span><span>Plugs and switches</span><span>Fans</span><span>Scenes</span><span>Temperature sensors</span></div>
+    <p class="glance-try"><a class="btn ghost" href="demo.html">Try it in your browser</a><span>Use PocketOS and its settings page with a sample home.</span></p>
+  </section>
+
   <section class="film" id="watch" aria-label="PocketOS brand film">
     <div class="frame glass"><div>
       <video id="film" muted loop playsinline preload="metadata" poster="media/poster.jpg"><source src="media/promo.mp4" type="video/mp4"></video>
@@ -93,14 +103,24 @@
 
   <section class="promise" id="privacy">
     <h2>Private by design.</h2>
-    <p class="lede">PocketOS runs entirely on your home network. No account, no subscription and no cloud service.</p>
+    <p class="lede">PocketOS works with your own Home Assistant on your home network. There’s no PocketOS account, no subscription and no cloud service in between.</p>
     <div class="facts">
-      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg></div><div><h3>Local by default</h3><p>Your devices, settings and credentials stay on PocketOS and your Wi-Fi. No analytics, no advertising.</p></div></div>
-      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="3"/><path d="M11 18h2"/></svg></div><div><h3>Set up from your phone</h3><p>Every PocketOS hosts its own settings page. Scan the code on screen and enter the pairing code.</p></div></div>
-      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></svg></div><div><h3>Automatic updates</h3><p>New versions install with a tap, or overnight while charging. Each update is verified before it runs.</p></div></div>
-      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="18" height="10" rx="2.5"/><path d="M22 11v2M6 10v4M9.5 10v4"/></svg></div><div><h3>Battery insight</h3><p>Tracks 48 hours of battery history and estimates the time remaining based on how you use it.</p></div></div>
-      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg></div><div><h3>Talk to your home</h3><p>Hold the Boot button on the side and ask for what you want. PocketOS answers out loud and on screen, and your voice goes only to your own Home Assistant.</p></div></div>
-      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7M5 10v10h14V10"/></svg></div><div><h3>Knows when you’re home</h3><p>Rests while you’re out to save battery, and wakes up when you get back.</p></div></div>
+      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg></div><div><h3>No account, no subscription</h3><p>Set it up once from your phone. There’s nothing to sign up to and nothing to pay each month.</p></div></div>
+      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg></div><div><h3>No advertising or analytics</h3><p>PocketOS doesn’t track how you use it, and neither does this website.</p></div></div>
+      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><div><h3>Your details stay on PocketOS</h3><p>Your Wi-Fi password and Home Assistant token are stored only on the device, and the token is never shown again.</p></div></div>
+      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7M5 10v10h14V10"/></svg></div><div><h3>Only two connections</h3><p>PocketOS talks to your Home Assistant. Once a day it checks the PocketOS update server for new software, sending nothing about you. You can turn that check off.</p></div></div>
+      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></svg></div><div><h3>Signed updates</h3><p>PocketOS only installs software signed by PocketOS, checks it before installing, and goes back to the last version if a new one won’t start.</p></div></div>
+      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg></div><div><h3>Supported until at least 2029</h3><p>Security updates are free and provided until at least 31 December 2029. <a href="security.html">How PocketOS protects your home</a></p></div></div>
+    </div>
+  </section>
+
+  <section class="promise details">
+    <h2>Thoughtful details.</h2>
+    <div class="facts">
+      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg></div><div><h3>Talk to your home</h3><p>Hold the Boot button and ask. PocketOS answers out loud and on screen, using the voice assistant in your Home Assistant.</p></div></div>
+      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="18" height="10" rx="2.5"/><path d="M22 11v2M6 10v4M9.5 10v4"/></svg></div><div><h3>Battery insight</h3><p>Keeps 48 hours of battery history and estimates the time left from how you use it.</p></div></div>
+      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="3"/><path d="M11 18h2"/></svg></div><div><h3>Set up from your phone</h3><p>Scan the code on screen. PocketOS hosts its own settings page, so there’s no app to install.</p></div></div>
+      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div><div><h3>Knows when you’re home</h3><p>Rests while you’re out to save battery, and wakes up when you get back.</p></div></div>
     </div>
   </section>
 
@@ -114,6 +134,22 @@
         <div><b>Your phone, for setup</b><span>Its camera and web browser join PocketOS to your Wi-Fi and connect Home Assistant. No app, and nothing to download.</span></div>
       </div>
       <p class="inbox-note">Everything else is in the box, including the USB-C charging cable. Plug it into any USB charger or computer to charge.</p>
+    </div>
+  </section>
+
+  <section class="about" id="about" aria-labelledby="about-h">
+    <div class="panel glass">
+      <p class="eyebrow">About PocketOS</p>
+      <h2 id="about-h">Made to make a smart home feel simple.</h2>
+      <div class="about-cols">
+        <p>Smart homes are powerful, but controlling one usually means finding your phone, unlocking it and opening an app. PocketOS puts the things you use every day on one small screen you can pick up and use in seconds.</p>
+        <p>It’s designed to be calm and private: it shows what matters, confirms every change with your home, and keeps your home’s details on your own network.</p>
+      </div>
+      <dl class="brand-row">
+        <div><dt>PocketOS</dt><dd>The product</dd></div>
+        <div><dt>Leeko</dt><dd>Design and technology</dd></div>
+        <div><dt>Leeeko LTD</dt><dd>The company that sells it</dd></div>
+      </dl>
     </div>
   </section>
 
@@ -137,7 +173,6 @@
   </div>
   <div class="legal-row">
     <p class="legal">© 2026 Leeeko LTD. Registered office: PocketOS @ 32 Ferndale Avenue, Newcastle, NE28 7NE, United Kingdom. Home Assistant is a trademark of its respective owner. PocketOS is not affiliated with or endorsed by Home Assistant.</p>
-    <a class="legal" href="https://github.com/Tweeeko/PocketOS">Open source</a>
   </div>
 </footer>
 <script src="assets/site.js"></script>

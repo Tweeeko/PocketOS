@@ -5,7 +5,7 @@ PocketOS is created by Leeko.
 ## Reporting a vulnerability
 
 Please report security problems privately using
-[Report a vulnerability](https://github.com/Tweeeko/PocketOS/security/advisories/new).
+the [contact form](https://www.pocketos.co.uk/contact) and choose **A security problem**.
 Reports are acknowledged within 7 days. Please don't test against devices or homes that aren't yours.
 
 ## Supported versions

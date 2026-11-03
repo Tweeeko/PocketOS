@@ -4,6 +4,9 @@ Each release needs a section here headed with its version, exactly as in `firmwa
 The text under it (keep it short and plain) is shown on the settings website when the update
 is offered.
 
+## 0.1.7
+- Small wording updates on the settings page
+
 ## 0.1.6
 - The settings page now looks and works like PocketOS: the same glass tiles and lists, PocketOS’s own lettering, and a live picture of your PocketOS at the top
 - Open a section from its tile, then tap ‹ or swipe right to go back, just like on PocketOS. Your phone’s back gesture works too

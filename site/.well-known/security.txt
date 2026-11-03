@@ -1,4 +1,4 @@
-Contact: https://github.com/Tweeeko/PocketOS/security/advisories/new
+Contact: https://www.pocketos.co.uk/contact
 Policy: https://www.pocketos.co.uk/security
 Preferred-Languages: en
 Expires: 2027-11-03T00:00:00.000Z

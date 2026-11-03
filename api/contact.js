@@ -10,7 +10,7 @@
 const net = require('net');
 const tls = require('tls');
 
-const TOPICS = ['Buying PocketOS', 'An order or delivery', 'Setup or using PocketOS', 'Returns or a fault', 'Something else'];
+const TOPICS = ['Buying PocketOS', 'An order or delivery', 'Setup or using PocketOS', 'Returns or a fault', 'A security problem', 'Something else'];
 const LIMITS = { name: 80, email: 254, topic: 40, order: 40, message: 4000 };
 const EMAIL = /^[^\s@<>()",;:]+@[^\s@<>()",;:]+\.[^\s@<>()",;:]{2,}$/;
 const recent = new Map();               // per-address send times; best effort (each function instance has its own)

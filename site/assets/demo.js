@@ -86,7 +86,7 @@
       hist.push([t, Math.floor(pct), Math.floor(3500 + pct * 6.5), fl]);
     }
     S = { cfg: defaults(), ents: ENTITIES(), pin: pin(), tokens: [TOKEN], bad: 0, lockedUntil: 0, ha: 'connected', haError: '',
-      firmware: '0.1.6', hist, battery: hist[hist.length - 1][1], booted: Date.now(), upd: { state: 'idle', progress: 0, error: '', checked: null },
+      firmware: '0.1.7', hist, battery: hist[hist.length - 1][1], booted: Date.now(), upd: { state: 'idle', progress: 0, error: '', checked: null },
       resetUntil: 0, downUntil: 0 };
     S.cfg.known = S.ents.map(e => e.id);
   }

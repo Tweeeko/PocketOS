@@ -28,15 +28,35 @@
 </header>
 
 <main id="main" class="buy">
-  <section class="buy-hero">
-    <div class="copy">
-      <p class="eyebrow">PocketOS Device</p>
-      <h1>Buy PocketOS.<span>Your home, at a glance.</span></h1>
-      <p class="lede">A pocket-sized smart-home companion designed to bring your home together in one beautifully simple device.</p>
-      <dl class="avail glass" data-availability></dl>
-      <p class="fine">Arrives ready to use, with PocketOS installed. <b>Works with Home Assistant</b> on your home network. <a href="specs.html#requirements">What you’ll need</a></p>
+  <section class="store">
+    <div class="gallery">
+      <figure class="shot main-shot" data-image="hero" data-eager data-main></figure>
+      <div class="thumbs" role="group" aria-label="Choose a picture" data-thumbs></div>
     </div>
-    <figure class="shot hero-shot" data-image="hero" data-eager></figure>
+    <div class="buybox">
+      <p class="eyebrow">PocketOS</p>
+      <h1>PocketOS</h1>
+      <p class="tagline">Your home, at a glance.</p>
+      <p class="lede">A pocket-sized companion with a round touchscreen that puts the lights, heating and speakers in your Home Assistant home within reach.</p>
+      <div class="price-row"><span class="price" data-price>£99.99</span><span class="status-pill"><i></i><span data-status>Coming soon</span></span></div>
+      <p class="ship" data-region-note>Sold and delivered in the UK only.</p>
+      <ul class="highlights">
+        <li>1.75-inch round AMOLED touchscreen</li>
+        <li>Aluminium case with two side buttons</li>
+        <li>Microphones and speaker for voice</li>
+        <li>Rechargeable battery, USB-C charging</li>
+        <li>No app, account or subscription</li>
+      </ul>
+      <div class="row"><span class="btn soon" aria-disabled="true">Coming soon</span><a class="btn ghost" href="demo.html">Try it in your browser</a></div>
+      <p class="fine">Arrives with PocketOS installed. <b>Works with Home Assistant</b> on your home network. <a href="specs.html#requirements">What you’ll need</a></p>
+    </div>
+  </section>
+
+  <section class="assure" aria-label="Delivery, returns and support">
+    <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7M7 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM17 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg><b>UK delivery</b><span>Delivery options and costs are shown before you pay.</span><a href="terms.html">Terms of sale</a></div>
+    <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 3-6.2M4 4v4h4"/></svg><b>14 days to change your mind</b><span>From the day it arrives, for any reason.</span><a href="returns.html#cancel">Returns</a></div>
+    <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg><b>Your rights if it’s faulty</b><span>Refund within 30 days, then repair or replacement, under UK consumer law.</span><a href="returns.html#faulty">Warranty and faults</a></div>
+    <div><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></svg><b>Security updates</b><span>Free over Wi-Fi until at least 31 December 2029.</span><a href="security.html">Security</a></div>
   </section>
 
   <section class="in-box" id="in-the-box">
@@ -48,10 +68,31 @@
     </div>
   </section>
 
+  <section class="block alu key-specs">
+    <div class="ks-head"><h2>Key specs</h2><a href="specs.html">All tech specs ›</a></div>
+    <dl class="ks">
+      <div><dt>Display</dt><dd>1.75-inch round AMOLED, 466 × 466, touch</dd></div>
+      <div><dt>Connectivity</dt><dd>2.4 GHz Wi-Fi · USB-C</dd></div>
+      <div><dt>Voice</dt><dd>Two microphones · built-in speaker</dd></div>
+      <div><dt>Battery</dt><dd>Rechargeable, USB-C charging</dd></div>
+      <div><dt>Case</dt><dd>CNC-machined aluminium</dd></div>
+      <div><dt>Size</dt><dd>About 55 mm across, 15 mm deep</dd></div>
+    </dl>
+  </section>
+
+  <section class="closer" id="photos">
+    <header class="sec-head">
+      <h2>Take a closer look.</h2>
+      <p class="lede">Concept renders for now. Photographs of the finished PocketOS will replace them before it goes on sale.</p>
+    </header>
+    <div class="closer-grid" data-closer></div>
+  </section>
+
   <section class="pack" id="packaging">
     <header class="sec-head">
       <h2>The packaging.</h2>
-      <p class="lede">A clean, matte black box with PocketOS in silver foil. Inside, a fitted insert holds the device and its accessories in their own compartments.</p>
+      <p class="lede">A matte black box with PocketOS in silver foil. Inside, a fitted insert holds the device and its accessories in their own compartments.</p>
+      <p class="concept-note">Packaging concept. The finished box is still being designed and may look different.</p>
     </header>
     <div class="pack-grid" data-packaging></div>
   </section>
@@ -73,7 +114,6 @@
   </div>
   <div class="legal-row">
     <p class="legal">© 2026 Leeeko LTD. Registered office: PocketOS @ 32 Ferndale Avenue, Newcastle, NE28 7NE, United Kingdom. Home Assistant is a trademark of its respective owner. PocketOS is not affiliated with or endorsed by Home Assistant.</p>
-    <a class="legal" href="https://github.com/Tweeeko/PocketOS">Open source</a>
   </div>
 </footer>
 <script src="assets/product-media.js"></script>

@@ -299,7 +299,7 @@ function updCard(){
   else s='<p>Not checked yet.</p>';
   return '<div class="card"><h2>Updates</h2><p style="margin-top:0">You’re on <b>v'+esc(info.firmware)+'</b>.</p>'+s+
    (u.online?'<div class="btns"><button class="btn g" data-a="updcheck" '+(u.state==='checking'||u.state==='downloading'?'disabled':'')+'>Check now</button></div><label class="f">New versions</label>'+seg('updates',[['notify','Notify'],['auto','Install overnight'],['off','Off']],cfg.updates)+
-   '<p style="margin-top:8px;font-size:13px">'+(cfg.updates==='auto'?'Installs between 2 and 5 am while PocketOS is charging and nobody is using it. ':cfg.updates==='notify'?'PocketOS looks once a day and tells you here and on its screen. ':'')+'Checking downloads a small file from GitHub. Nothing about your home or devices is sent.</p>':'')+'</div>';
+   '<p style="margin-top:8px;font-size:13px">'+(cfg.updates==='auto'?'Installs between 2 and 5 am while PocketOS is charging and nobody is using it. ':cfg.updates==='notify'?'PocketOS looks once a day and tells you here and on its screen. ':'')+'Checking downloads a small file from the PocketOS update server. Nothing about your home or devices is sent.</p>':'')+'</div>';
 }
 async function watchUpdate(target){
   if(updWatching)return;updWatching=true;const t0=Date.now();let gone=false;

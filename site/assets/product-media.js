@@ -18,6 +18,17 @@ window.POCKETOS_PRODUCT = {
     contents:  { src: 'media/product/in-the-box.jpg',   kind: 'render', alt: 'The PocketOS Device, a coiled USB-C cable and a quick start card laid out side by side' }
   },
 
+  // "Take a closer look" on the Where to Buy page. A slot without an image shows a tidy placeholder
+  // until a real photograph is added (set `image` to one of the keys above).
+  closer: [
+    { image: 'hero',    title: 'Front',            text: 'The round AMOLED screen and companion.' },
+    { image: 'angle',   title: 'Side and buttons',  text: 'The aluminium case, with Power and Boot on the side.' },
+    { image: null,      title: 'Size',             text: 'About 55 mm across and 15 mm deep.' },
+    { image: null,      title: 'In the hand',      text: 'How it sits in your palm.' },
+    { image: null,      title: 'Around the home',  text: 'On a bedside table, sofa arm or desk.' },
+    { image: 'boxOpen', title: 'Unboxing',         text: 'Face up in its fitted cradle, ready to switch on.' }
+  ],
+
   packaging: [
     { image: 'boxClosed', title: 'The box', text: 'Matte black, with the PocketOS logo in silver foil on the lid.' },
     { image: 'boxOpen',   title: 'Opened',  text: 'The device sits face up in a fitted cradle, ready to switch on.' },

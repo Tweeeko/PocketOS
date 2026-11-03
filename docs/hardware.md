@@ -12,7 +12,7 @@ Waveshare **ESP32-S3-Touch-AMOLED-1.75C-EN** (SKU 33691 includes the battery, 33
 | Touch | CST9217, I2C | Waveshare wiki + BSP |
 | Power | AXP2101 PMU, I2C address 0x34, charging and fuel gauge | Waveshare `01_AXP2101` example |
 | Audio | ES7210 dual-mic ADC + speaker codec, I2S | Waveshare BSP |
-| Other | QMI8658 IMU, PCF85063 RTC, TCA9554 expander | Waveshare wiki |
+| Other | QMI8658 IMU (on the 1.75C schematic). The 1.75C has no PCF85063 RTC or TCA9554 expander: those are on the non-case 1.75 board | Waveshare 1.75C schematic |
 | Buttons | PWR and BOOT on the side of the case | Waveshare wiki |
 
 ## Pins (from the official BSP header `esp32_s3_touch_amoled_1_75c.h`, v3.0.0)
