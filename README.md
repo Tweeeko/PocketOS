@@ -28,6 +28,13 @@ Things to know:
 - PocketOS remembers up to 96 favourites, hidden and reviewed devices each, and handles up to
   128 Home Assistant devices.
 
+## Website
+
+**https://tweeeko.github.io/PocketOS/**: the product page with the promo film, a one-click
+browser installer for new boards, help, and what's new. It lives in `site/` and is published
+by `.github/workflows/site.yml` after every release (it copies in the latest firmware and the
+changelog). No cookies or analytics.
+
 ## Hardware
 
 Waveshare **ESP32-S3-Touch-AMOLED-1.75C-EN** (aluminium case, battery included).
@@ -44,7 +51,8 @@ firmware/          ESP-IDF project for the device (C, LVGL 9)
   main/www/        the settings website the device serves itself
   host/            PC tests, simulator and a mock device for the website
 design/            browser prototypes of the OS and settings website (reference only)
-docs/              architecture, API, settings schema, hardware, flashing, testing
+site/              the public website (GitHub Pages)
+docs/              architecture, API, settings schema, hardware, flashing, releasing, testing
 .devcontainer/     GitHub Codespaces setup with ESP-IDF, for building from an iPad
 .github/workflows/ cloud build that produces flashable firmware files
 ```
