@@ -356,6 +356,69 @@ async function build() {
       key.position.set(-2, 10, 3);
       look([0, 9.0, 2.0], [0, 0, 0.45], 30); break;
     }
+    case 'size': {     // front and side views, for the size drawing (marks for the labels go to render.py)
+      const front = await device('tex/home.png'); front.scale.y = 15 / 11.55;          // the case is about 15 mm deep
+      front.rotation.x = Math.PI / 2; front.position.set(-1.25, R, -TH / 2); scene.add(front);
+      const side = await device('tex/home.png'); side.scale.y = 15 / 11.55;
+      side.rotation.x = Math.PI / 2; side.position.set(0, R, -TH * 15 / 11.55 / 2);
+      const sg = new THREE.Group(); sg.add(side); sg.rotation.y = -Math.PI / 2; sg.position.set(1.55, 0, 0); scene.add(sg);
+      contact(-1.25, 0, 1.6, 0.45, 0.6); contact(1.55, 0, 0.6, 0.45, 0.6);
+      key.position.set(-2, 7, 9);
+      look([0.0, 1.05, 16], [0.0, 0.85, 0], 15);
+      const pt = (x, y, z) => { const v = new THREE.Vector3(x, y, z).project(camera); return [(v.x + 1) / 2 * W, (1 - v.y) / 2 * H]; };
+      const d = TH * 15 / 11.55;
+      window.__marks = { w: [pt(-1.25 - R, 0, 0), pt(-1.25 + R, 0, 0)], d: [pt(1.55 - d / 2, 0, 0), pt(1.55 + d / 2, 0, 0)], top: pt(0, 2 * R, 0)[1] };
+      break;
+    }
+    case 'scale': {    // beside a phone, for scale (a plain, unbranded phone)
+      const phone = new THREE.Group();
+      const body = new THREE.Mesh(new RoundedBoxGeometry(2.6, 0.29, 5.35, 6, 0.36), new THREE.MeshPhysicalMaterial({ color: 0x2a2d35, metalness: 0.8, roughness: 0.35 }));
+      body.position.y = 0.145; phone.add(body);
+      const wall = (() => { const c = document.createElement('canvas'); c.width = 256; c.height = 512; const g = c.getContext('2d');
+        const gr = g.createLinearGradient(0, 0, 256, 512); gr.addColorStop(0, '#1d2a5a'); gr.addColorStop(0.55, '#3a2a6e'); gr.addColorStop(1, '#0d1430');
+        g.fillStyle = gr; g.fillRect(0, 0, 256, 512); const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t; })();
+      const scr = new THREE.Mesh(new RoundedBoxGeometry(2.48, 0.01, 5.23, 6, 0.3), new THREE.MeshPhysicalMaterial({ color: 0x000000, emissive: 0xffffff, emissiveMap: wall, emissiveIntensity: 0.55, roughness: 0.05, clearcoat: 1, clearcoatRoughness: 0.02 }));
+      scr.position.y = 0.292; phone.add(scr);
+      shadowAll(phone); phone.rotation.y = 0.18; phone.position.set(-1.35, 0, 0.1); scene.add(phone);
+      contact(-1.35, 0.1, 3.4, 6.2, 0.55, 0.18);
+      const d = await device('tex/home.png'); d.rotation.y = -0.3; d.position.set(1.6, 0, 0.35); scene.add(d);
+      contact(1.6, 0.35, 2.4, 2.4, 0.75);
+      key.position.set(-3, 10, 4);
+      look([0.3, 9.6, 5.2], [0.1, 0, 0.25], 34); break;
+    }
+    case 'home': {     // on a wooden bedside table, at night
+      floor.visible = false;
+      const wood = (() => {
+        const c = document.createElement('canvas'); c.width = 2048; c.height = 1024; const g = c.getContext('2d');
+        g.fillStyle = '#5a3a24'; g.fillRect(0, 0, 2048, 1024);
+        let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+        for (let i = 0; i < 260; i++) {
+          const y = rnd() * 1024, w = 0.6 + rnd() * 2.6, a = 0.05 + rnd() * 0.12;
+          g.strokeStyle = rnd() > 0.5 ? `rgba(30,16,8,${a})` : `rgba(150,100,60,${a})`; g.lineWidth = w; g.beginPath();
+          for (let x = 0; x <= 2048; x += 32) g.lineTo(x, y + Math.sin(x / 260 + i) * 6 + Math.sin(x / 47 + i * 3) * 1.5);
+          g.stroke();
+        }
+        const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8; t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(2, 2); return t;
+      })();
+      const table = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), new THREE.MeshPhysicalMaterial({ map: wood, roughness: 0.55, clearcoat: 0.35, clearcoatRoughness: 0.4 }));
+      table.rotation.x = -Math.PI / 2; table.receiveShadow = true; scene.add(table);
+      // a mug and a book beside it
+      const mugPts = []; for (let i = 0; i <= 12; i++) mugPts.push(new THREE.Vector2(0.62 + (i === 0 ? -0.62 : 0) - (i > 10 ? (i - 10) * 0.02 : 0), i * 0.13));
+      const mugMat = new THREE.MeshPhysicalMaterial({ color: 0xe8e2d6, roughness: 0.3, clearcoat: 0.6 });
+      const mug = new THREE.Mesh(new THREE.LatheGeometry([new THREE.Vector2(0, 0), new THREE.Vector2(0.62, 0), new THREE.Vector2(0.64, 1.5), new THREE.Vector2(0.56, 1.5), new THREE.Vector2(0.54, 0.1), new THREE.Vector2(0, 0.1)], 64), mugMat);
+      const handle = new THREE.Mesh(new THREE.TorusGeometry(0.3, 0.07, 16, 32, Math.PI * 1.2), mugMat); handle.position.set(0.66, 0.78, 0); handle.rotation.z = -Math.PI * 0.6;
+      const mg = new THREE.Group(); mg.add(mug, handle); shadowAll(mg); mg.position.set(-2.5, 0, -1.9); mg.rotation.y = 0.9; scene.add(mg);
+      const book = new THREE.Mesh(new RoundedBoxGeometry(2.6, 0.32, 3.6, 2, 0.03), new THREE.MeshPhysicalMaterial({ color: 0x2b3a5c, roughness: 0.7 }));
+      book.position.set(2.7, 0.16, -1.2); book.rotation.y = -0.35; shadowAll(book); scene.add(book);
+      const d = await device('tex/home.png');
+      d.rotation.x = Math.PI / 2 - 0.12; d.position.set(0, R * Math.cos(0.12), -TH / 2);
+      const s = new THREE.Group(); s.add(d); s.rotation.y = -0.22; s.position.set(0.1, 0, 0.6); scene.add(s);
+      contact(0.1, 0.6, 1.5, 0.6, 0.8, 0.22);
+      key.color.set(0xffe2c0); key.intensity = 1.6; key.position.set(-5, 7, 3);
+      rim.intensity = 1.5;
+      renderer.toneMappingExposure = 0.85;
+      look([0.6, 2.2, 7.4], [0.1, 0.95, 0], 30); break;
+    }
   }
 }
 await build();

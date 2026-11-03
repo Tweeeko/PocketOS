@@ -38,6 +38,18 @@ with sync_playwright() as p:
         im = Image.open(io.BytesIO(base64.b64decode(data.split(',')[1]))).convert('RGBA')
         bg = backdrop(W, H).convert('RGBA')
         bg.alpha_composite(im)
+        marks = pg.evaluate('window.__marks || null')
+        if marks:   # size drawing: dimension lines under the front view and the side view
+            from PIL import ImageFont
+            dr = ImageDraw.Draw(bg); col = (196, 205, 232, 255); lw = max(2, int(3 * scale))
+            try: font = ImageFont.truetype(os.path.join(HERE, 'tex', 'font.ttf'), int(54 * scale))
+            except Exception: font = ImageFont.load_default()
+            y = marks['w'][0][1] + 90 * scale
+            for (x0, _), (x1, _), label in ((marks['w'][0], marks['w'][1], 'About 55 mm'), (marks['d'][0], marks['d'][1], 'About 15 mm')):
+                dr.line([(x0, y), (x1, y)], fill=col, width=lw)
+                for x in (x0, x1): dr.line([(x, y - 22 * scale), (x, y + 22 * scale)], fill=col, width=lw)
+                tw = dr.textlength(label, font=font)
+                dr.text(((x0 + x1) / 2 - tw / 2, y + 34 * scale), label, font=font, fill=col)
         fw, fh = int(1600 * scale), int(1200 * scale)
         out = bg.convert('RGB').resize((fw, fh), Image.LANCZOS)
         out.save(os.path.join(OUT, s + '.png'))

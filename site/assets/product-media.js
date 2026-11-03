@@ -15,7 +15,10 @@ window.POCKETOS_PRODUCT = {
     boxClosed: { src: 'media/product/box-closed.jpg',   kind: 'render', alt: 'Closed PocketOS box with the logo in silver foil, the device standing beside it' },
     boxOpen:   { src: 'media/product/box-open.jpg',     kind: 'render', alt: 'Open PocketOS box with the device in its cradle and the lid standing behind' },
     boxInsert: { src: 'media/product/box-insert.jpg',   kind: 'render', alt: 'The box insert with its round device cradle, finger notches and accessory compartment' },
-    contents:  { src: 'media/product/in-the-box.jpg',   kind: 'render', alt: 'The PocketOS Device, a coiled USB-C cable and a quick start card laid out side by side' }
+    contents:  { src: 'media/product/in-the-box.jpg',   kind: 'render', alt: 'The PocketOS Device, a coiled USB-C cable and a quick start card laid out side by side' },
+    size:      { src: 'media/product/size.jpg',         kind: 'render', alt: 'PocketOS from the front and from the side, about 55 mm across and about 15 mm deep' },
+    scale:     { src: 'media/product/scale.jpg',        kind: 'render', alt: 'PocketOS lying beside a smartphone, for scale' },
+    home:      { src: 'media/product/home.jpg',         kind: 'render', alt: 'PocketOS standing on a wooden bedside table beside a mug and a book' }
   },
 
   // "Take a closer look" on the Where to Buy page. A slot without an image shows a tidy placeholder
@@ -23,9 +26,9 @@ window.POCKETOS_PRODUCT = {
   closer: [
     { image: 'hero',    title: 'Front',            text: 'The round AMOLED screen and companion.' },
     { image: 'angle',   title: 'Side and buttons',  text: 'The aluminium case, with Power and Boot on the side.' },
-    { image: null,      title: 'Size',             text: 'About 55 mm across and 15 mm deep.' },
-    { image: null,      title: 'In the hand',      text: 'How it sits in your palm.' },
-    { image: null,      title: 'Around the home',  text: 'On a bedside table, sofa arm or desk.' },
+    { image: 'size',    title: 'Size',             text: 'About 55 mm across and 15 mm deep.' },
+    { image: 'scale',   title: 'Next to your phone', text: 'Small enough to pick up and carry from room to room.' },
+    { image: 'home',    title: 'Around the home',  text: 'On a bedside table, sofa arm or desk.' },
     { image: 'boxOpen', title: 'Unboxing',         text: 'Face up in its fitted cradle, ready to switch on.' }
   ],
 
