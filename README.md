@@ -30,10 +30,10 @@ Things to know:
 
 ## Website
 
-**https://tweeeko.github.io/PocketOS/**: the product page with the promo film, a one-click
-browser installer for new boards, help, and what's new. It lives in `site/` and is published
-by `.github/workflows/site.yml` after every release (it copies in the latest firmware and the
-changelog). No cookies or analytics.
+The product page with the promo film, a one-click browser installer for new boards, help, and
+what's new. It lives in `site/` and is hosted on Vercel (`vercel.json`, `site/build.sh`): every
+deploy fetches the latest release's firmware for the installer, and each release triggers a
+deploy. No cookies or analytics. Setup: `docs/website.md`.
 
 ## Hardware
 
