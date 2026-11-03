@@ -1,3 +1,4 @@
+# PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 # PC builds of PocketOS's portable code.
 #   make test   - unit tests for settings, device model and the Home Assistant protocol
 #   make sim    - screen simulator: renders every device screen to PNG (needs LVGL, see below)

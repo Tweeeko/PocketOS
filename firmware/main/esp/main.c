@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 // PocketOS firmware entry point.
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"

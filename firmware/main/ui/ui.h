@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 #pragma once
 // PocketOS on-screen interface (LVGL 9). All functions must be called with the LVGL lock held
 // (on the device: bsp_display_lock), except where noted.

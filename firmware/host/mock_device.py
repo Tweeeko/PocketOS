@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 """Pretend PocketOS for trying the settings website on a computer.
 
   python3 firmware/host/mock_device.py [--setup] [--port 8080]

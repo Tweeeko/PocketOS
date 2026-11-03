@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 // Over-the-air updates from published releases. See updater.h and docs/releasing.md.
 #include "updater.h"
 #include <string.h>

@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 // Device control screen. Anything with a level gets a 270° glass dial around the edge; on/off-only
 // devices get one big glass button. Values update live from Home Assistant; while a command is
 // on its way the screen says "Sending..." and only shows the new value once HA confirms it.

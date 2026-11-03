@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 #pragma once
 // Flash storage (NVS): settings as one JSON blob, Wi-Fi credentials, per-device secrets.
 #include <stdbool.h>

@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 #pragma once
 // PocketOS view of the home: entities from Home Assistant, grouped by area, with exactly the
 // controls each entity supports. Portable C (unit-tested on a PC). Not thread-safe by itself:
