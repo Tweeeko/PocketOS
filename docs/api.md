@@ -59,12 +59,16 @@ the website removes `ha_url`, `ha_token_set` and `schema` before posting it to `
 ```json
 {"areas": ["Kitchen", "Living room"],
  "entities": [{"id": "light.floor_lamp", "name": "Floor lamp", "domain": "light", "area": "Living room",
-   "status": "On · 60%", "controls": "On, off and brightness", "fav": true, "hidden": false, "new": false}]}
+   "ha_name": "Floor lamp", "status": "On · 60%", "controls": "On, off and brightness", "fav": true, "hidden": false, "new": false}]}
 ```
+`name` is the name chosen on PocketOS if there is one, otherwise Home Assistant's (`ha_name`).
 Entities Home Assistant marks as hidden or as configuration/diagnostic are left out.
 
 ### POST /entities (auth)
 `{"id": "light.floor_lamp", "fav": true}`; any of `fav`, `hidden`, `known` (booleans) in one call.
+`{"id": "light.floor_lamp", "name": "Reading lamp"}` renames it on PocketOS (up to 32 bytes, 48 devices).
+`""` or Home Assistant's own name goes back to Home Assistant's name. Nothing changes in Home Assistant.
+`{"id": "light.floor_lamp", "move": -1}` moves a favourite one place up (`1` = down).
 `{"all_known": true}` marks every current device as reviewed (shown).
 
 ## Home Assistant

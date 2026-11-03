@@ -367,7 +367,13 @@ mood_t model_mood(const model_t *m, const settings_t *s, const mood_inputs_t *in
     return MOOD_IDLE;
 }
 
-const char *mood_caption(mood_t mood, const model_t *m, int hour, char *buf, int len)
+const char *model_name(const settings_t *s, const entity_t *e)
+{
+    const char *n = s ? settings_name_for(s, e->id) : NULL;
+    return n ? n : e->name;
+}
+
+const char *mood_caption(mood_t mood, const model_t *m, const settings_t *s, int hour, char *buf, int len)
 {
     switch (mood) {
     case MOOD_SLEEP: return "Zzz";
@@ -383,7 +389,7 @@ const char *mood_caption(mood_t mood, const model_t *m, int hour, char *buf, int
     case MOOD_AWAY: return "Out and about";
     case MOOD_ALERT:
         for (int i = 0; i < m->n; i++)
-            if (m->e[i].dom == D_LOCK && m->e[i].avail && !m->e[i].on) { snprintf(buf, (size_t)len, "%s is unlocked", m->e[i].name); return buf; }
+            if (m->e[i].dom == D_LOCK && m->e[i].avail && !m->e[i].on) { snprintf(buf, (size_t)len, "%s is unlocked", model_name(s, &m->e[i])); return buf; }
         return "A door is unlocked";
     case MOOD_COLD: {
         int o = outdoor_temp(m);

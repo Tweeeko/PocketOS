@@ -135,7 +135,7 @@ lv_obj_t *mk_title(lv_obj_t *scr, const char *text, bool bottom)
     lv_obj_align(l, bottom ? LV_ALIGN_BOTTOM_MID : LV_ALIGN_TOP_MID, 0, bottom ? -34 : 36);
     lv_obj_add_flag(l, LV_OBJ_FLAG_CLICKABLE);
     lv_obj_set_ext_click_area(l, 14);
-    lv_obj_add_event_cb(l, title_cb, LV_EVENT_CLICKED, NULL);
+    lv_obj_add_event_cb(l, title_cb, LV_EVENT_SHORT_CLICKED, NULL);   // a long press may open options
     return l;
 }
 

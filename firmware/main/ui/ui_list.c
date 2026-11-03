@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 #define MAX_ROWS 64
-typedef enum { R_ENTITY, R_ALL, R_ROOM, R_TILE, R_SCREEN, R_INFO, R_SETTING } row_kind_t;
+typedef enum { R_ENTITY, R_ALL, R_ROOM, R_TILE, R_SCREEN, R_INFO, R_SETTING, R_OPT } row_kind_t;
 typedef struct { row_kind_t kind; char id[ID_LEN]; char label[48]; char sub[80]; bool on; } row_t;
 
 PSRAM_BSS static row_t rows[MAX_ROWS];   // ~13 KB
@@ -33,7 +33,7 @@ static const char *tile_label(const settings_t *s, const char *key)
     return key;
 }
 
-static void entity_row(const model_t *m, int i, bool with_area)
+static void entity_row(const model_t *m, const settings_t *s, int i, bool with_area)
 {
     const entity_t *e = &m->e[i];
     char st[48], sub[96];
@@ -42,7 +42,7 @@ static void entity_row(const model_t *m, int i, bool with_area)
     if (with_area && e->area >= 0) snprintf(sub, sizeof sub, "%s · %s", m->a[e->area].name, st);
     else snprintf(sub, sizeof sub, "%s", st);
     bool on = (e->dom == D_LOCK) ? false : e->on;
-    add(R_ENTITY, e->id, e->name, sub, on && e->dom != D_SENSOR);
+    add(R_ENTITY, e->id, model_name(s, e), sub, on && e->dom != D_SENSOR);
 }
 
 static void collect(void)
@@ -62,7 +62,7 @@ static void collect(void)
         if (n > 1 && on && !strcmp(k, "media")) add(R_ALL, k, "Pause all", "Every speaker and TV", false);
         if (n > 1 && on && !strcmp(k, "locks")) add(R_ALL, k, "Lock all", "Every door", false);
         if (n > 1 && on && !strcmp(k, "plugs")) add(R_ALL, k, "Turn all off", "Every plug", false);
-        for (int i = 0; i < m->n; i++) if (cat_match(k, &m->e[i]) && model_visible(m, s, i)) entity_row(m, i, true);
+        for (int i = 0; i < m->n; i++) if (cat_match(k, &m->e[i]) && model_visible(m, s, i)) entity_row(m, s, i, true);
         break;
     }
     case L_ROOMS:
@@ -78,12 +78,34 @@ static void collect(void)
         break;
     case L_ROOM: {
         int a = atoi(ref->arg);
-        for (int i = 0; i < m->n; i++) if (m->e[i].area == a && model_visible(m, s, i)) entity_row(m, i, false);
+        for (int i = 0; i < m->n; i++) if (m->e[i].area == a && model_visible(m, s, i)) entity_row(m, s, i, false);
         break;
     }
-    case L_FAVS:
-        for (int i = 0; i < m->n; i++) if (model_visible(m, s, i) && settings_has((char (*)[ID_LEN])s->fav, s->nfav, m->e[i].id)) entity_row(m, i, true);
+    case L_FAVS:   // in the order the user chose
+        for (int f = 0; f < s->nfav; f++) { int i = model_find(m, s->fav[f]); if (i >= 0 && model_visible(m, s, i)) entity_row(m, s, i, true); }
         break;
+    case L_HIDDEN:
+        for (int i = 0; i < m->n; i++)
+            if (!m->e[i].registry_hidden && settings_has((char (*)[ID_LEN])s->hidden, s->nhidden, m->e[i].id)) entity_row(m, s, i, true);
+        break;
+    case L_OPTIONS: {
+        int i = model_find(m, ref->arg);
+        if (i < 0) break;
+        const char *id = m->e[i].id;
+        bool fav = settings_has((char (*)[ID_LEN])s->fav, s->nfav, id), hidden = settings_has((char (*)[ID_LEN])s->hidden, s->nhidden, id);
+        if (hidden) {
+            add(R_OPT, "show", "Show on PocketOS", "Put it back in menus and lists", true);
+        } else {
+            add(R_OPT, "fav", fav ? "Remove from favourites" : "Add to favourites", fav ? "Takes it off the Favourites list" : "Adds it to the Favourites list", fav);
+            int at = -1;
+            for (int f = 0; f < s->nfav; f++) if (!strcmp(s->fav[f], id)) at = f;
+            if (at > 0) add(R_OPT, "up", "Move up", "Earlier in Favourites", false);
+            if (at >= 0 && at < s->nfav - 1) add(R_OPT, "down", "Move down", "Later in Favourites", false);
+        }
+        add(R_OPT, "rename", "Rename", "On the settings page", false);
+        if (!hidden) add(R_OPT, "hide", "Hide from PocketOS", "Stays in Home Assistant", false);
+        break;
+    }
     case L_MORE:
         for (int t = 0; t < s->ntiles; t++) {
             if (s->tiles[t].show) continue;
@@ -91,6 +113,11 @@ static void collect(void)
             bool on = false;
             int n = cat_summary_locked(m, s, s->tiles[t].key, sb, sizeof sb, &on);
             if (n) add(R_TILE, s->tiles[t].key, s->tiles[t].label, sb, false);
+        }
+        {
+            int nh = 0;
+            for (int i = 0; i < m->n; i++) if (!m->e[i].registry_hidden && settings_has((char (*)[ID_LEN])s->hidden, s->nhidden, m->e[i].id)) nh++;
+            if (nh) { snprintf(sub, sizeof sub, "%d device%s", nh, nh == 1 ? "" : "s"); add(R_SCREEN, "hidden", "Hidden devices", sub, false); }
         }
         add(R_SCREEN, "companion", "Companion", "Eyes, animation, brightness", false);
         add(R_SCREEN, "info", "This PocketOS", "Wi-Fi, battery, version", false);
@@ -167,6 +194,48 @@ static void cycle_setting(const char *what)
     if (!app_settings_patch(json)) ui_toast("Couldn't save that", 2000);
 }
 
+static void option(const char *what)
+{
+    char id[ID_LEN];
+    snprintf(id, sizeof id, "%s", ref->arg);
+    if (!strcmp(what, "fav") || !strcmp(what, "show") || !strcmp(what, "hide")) {
+        bool on = true;
+        if (!strcmp(what, "fav")) {
+            const settings_t *s = app_settings_lock();
+            on = !settings_has((char (*)[ID_LEN])s->fav, s->nfav, id);
+            app_settings_unlock();
+        }
+        bool ok = !strcmp(what, "fav") ? app_set_flag("fav", id, on) : app_set_flag("hidden", id, !strcmp(what, "hide"));
+        if (!ok) { ui_toast("Couldn't save that", 2000); return; }
+        if (!strcmp(what, "fav")) { ui_toast(on ? "Added to favourites" : "Removed from favourites", 1500); return; }
+        // Leave the options; if they came from the device's own screen, leave that too
+        ui_back();
+        scr_ref_t *t = nav_top();
+        if (t->kind == SCR_CONTROL && !strcmp(t->arg, id)) ui_back();
+        ui_toast(!strcmp(what, "hide") ? "Hidden. Find it under More" : "Back on PocketOS", 2000);
+        return;
+    }
+    if (!strcmp(what, "up") || !strcmp(what, "down")) {
+        if (!app_fav_move(id, !strcmp(what, "up") ? -1 : 1)) ui_toast("Couldn't save that", 2000);
+        return;
+    }
+    if (!strcmp(what, "rename")) { ui_toggle_settings_qr(); ui_toast("Rename it on the settings page", 2500); }
+}
+
+static void row_long(lv_event_t *e)
+{
+    int i = (int)(intptr_t)lv_event_get_user_data(e);
+    if (i < 0 || i >= nrows || rows[i].kind != R_ENTITY) return;
+    ui_device_options(rows[i].id);
+}
+
+void ui_device_options(const char *entity_id)
+{
+    scr_ref_t n = {.kind = SCR_LIST, .list = L_OPTIONS};
+    snprintf(n.arg, sizeof n.arg, "%s", entity_id);
+    nav_push(&n);
+}
+
 static void row_cb(lv_event_t *e)
 {
     int i = (int)(intptr_t)lv_event_get_user_data(e);
@@ -179,6 +248,7 @@ static void row_cb(lv_event_t *e)
         int k = model_find(m, r->id);
         bool scene = k >= 0 && (m->e[k].caps & CAP_RUN);
         app_model_unlock();
+        if (ref->list == L_HIDDEN) { ui_device_options(r->id); return; }
         if (scene) { app_act(r->id, ACT_RUN, 0); ui_toast("Running scene", 1500); return; }
         n.kind = SCR_CONTROL;
         snprintf(n.arg, sizeof n.arg, "%s", r->id);
@@ -197,10 +267,11 @@ static void row_cb(lv_event_t *e)
     case R_SCREEN:
         if (!strcmp(r->id, "settings")) { ui_toggle_settings_qr(); return; }
         n.kind = SCR_LIST;
-        n.list = !strcmp(r->id, "info") ? L_INFO : L_COMPANION;
+        n.list = !strcmp(r->id, "info") ? L_INFO : !strcmp(r->id, "hidden") ? L_HIDDEN : L_COMPANION;
         nav_push(&n);
         return;
     case R_SETTING: cycle_setting(r->id); return;
+    case R_OPT: option(r->id); return;
     case R_INFO: return;
     }
 }
@@ -241,7 +312,8 @@ static void fill(void)
         lv_obj_set_style_pad_hor(r, 28, 0);
         lv_obj_remove_flag(r, LV_OBJ_FLAG_SCROLLABLE);
         lv_obj_add_flag(r, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SNAPPABLE);
-        lv_obj_add_event_cb(r, row_cb, LV_EVENT_CLICKED, (void *)(intptr_t)i);
+        lv_obj_add_event_cb(r, row_cb, LV_EVENT_SHORT_CLICKED, (void *)(intptr_t)i);
+        lv_obj_add_event_cb(r, row_long, LV_EVENT_LONG_PRESSED, (void *)(intptr_t)i);   // device options
         lv_obj_t *l = mk_label(r, &inter_20, C_INK, rows[i].label);
         lv_obj_set_style_text_align(l, LV_TEXT_ALIGN_LEFT, 0);
         lv_label_set_long_mode(l, LV_LABEL_LONG_MODE_DOTS);
@@ -270,6 +342,16 @@ static const char *title_for(const scr_ref_t *r, char *buf, int len)  // buf >= 
     case L_MORE: return "More";
     case L_INFO: return "This PocketOS";
     case L_COMPANION: return "Companion";
+    case L_HIDDEN: return "Hidden devices";
+    case L_OPTIONS: {
+        const settings_t *s = app_settings_lock();
+        model_t *m = app_model_lock();
+        int i = model_find(m, r->arg);
+        snprintf(buf, (size_t)len, "%s", i >= 0 ? model_name(s, &m->e[i]) : "Device");
+        app_model_unlock();
+        app_settings_unlock();
+        return buf;
+    }
     case L_ROOM: {
         model_t *m = app_model_lock();
         int a = atoi(r->arg);
@@ -305,7 +387,7 @@ void list_build(lv_obj_t *scr, scr_ref_t *r)
     lv_obj_add_event_cb(scroller, del_cb, LV_EVENT_DELETE, NULL);
     char tb[80];
     mk_title(scr, title_for(r, tb, sizeof tb), false);
-    empty_lbl = mk_label(scr, &inter_18, C_DIM, r->list == L_FAVS ? "No favourites yet.\nStar devices on the\nsettings website." : "Nothing here yet.\nAdd devices in Home Assistant,\nthen review them on the\nsettings website.");
+    empty_lbl = mk_label(scr, &inter_18, C_DIM, r->list == L_FAVS ? "No favourites yet.\nPress and hold a device\nto add it." : r->list == L_HIDDEN ? "Nothing is hidden." : "Nothing here yet.\nAdd devices in Home Assistant,\nthen review them on the\nsettings website.");
     lv_obj_center(empty_lbl);
     fill();
     if (r->scroll) lv_obj_scroll_to_y(scroller, r->scroll, LV_ANIM_OFF);

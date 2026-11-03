@@ -22,10 +22,10 @@ TILE_KEYS = [("favourites", "Favourites"), ("lights", "Lights"), ("heating", "He
              ("blinds", "Blinds"), ("sensors", "Sensors")]
 
 def defaults():
-    return {"schema": 3, "name": "PocketOS", "brightness": 80, "clock_24h": True, "date_format": "dmy", "sleep_s": 30,
+    return {"schema": 4, "name": "PocketOS", "brightness": 80, "clock_24h": True, "date_format": "dmy", "sleep_s": 30,
             "eye": "blue", "anim": "lively", "tz": "GMT0BST,M3.5.0/1,M10.5.0", "auto_add": False, "alerts": True, "updates": "notify",
             "tiles": [{"key": k, "label": l, "show": i < 7} for i, (k, l) in enumerate(TILE_KEYS)],
-            "favourites": [], "hidden": [], "known": [], "ha_url": "", "ha_token": ""}
+            "favourites": [], "hidden": [], "known": [], "names": [], "ha_url": "", "ha_token": ""}
 
 ENTITIES = [
     ("light.floor_lamp", "Floor lamp", "light", "Living room", "On · 60%", "On, off and brightness"),
@@ -110,6 +110,15 @@ def validate(cur, patch, trusted):
             if v not in ("off", "notify", "auto"): return None, ("Updates must be off, notify or auto", k)
         elif k in ("favourites", "hidden", "known"):
             if not isinstance(v, list) or len(v) > 96 or any(not isinstance(x, str) or not 0 < len(x) < 64 for x in v): return None, ("List of device ids expected", k)
+        elif k == "names":
+            if not isinstance(v, list) or len(v) > 48: return None, ("You can rename up to 48 devices", k)
+            seen = set()
+            for x in v:
+                if not isinstance(x, dict) or not isinstance(x.get("id"), str) or not isinstance(x.get("name"), str): return None, ("Contains an invalid device ID", k)
+                if x["id"] in seen: return None, ("A device is named twice", k)
+                if not 1 <= len(x["name"].encode()) <= 32 or not x["name"].strip(): return None, ("Names can be up to 32 characters", k)
+                seen.add(x["id"])
+            v = [{"id": x["id"], "name": x["name"]} for x in v]
         elif trusted and k in ("ha_url", "ha_token"):
             if not isinstance(v, str): return None, ("Must be text", k)
         else:
@@ -223,7 +232,7 @@ class H(BaseHTTPRequestHandler):
         if p == "/entities":
             known = c["known"]
             return self.send(200, {"areas": sorted({e[3] for e in D.ents if e[3]}), "entities": [
-                {"id": e[0], "name": e[1], "domain": e[2], "area": e[3], "status": e[4], "controls": e[5],
+                {"id": e[0], "name": next((n["name"] for n in c["names"] if n["id"] == e[0]), e[1]), "ha_name": e[1], "domain": e[2], "area": e[3], "status": e[4], "controls": e[5],
                  "fav": e[0] in c["favourites"], "hidden": e[0] in c["hidden"], "new": (not c["auto_add"]) and e[0] not in known}
                 for e in D.ents] if D.ha == "connected" else []})
         return self.err(404, "Not found")
@@ -270,9 +279,27 @@ class H(BaseHTTPRequestHandler):
                 return self.send(200, {"ok": True})
             i = j.get("id")
             if not isinstance(i, str): return self.err(400, "Missing device id", "id")
+            if "name" in j:
+                ent = next((e for e in D.ents if e[0] == i), None)
+                if not ent: return self.err(404, "That device isn't in Home Assistant any more", "id")
+                nm = j["name"]
+                if not isinstance(nm, str): return self.err(400, "Name must be text", "name")
+                if len(nm.encode()) > 32: return self.err(400, "Names can be up to 32 characters", "name")
+                if nm and not nm.strip(): return self.err(400, "Names can't be only spaces", "name")
+                rest = [n for n in c["names"] if n["id"] != i]
+                if nm and nm != ent[1]:
+                    if len(rest) >= 48: return self.err(400, "You can rename up to 48 devices", "name")
+                    rest.append({"id": i, "name": nm})
+                c["names"] = rest
+            if isinstance(j.get("move"), int) and i in c["favourites"]:
+                f = c["favourites"]; a = f.index(i); b = a + (-1 if j["move"] < 0 else 1)
+                if 0 <= b < len(f): f[a], f[b] = f[b], f[a]
             for k, lst in (("fav", "favourites"), ("hidden", "hidden"), ("known", "known")):
                 if isinstance(j.get(k), bool):
-                    s = set(c[lst]); (s.add if j[k] else s.discard)(i); c[lst] = sorted(s)
+                    if lst == "favourites":   # order matters: new favourites go to the end
+                        c[lst] = [x for x in c[lst] if x != i] + ([i] if j[k] else [])
+                    else:
+                        s = set(c[lst]); (s.add if j[k] else s.discard)(i); c[lst] = sorted(s)
             return self.send(200, {"ok": True})
         if p in ("/ha", "/ha/test"):
             j = self.jbody() or {}

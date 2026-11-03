@@ -371,7 +371,7 @@ void home_refresh(void)
     if (override != (mood_t)-1 && (int32_t)(override_until - app_ms()) > 0) md = override;
     else override = (mood_t)-1;
     if (ui_asleep_flag()) md = MOOD_SLEEP;
-    caption = mood_caption(md, m, st.time_ok ? tm.tm_hour : -1, capbuf, sizeof capbuf);
+    caption = mood_caption(md, m, s, st.time_ok ? tm.tm_hour : -1, capbuf, sizeof capbuf);
     if (st.ha == HA_NOT_SET && md == MOOD_IDLE) caption = "Hello! Scan Settings to set me up";
     app_model_unlock();
     app_settings_unlock();

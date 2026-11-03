@@ -115,6 +115,8 @@ static void update_buttons(void)
     }
 }
 
+static void opts_cb(lv_event_t *e) { ui_device_options(ent_id); }
+
 static void del_cb(lv_event_t *e) { arc = NULL; val_lbl = sub_lbl = btn_row = big_btn = big_lbl = NULL; b_tog = b_l = b_r = NULL; }
 
 void ctl_build(lv_obj_t *scr, scr_ref_t *r)
@@ -208,7 +210,19 @@ void ctl_build(lv_obj_t *scr, scr_ref_t *r)
         lv_obj_align(big_lbl, LV_ALIGN_CENTER, 0, 108);
         if (!(snap.caps & CAP_TOGGLE)) lv_obj_remove_flag(big_btn, LV_OBJ_FLAG_CLICKABLE);
     }
-    mk_title(scr, snap.name, true);
+    {
+        const settings_t *s = app_settings_lock();
+        char nm[NAME_LEN + 8];
+        snprintf(nm, sizeof nm, "%s", model_name(s, &snap));
+        app_settings_unlock();
+        lv_obj_t *t = mk_title(scr, nm, true);
+        lv_obj_add_event_cb(t, opts_cb, LV_EVENT_LONG_PRESSED, NULL);
+    }
+    // "..." at the top: favourite, rename or hide this device
+    lv_obj_t *o = mk_round_btn(scr, 44, &ic_dots_40, false);
+    lv_obj_align(o, LV_ALIGN_TOP_MID, 0, 48);
+    lv_obj_set_ext_click_area(o, 10);
+    lv_obj_add_event_cb(o, opts_cb, LV_EVENT_CLICKED, NULL);
     ctl_refresh();
 }
 

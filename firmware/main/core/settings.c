@@ -78,6 +78,60 @@ bool settings_set_flag(settings_t *s, const char *list_name, const char *id, boo
     return false;
 }
 
+bool settings_fav_move(settings_t *s, const char *id, int dir)
+{
+    for (int i = 0; i < s->nfav; i++) {
+        if (strcmp(s->fav[i], id)) continue;
+        int j = i + (dir < 0 ? -1 : 1);
+        if (j < 0 || j >= s->nfav) return true;   // already at the end: nothing to do
+        char t[ID_LEN];
+        memcpy(t, s->fav[i], ID_LEN); memcpy(s->fav[i], s->fav[j], ID_LEN); memcpy(s->fav[j], t, ID_LEN);
+        return true;
+    }
+    return false;
+}
+
+const char *settings_name_for(const settings_t *s, const char *id)
+{
+    for (int i = 0; i < s->nnames; i++) if (!strcmp(s->names[i].id, id)) return s->names[i].name;
+    return NULL;
+}
+
+static const char *name_problem(const char *name)
+{
+    size_t n = strlen(name);
+    if (n > NAME_LEN - 1) return "Names can be up to 32 characters";
+    for (size_t i = 0; i < n; i++) if ((unsigned char)name[i] < 0x20) return "Names can't contain line breaks";
+    bool blank = true;
+    for (size_t i = 0; i < n; i++) if (name[i] != ' ') blank = false;
+    if (n && blank) return "Names can't be only spaces";
+    return NULL;
+}
+
+static bool valid_entity_id(const char *s);
+
+bool settings_set_name(settings_t *s, const char *id, const char *name, const char **why)
+{
+    const char *dummy;
+    if (!why) why = &dummy;
+    *why = NULL;
+    if (!id || !valid_entity_id(id)) { *why = "Unknown device"; return false; }
+    if (!name) name = "";
+    if ((*why = name_problem(name))) return false;
+    for (int i = 0; i < s->nnames; i++) {
+        if (strcmp(s->names[i].id, id)) continue;
+        if (!name[0]) { memmove(&s->names[i], &s->names[i + 1], (size_t)(s->nnames - i - 1) * sizeof(rename_t)); s->nnames--; }
+        else copy(s->names[i].name, NAME_LEN, name);
+        return true;
+    }
+    if (!name[0]) return true;
+    if (s->nnames >= MAX_NAMES) { *why = "You can rename up to 48 devices"; return false; }
+    copy(s->names[s->nnames].id, ID_LEN, id);
+    copy(s->names[s->nnames].name, NAME_LEN, name);
+    s->nnames++;
+    return true;
+}
+
 #define FAIL(f, m) do { err->field = (f); err->message = (m); return false; } while (0)
 
 static bool is_int(const cJSON *v) { return cJSON_IsNumber(v) && v->valuedouble == (double)(int)v->valuedouble; }
@@ -115,7 +169,7 @@ static int tile_index(const char *key)
 
 bool settings_patch(settings_t *out, const cJSON *patch, bool trusted, settings_err_t *err)
 {
-    PSRAM_BSS static settings_t s;   // ~20 KB: too big for a task stack or internal RAM
+    PSRAM_BSS static settings_t s;   // ~25 KB: too big for a task stack or internal RAM
     err->field = NULL;
     err->message = NULL;
     if (!cJSON_IsObject(patch)) FAIL(NULL, "Expected a JSON object");
@@ -196,6 +250,21 @@ bool settings_patch(settings_t *out, const cJSON *patch, bool trusted, settings_
             if (!load_list(v, s.hidden, &s.nhidden, k, err)) return false;
         } else if (!strcmp(k, "known")) {
             if (!load_list(v, s.known, &s.nknown, k, err)) return false;
+        } else if (!strcmp(k, "names")) {
+            // [{"id": "light.floor_lamp", "name": "Reading lamp"}, ...]
+            if (!cJSON_IsArray(v)) FAIL(k, "Must be a list of device names");
+            if (cJSON_GetArraySize(v) > MAX_NAMES) FAIL(k, "You can rename up to 48 devices");
+            s.nnames = 0;
+            const cJSON *it;
+            cJSON_ArrayForEach(it, v) {
+                const char *id = cJSON_GetStringValue(cJSON_GetObjectItem(it, "id"));
+                const char *nm = cJSON_GetStringValue(cJSON_GetObjectItem(it, "name"));
+                if (!id || !nm || !valid_entity_id(id)) FAIL(k, "Contains an invalid device ID");
+                if (!nm[0]) FAIL(k, "Names can't be empty");
+                if (settings_name_for(&s, id)) FAIL(k, "A device is named twice");
+                const char *why;
+                if (!settings_set_name(&s, id, nm, &why)) FAIL(k, why);
+            }
         } else if (trusted && !strcmp(k, "ha_url")) {
             if (!cJSON_IsString(v) || strlen(v->valuestring) >= sizeof(s.ha_url)) FAIL(k, "Address too long");
             copy(s.ha_url, sizeof(s.ha_url), v->valuestring);
@@ -243,6 +312,13 @@ cJSON *settings_to_json(const settings_t *s, bool include_secret)
     cJSON_AddItemToObject(o, "favourites", list_json((char (*)[ID_LEN])s->fav, s->nfav));
     cJSON_AddItemToObject(o, "hidden", list_json((char (*)[ID_LEN])s->hidden, s->nhidden));
     cJSON_AddItemToObject(o, "known", list_json((char (*)[ID_LEN])s->known, s->nknown));
+    cJSON *nm = cJSON_AddArrayToObject(o, "names");
+    for (int i = 0; i < s->nnames; i++) {
+        cJSON *e = cJSON_CreateObject();
+        cJSON_AddStringToObject(e, "id", s->names[i].id);
+        cJSON_AddStringToObject(e, "name", s->names[i].name);
+        cJSON_AddItemToArray(nm, e);
+    }
     cJSON_AddStringToObject(o, "ha_url", s->ha_url);
     if (include_secret) cJSON_AddStringToObject(o, "ha_token", s->ha_token);
     else cJSON_AddBoolToObject(o, "ha_token_set", s->ha_token[0] != 0);

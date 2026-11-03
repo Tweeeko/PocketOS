@@ -119,6 +119,26 @@ bool app_set_flag(const char *list, const char *entity_id, bool on)
     return ok;
 }
 
+bool app_fav_move(const char *entity_id, int dir)
+{
+    xSemaphoreTake(s_lock, portMAX_DELAY);
+    bool ok = settings_fav_move(&s_settings, entity_id, dir);
+    if (ok) ok = storage_save_settings(&s_settings) == ESP_OK;
+    xSemaphoreGive(s_lock);
+    if (ok) { xSemaphoreTake(m_lock, portMAX_DELAY); s_model.version++; xSemaphoreGive(m_lock); }
+    return ok;
+}
+
+bool app_set_name(const char *entity_id, const char *name, const char **why)
+{
+    xSemaphoreTake(s_lock, portMAX_DELAY);
+    bool ok = settings_set_name(&s_settings, entity_id, name, why);
+    if (ok && storage_save_settings(&s_settings) != ESP_OK) { ok = false; *why = "Couldn't save that"; }
+    xSemaphoreGive(s_lock);
+    if (ok) { xSemaphoreTake(m_lock, portMAX_DELAY); s_model.version++; xSemaphoreGive(m_lock); }
+    return ok;
+}
+
 void app_mark_all_known(void)
 {
     xSemaphoreTake(s_lock, portMAX_DELAY);

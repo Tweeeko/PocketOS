@@ -178,3 +178,8 @@
 .demo-pocket.asleep .os-toast,.demo-pocket.off .os-toast{opacity:0}
 
 @media (prefers-reduced-motion:reduce){.os-scr.in,.os-over.show{animation:none}}
+
+/* device options: "..." on a device's screen, and press-and-hold feedback on rows */
+.ctl .optsb{position:absolute;left:calc(var(--u) * 211);top:calc(var(--u) * 48);z-index:2;color:#F1F3FF}
+.ctl .optsb .ic{width:calc(var(--u) * 40);height:calc(var(--u) * 40)}
+.row.held{transform:scale(.96)}

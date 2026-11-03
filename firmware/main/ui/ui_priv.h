@@ -29,7 +29,8 @@ const lv_image_dsc_t *tile_icon(const char *key);
 
 // Navigation
 typedef enum { SCR_HOME, SCR_MENU, SCR_LIST, SCR_CONTROL, SCR_QR, SCR_SETUP, SCR_VOICE } scr_kind_t;
-typedef enum { L_CATEGORY, L_ROOMS, L_ROOM, L_FAVS, L_MORE, L_INFO, L_COMPANION } list_kind_t;
+typedef enum { L_CATEGORY, L_ROOMS, L_ROOM, L_FAVS, L_MORE, L_INFO, L_COMPANION, L_OPTIONS, L_HIDDEN } list_kind_t;
+void ui_device_options(const char *entity_id);   // favourite, reorder, rename, hide or show one device
 typedef struct {
     scr_kind_t kind;
     list_kind_t list;

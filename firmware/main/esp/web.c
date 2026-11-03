@@ -247,7 +247,8 @@ static esp_err_t h_entities(httpd_req_t *req)
         model_status(e, st, sizeof st);
         cJSON *x = cJSON_CreateObject();
         cJSON_AddStringToObject(x, "id", e->id);
-        cJSON_AddStringToObject(x, "name", e->name);
+        cJSON_AddStringToObject(x, "name", model_name(s, e));
+        cJSON_AddStringToObject(x, "ha_name", e->name);
         cJSON_AddStringToObject(x, "domain", dom_name(e->dom));
         cJSON_AddStringToObject(x, "area", e->area >= 0 ? m->a[e->area].name : "");
         cJSON_AddStringToObject(x, "status", st);
@@ -273,6 +274,22 @@ static esp_err_t h_entities_post(httpd_req_t *req)
     } else {
         const char *id = cJSON_GetStringValue(cJSON_GetObjectItem(j, "id"));
         if (!id) { cJSON_Delete(j); return send_error(req, "400 Bad Request", "Missing device id", "id"); }
+        const cJSON *nm = cJSON_GetObjectItem(j, "name");
+        if (nm) {
+            const char *why = NULL;
+            if (!cJSON_IsString(nm)) { cJSON_Delete(j); return send_error(req, "400 Bad Request", "Name must be text", "name"); }
+            // Using Home Assistant's own name clears the custom one
+            char ha[40] = "";
+            model_t *m = app_model_lock();
+            int i = model_find(m, id);
+            if (i >= 0) snprintf(ha, sizeof ha, "%s", m->e[i].name);
+            app_model_unlock();
+            if (i < 0) { cJSON_Delete(j); return send_error(req, "404 Not Found", "That device isn't in Home Assistant any more", "id"); }
+            const char *v = !strcmp(nm->valuestring, ha) ? "" : nm->valuestring;
+            if (!app_set_name(id, v, &why)) { cJSON_Delete(j); return send_error(req, "400 Bad Request", why ? why : "Couldn't save that name", "name"); }
+        }
+        const cJSON *mv = cJSON_GetObjectItem(j, "move");
+        if (cJSON_IsNumber(mv)) ok = app_fav_move(id, mv->valueint < 0 ? -1 : 1);
         const char *keys[] = {"fav", "hidden", "known"};
         for (int k = 0; k < 3 && ok; k++) {
             const cJSON *v = cJSON_GetObjectItem(j, keys[k]);

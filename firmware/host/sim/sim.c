@@ -44,6 +44,9 @@ bool app_settings_patch(const char *json)
     return ok;
 }
 
+bool app_set_flag(const char *list, const char *id, bool on) { bool ok = settings_set_flag(&S, list, id, on); M.version++; return ok; }
+bool app_fav_move(const char *id, int dir) { bool ok = settings_fav_move(&S, id, dir); M.version++; return ok; }
+
 // Fake Home Assistant: applies the command and sends back a state change after 300 ms.
 typedef struct { uint32_t at; char id[ID_LEN]; act_t act; float v; } pending_t;
 static pending_t q[16];
@@ -323,6 +326,46 @@ int main(void)
     run(300);
     shot("list_companion");
     expect(S.eye == EYE_VIOLET, "changing eye colour on the device saves it");
+
+    // 8b. Managing devices on PocketOS itself: favourite, reorder, hide and show again
+    open_ref(SCR_CONTROL, 0, "light.floor_lamp");
+    tap(233, 70);                       // the "..." button
+    run(300);
+    expect(nav_top()->kind == SCR_LIST && nav_top()->list == L_OPTIONS, "the ... button opens the device's options");
+    bool fav0 = settings_has(S.fav, S.nfav, "light.floor_lamp");
+    tap(233, 233);                      // centred row: add to / remove from favourites
+    run(300);
+    expect(settings_has(S.fav, S.nfav, "light.floor_lamp") != fav0, "options add or remove a favourite");
+    if (!settings_has(S.fav, S.nfav, "light.floor_lamp")) { tap(233, 233); run(300); }
+    shot("device_options");
+    open_ref(SCR_LIST, L_FAVS, "");
+    pt_x = 233; pt_y = 233; pt_down = 1; run(700); pt_down = 0; run(300);   // press and hold a device
+    expect(nav_top()->kind == SCR_LIST && nav_top()->list == L_OPTIONS, "press and hold opens a device's options");
+    char held[ID_LEN];
+    snprintf(held, sizeof held, "%s", nav_top()->arg);
+    int nrows_hide = 0;   // hide is the last row: favourite, (move), rename, hide
+    for (int k = 0; k < S.nfav; k++) if (!strcmp(S.fav[k], held)) nrows_hide = (k > 0) + (k < S.nfav - 1);
+    {   // scroll the last row (hide) to the centre, then tap it
+        lv_obj_t *sc = lv_obj_get_child(lv_screen_active(), 0);
+        lv_obj_scroll_to_view(lv_obj_get_child(sc, 2 + nrows_hide), LV_ANIM_OFF);
+        run(200);
+    }
+    tap(233, 233);
+    run(400);
+    expect(settings_has(S.hidden, S.nhidden, held), "hide from PocketOS");
+    open_ref(SCR_LIST, L_MORE, "");
+    shot("list_more_hidden");
+    open_ref(SCR_LIST, L_HIDDEN, "");
+    shot("list_hidden");
+    tap(233, 233); run(300);            // the hidden device's options
+    tap(233, 233); run(400);            // show on PocketOS
+    expect(!settings_has(S.hidden, S.nhidden, held), "show a hidden device again");
+    settings_set_name(&S, "light.floor_lamp", "Reading lamp", NULL);
+    M.version++;
+    open_ref(SCR_LIST, L_CATEGORY, "lights");
+    shot("list_renamed");
+    settings_set_name(&S, "light.floor_lamp", "", NULL);
+    M.version++;
 
     // 9. Settings QR (always reachable)
     ui_home(); run(300);

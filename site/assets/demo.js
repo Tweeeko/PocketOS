@@ -67,10 +67,10 @@
     { id: 'scene.movie', name: 'Movie time', dom: 'scene', area: '' }
   ];
   const defaults = () => ({
-    schema: 3, name: 'PocketOS', brightness: 80, clock_24h: true, date_format: 'dmy', sleep_s: 30, eye: 'blue', anim: 'lively',
+    schema: 4, name: 'PocketOS', brightness: 80, clock_24h: true, date_format: 'dmy', sleep_s: 30, eye: 'blue', anim: 'lively',
     tz: 'GMT0BST,M3.5.0/1,M10.5.0', auto_add: false, alerts: true, updates: 'notify',
     tiles: TILE_KEYS.map(([key, label], i) => ({ key, label, show: i < 7 })),
-    favourites: ['light.floor_lamp', 'climate.thermostat', 'lock.front'], hidden: [], known: [], ha_url: 'http://homeassistant.local:8123', ha_token: 'demo'
+    favourites: ['light.floor_lamp', 'climate.thermostat', 'lock.front'], hidden: [], known: [], names: [], ha_url: 'http://homeassistant.local:8123', ha_token: 'demo'
   });
   const EYES = { blue: '#6AA7FF', violet: '#9B7BFF', white: '#E8ECFF' };
   const TOKEN = 'demo-' + Math.random().toString(36).slice(2, 10);
@@ -91,6 +91,7 @@
   const pin = () => String(Math.floor(Math.random() * 1e6)).padStart(6, '0');
   fresh();
 
+  const nm = e => (S.cfg.names.find(n => n.id === e.id) || {}).name || e.name;   // model_name
   const visible = e => (S.cfg.auto_add || S.cfg.known.includes(e.id)) && !S.cfg.hidden.includes(e.id);
   const ents = () => S.ha === 'connected' ? S.ents : [];
   const find = id => S.ents.find(e => e.id === id);
@@ -143,7 +144,7 @@
     const c = { sleep: 'Zzz', dance: 'Vibing to the music', hot: 'Toasty in here', worried: 'Can’t reach home', tired: 'Battery low', charge: 'Charging',
       happy: 'All done!', sad: 'That didn’t work', listen: 'Listening...', wake: 'Good to see you', away: 'Out and about' }[m];
     if (c) return c;
-    if (m === 'alert') { const l = ents().find(e => e.dom === 'lock' && !e.on); return l ? `${l.name} is unlocked` : 'A door is unlocked'; }
+    if (m === 'alert') { const l = ents().find(e => e.dom === 'lock' && !e.on); return l ? `${nm(l)} is unlocked` : 'A door is unlocked'; }
     if (m === 'cold') { const o = ents().find(e => e.outdoor); return `Brr... ${Math.round(o.level)}° outside`; }
     if (S.ha === 'not_set') return 'Hello! Scan Settings to set me up';
     return h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening';
@@ -262,7 +263,7 @@
   // ----- lists (ui_list.c)
   function rows(ref) {
     const r = [], list = ents().filter(visible);
-    const eRow = (e, withArea) => { const st = e.pending ? 'Sending...' : status(e); r.push({ kind: 'e', id: e.id, label: e.name, sub: withArea && e.area ? `${e.area} · ${st}` : st, on: e.dom !== 'lock' && e.dom !== 'sensor' && (e.dom === 'cover' ? e.level > 0 : e.on) }); };
+    const eRow = (e, withArea) => { const st = e.pending ? 'Sending...' : status(e); r.push({ kind: 'e', id: e.id, label: nm(e), sub: withArea && e.area ? `${e.area} · ${st}` : st, on: e.dom !== 'lock' && e.dom !== 'sensor' && (e.dom === 'cover' ? e.level > 0 : e.on) }); };
     switch (ref.list) {
       case 'cat': {
         const es = list.filter(e => catMatch(ref.arg, e)), on = es.filter(e => e.dom === 'lock' ? !e.on : e.on).length;
@@ -276,9 +277,24 @@
         AREAS.forEach(a => { const es = list.filter(e => e.area === a); if (!es.length) return; const on = es.filter(e => e.on && e.dom !== 'lock' && e.dom !== 'sensor').length;
           r.push({ kind: 'room', id: a, label: a, sub: `${es.length} device${es.length === 1 ? '' : 's'} · ${on} on`, on: on > 0 }); }); break;
       case 'room': list.filter(e => e.area === ref.arg).forEach(e => eRow(e, false)); break;
-      case 'favs': list.filter(e => S.cfg.favourites.includes(e.id)).forEach(e => eRow(e, true)); break;
+      case 'favs': S.cfg.favourites.map(find).filter(e => e && visible(e)).forEach(e => eRow(e, true)); break;   // the user's order
+      case 'hidden': ents().filter(e => S.cfg.hidden.includes(e.id)).forEach(e => eRow(e, true)); break;
+      case 'opts': {
+        const e = find(ref.arg); if (!e) break;
+        const fav = S.cfg.favourites.includes(e.id), hidden = S.cfg.hidden.includes(e.id), at = S.cfg.favourites.indexOf(e.id);
+        if (hidden) r.push({ kind: 'opt', id: 'show', label: 'Show on PocketOS', sub: 'Put it back in menus and lists', on: true });
+        else {
+          r.push({ kind: 'opt', id: 'fav', label: fav ? 'Remove from favourites' : 'Add to favourites', sub: fav ? 'Takes it off the Favourites list' : 'Adds it to the Favourites list', on: fav });
+          if (at > 0) r.push({ kind: 'opt', id: 'up', label: 'Move up', sub: 'Earlier in Favourites' });
+          if (at >= 0 && at < S.cfg.favourites.length - 1) r.push({ kind: 'opt', id: 'down', label: 'Move down', sub: 'Later in Favourites' });
+        }
+        r.push({ kind: 'opt', id: 'rename', label: 'Rename', sub: 'On the settings page' });
+        if (!hidden) r.push({ kind: 'opt', id: 'hide', label: 'Hide from PocketOS', sub: 'Stays in Home Assistant' });
+        break;
+      }
       case 'more':
         S.cfg.tiles.filter(t => !t.show).forEach(t => { const [sub] = summary(t.key); if (sub) r.push({ kind: 'tile', id: t.key, label: t.label, sub }); });
+        { const nh = ents().filter(e => S.cfg.hidden.includes(e.id)).length; if (nh) r.push({ kind: 'screen', id: 'hidden', label: 'Hidden devices', sub: `${nh} device${nh === 1 ? '' : 's'}` }); }
         r.push({ kind: 'screen', id: 'companion', label: 'Companion', sub: 'Eyes, animation, brightness' });
         r.push({ kind: 'screen', id: 'info', label: 'This PocketOS', sub: 'Wi-Fi, battery, version' });
         r.push({ kind: 'screen', id: 'settings', label: 'Settings website', sub: 'Scan the code on your phone' }); break;
@@ -301,12 +317,13 @@
     return r;
   }
   function listTitle(ref) {
-    return { rooms: 'Rooms', favs: 'Favourites', more: 'More', info: 'This PocketOS', companion: 'Companion', room: ref.arg,
+    if (ref.list === 'opts') { const e = find(ref.arg); return e ? nm(e) : 'Device'; }
+    return { rooms: 'Rooms', favs: 'Favourites', more: 'More', info: 'This PocketOS', companion: 'Companion', room: ref.arg, hidden: 'Hidden devices',
       cat: (S.cfg.tiles.find(t => t.key === ref.arg) || {}).label || ref.arg }[ref.list];
   }
   function listHTML(ref) {
     const r = rows(ref); ref._rows = r;
-    const empty = ref.list === 'favs' ? 'No favourites yet.<br>Star devices on the<br>settings website.' : 'Nothing here yet.<br>Add devices in Home Assistant,<br>then review them on the<br>settings website.';
+    const empty = ref.list === 'favs' ? 'No favourites yet.<br>Press and hold a device<br>to add it.' : ref.list === 'hidden' ? 'Nothing is hidden.' : 'Nothing here yet.<br>Add devices in Home Assistant,<br>then review them on the<br>settings website.';
     return `<div class="list">${title(listTitle(ref), true)}<div class="rows">${r.map((x, i) =>
       `<button class="row" data-row="${i}"><b>${esc(x.label)}</b>${x.sub ? `<small class="${x.on ? 'on' : ''}">${esc(x.sub)}</small>` : ''}</button>`).join('')}</div>
       ${r.length ? '' : `<p class="empty">${empty}</p>`}</div>`;
@@ -328,6 +345,7 @@
   function ctlHTML(ref) {
     const e = find(ref.id);
     if (!e || !visible(e)) return `<div class="ctl"><p class="empty">This device is no longer<br>in Home Assistant</p>${title('Back', true, true)}</div>`;
+    const optsBtn = `<button class="rb optsb" style="--d:44" data-opts aria-label="Options for ${esc(nm(e))}">${icon('dots', 40)}</button>`;
     if (hasLevel(e)) {
       const col = DIAL[e.dom] || '#8FD3FF';
       const btn = (ic, a, size, on) => `<button class="rb${on ? ' on' : ''}" style="--d:${size}" data-act="${a}" aria-label="${a}">${icon(ic, 30)}</button>`;
@@ -338,11 +356,11 @@
       if (e.dom === 'cover') row = btn('down', 'close', 52) + btn('stop', 'stop', 52) + btn('up', 'open', 52);
       return `<div class="ctl dial-ctl" style="--col:${col}" data-ro="${e.dom === 'sensor' ? 1 : 0}">
         <svg class="dial" viewBox="0 0 466 466"><path class="track" d="${arcD(A0, A0 + SW)}"/><path class="ind" d=""/><circle class="knob" r="16" cx="0" cy="0"/></svg>
-        <div class="val"></div><div class="sub"></div><div class="btnrow">${row}</div>${title(e.name, true, true)}</div>`;
+        <div class="val"></div><div class="sub"></div><div class="btnrow">${row}</div>${title(nm(e), true, true)}${optsBtn}</div>`;
     }
     const ic = e.dom === 'lock' ? (e.on ? 'lock' : 'unlock') : 'power';
     return `<div class="ctl big-ctl"><button class="bigb${e.on && e.dom !== 'lock' ? ' on' : ''}" data-act="toggle" aria-label="${esc(e.name)}">${icon(ic, 84)}</button>
-      <div class="biglbl"></div>${title(e.name, true, true)}</div>`;
+      <div class="biglbl"></div>${title(nm(e), true, true)}${optsBtn}</div>`;
   }
   function ctlUpdate(ref, liveValue) {
     const e = find(ref.id), el = $('.ctl', layer); if (!e || !el) return;
@@ -459,19 +477,28 @@
     if (power !== 'on') return;
     if (asleep) { setAsleep(false); down = null; ev.preventDefault(); return; }
     lastTouch = Date.now();
-    if (top().k === 'ctl' && !overlay && dialDrag(ev)) { down = null; return; }
+    if (top().k === 'ctl' && !overlay && !ev.target.closest('[data-opts],[data-back]') && dialDrag(ev)) { down = null; return; }
     down = { x: ev.clientX, y: ev.clientY, t: Date.now(), target: ev.target };
+    // press and hold a device for its options, as on PocketOS
+    const rowEl = !overlay && ev.target.closest('[data-row]'), ref = top();
+    if (rowEl && ref._rows && ref._rows[+rowEl.dataset.row] && ref._rows[+rowEl.dataset.row].kind === 'e') {
+      const d = down, id = ref._rows[+rowEl.dataset.row].id;
+      d.longT = setTimeout(() => { if (down === d && !d.scrolled && !d.moved) { d.long = true; rowEl.classList.add('held'); openOptions(id); } }, 450);
+    }
     // with a mouse, dragging a list scrolls it, as a finger would
     const box = ev.pointerType === 'mouse' && ev.target.closest('.rows');
     if (box) { down.box = box; down.top = box.scrollTop; }
   });
   scr.addEventListener('pointermove', ev => {
+    if (down && Math.hypot(ev.clientX - down.x, ev.clientY - down.y) > 10) { down.moved = true; clearTimeout(down.longT); }
     if (!down || !down.box) return;
     const dy = ev.clientY - down.y, dx = ev.clientX - down.x;
     if (Math.abs(dy) > Math.abs(dx)) { down.box.style.scrollSnapType = 'none'; down.box.scrollTop = down.top - dy; down.scrolled = Math.abs(dy) > 6; }
   });
   scr.addEventListener('pointerup', ev => {
     if (!down) return;
+    clearTimeout(down.longT);
+    if (down.long) { down = null; return; }
     const dx = ev.clientX - down.x, dy = ev.clientY - down.y, ad = Math.max(Math.abs(dx), Math.abs(dy)), target = down.target;
     if (down.box) { const b = down.box; b.style.scrollSnapType = ''; if (down.scrolled) { down = null; return; } }
     down = null;
@@ -493,11 +520,32 @@
     }
     if (dir === 'right') back();
   }
+  function openOptions(id) { go({ k: 'list', list: 'opts', arg: id }); }
+  function option(id, what) {   // ui_list.c option()
+    const c = S.cfg;
+    if (what === 'fav') {
+      const on = !c.favourites.includes(id);
+      c.favourites = c.favourites.filter(x => x !== id); if (on) c.favourites.push(id);
+      toast(on ? 'Added to favourites' : 'Removed from favourites', 1500); return changed();
+    }
+    if (what === 'up' || what === 'down') {
+      const f = c.favourites, a = f.indexOf(id), b = a + (what === 'up' ? -1 : 1);
+      if (a >= 0 && b >= 0 && b < f.length) [f[a], f[b]] = [f[b], f[a]];
+      return changed();
+    }
+    if (what === 'rename') { showOverlay('qr', qrHTML()); toast('Rename it on the settings page', 2500); return; }
+    if (what === 'hide' || what === 'show') {
+      const set = new Set(c.hidden); what === 'hide' ? set.add(id) : set.delete(id); c.hidden = [...set].sort();
+      stack.pop(); if (top().k === 'ctl' && top().id === id) stack.pop();
+      render(true, true); toast(what === 'hide' ? 'Hidden. Find it under More' : 'Back on PocketOS', 2000);
+    }
+  }
   function tap(t) {
     if (overlay === 'qr') { if (t.closest('[data-back]')) hideOverlay(); return; }
     if (overlay === 'voice' || overlay === 'reset' || overlay === 'boot') return;
     if (t.closest('[data-back]')) return back();
     const ref = top();
+    if (t.closest('[data-opts]') && ref.k === 'ctl') return openOptions(ref.id);
     if (ref.k === 'home' && t.closest('.orb')) { happyUntil = Date.now() + 1300; homeFace(); setTimeout(() => homeFace(), 1350); return; }
     const tile = t.closest('[data-tile]');
     if (tile) {
@@ -511,7 +559,8 @@
     const row = t.closest('[data-row]');
     if (row && ref._rows) {
       const r = ref._rows[+row.dataset.row]; if (!r) return;
-      if (r.kind === 'e') { const e = find(r.id); if (e.dom === 'scene') return act(e.id); return go({ k: 'ctl', id: r.id }); }
+      if (r.kind === 'e') { const e = find(r.id); if (ref.list === 'hidden') return openOptions(r.id); if (e.dom === 'scene') return act(e.id); return go({ k: 'ctl', id: r.id }); }
+      if (r.kind === 'opt') return option(ref.arg, r.id);
       if (r.kind === 'all') { ents().filter(e => visible(e) && catMatch(r.id, e) && (e.dom === 'lock' ? !e.on : e.on)).forEach(e => act(e.id, 'toggle')); return toast('Sent to every device', 1500); }
       if (r.kind === 'room') return go({ k: 'list', list: 'room', arg: r.id });
       if (r.kind === 'tile') return go({ k: 'list', list: r.id === 'rooms' ? 'rooms' : r.id === 'favourites' ? 'favs' : 'cat', arg: r.id });
@@ -640,9 +689,19 @@
           seen.add(t.key);
         }
       }
+      else if (k === 'names') {
+        if (!Array.isArray(v) || v.length > 48) return bad('You can rename up to 48 devices');
+        const seen = new Set();
+        for (const x of v) {
+          if (!x || typeof x.id !== 'string' || typeof x.name !== 'string') return bad('Contains an invalid device ID');
+          if (seen.has(x.id)) return bad('A device is named twice');
+          if (bytes(x.name) < 1 || bytes(x.name) > 32 || !x.name.trim()) return bad('Names can be up to 32 characters');
+          seen.add(x.id);
+        }
+      }
       else if (['favourites', 'hidden', 'known'].includes(k)) { if (!Array.isArray(v) || v.length > 96 || v.some(x => typeof x !== 'string' || !x || x.length >= 64)) return bad('List of device ids expected'); }
       else return bad('Unknown setting');
-      s[k] = k === 'tiles' ? v.map(t => ({ key: t.key, label: t.label, show: t.show })) : v;
+      s[k] = k === 'tiles' ? v.map(t => ({ key: t.key, label: t.label, show: t.show })) : k === 'names' ? v.map(x => ({ id: x.id, name: x.name })) : v;
     }
     return [s];
   }
@@ -668,7 +727,7 @@
       if (path === '/battery') return R2(200, { percent: S.battery, mv: 3500 + S.battery * 6 + 100, present: true, charging: false, full: false, plugged: false, now: Math.floor(Date.now() / 1000),
         last_full: S.hist[21 * 6][0], estimate: { known: true, pct_per_h: 4.0, hours_left: Math.round(S.battery / 4 * 10) / 10, full_h: 25.0, basis_h: 22.0 }, history: S.hist });
       if (path === '/entities') return R2(200, { areas: [...new Set(ents().map(e => e.area).filter(Boolean))].sort(), entities: ents().map(e => ({
-        id: e.id, name: e.name, domain: DOMAIN[e.dom], area: e.area, status: status(e), controls: CONTROLS[e.dom], fav: c.favourites.includes(e.id), hidden: c.hidden.includes(e.id),
+        id: e.id, name: nm(e), ha_name: e.name, domain: DOMAIN[e.dom], area: e.area, status: status(e), controls: CONTROLS[e.dom], fav: c.favourites.includes(e.id), hidden: c.hidden.includes(e.id),
         new: !c.auto_add && !c.known.includes(e.id) })) });
       return R2(404, { error: 'Not found' });
     }
@@ -690,7 +749,18 @@
       j = j || {};
       if (j.all_known === true) { c.known = [...new Set([...c.known, ...S.ents.map(e => e.id)])].sort(); changed(); return R2(200, { ok: true }); }
       if (typeof j.id !== 'string') return R2(400, { error: 'Missing device id', field: 'id' });
+      if ('name' in j) {
+        const e = find(j.id); if (!e) return R2(404, { error: 'That device isn’t in Home Assistant any more', field: 'id' });
+        if (typeof j.name !== 'string') return R2(400, { error: 'Name must be text', field: 'name' });
+        if (new TextEncoder().encode(j.name).length > 32) return R2(400, { error: 'Names can be up to 32 characters', field: 'name' });
+        if (j.name && !j.name.trim()) return R2(400, { error: 'Names can’t be only spaces', field: 'name' });
+        const rest = c.names.filter(n => n.id !== j.id);
+        if (j.name && j.name !== e.name) { if (rest.length >= 48) return R2(400, { error: 'You can rename up to 48 devices', field: 'name' }); rest.push({ id: j.id, name: j.name }); }
+        c.names = rest;
+      }
+      if (typeof j.move === 'number') { const f = c.favourites, a = f.indexOf(j.id), b = a + (j.move < 0 ? -1 : 1); if (a >= 0 && b >= 0 && b < f.length) [f[a], f[b]] = [f[b], f[a]]; }
       for (const [k, lst] of [['fav', 'favourites'], ['hidden', 'hidden'], ['known', 'known']]) if (typeof j[k] === 'boolean') {
+        if (lst === 'favourites') { c.favourites = c.favourites.filter(x => x !== j.id); if (j[k]) c.favourites.push(j.id); continue; }   // order matters
         const set = new Set(c[lst]); j[k] ? set.add(j.id) : set.delete(j.id); c[lst] = [...set].sort();
       }
       changed(); return R2(200, { ok: true });

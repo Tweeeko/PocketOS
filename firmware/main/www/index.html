@@ -37,7 +37,7 @@ select{appearance:none;-webkit-appearance:none}
 input[type=range]{width:100%;accent-color:var(--blue);height:32px}
 .seg{display:flex;gap:6px;flex-wrap:wrap}.seg button{flex:1;min-width:60px;padding:10px 8px;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--ink);font:15px system-ui,-apple-system,sans-serif}.seg button.on{border-color:var(--blue);background:rgba(106,167,255,.2)}
 .sw{position:relative;width:48px;height:28px;flex:none}.sw input{opacity:0;position:absolute;inset:0;width:100%;height:100%;margin:0;z-index:1;cursor:pointer}.sw i{position:absolute;inset:0;border-radius:14px;background:#2a2d3b;transition:.2s}.sw i::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.2s}.sw input:checked+i{background:var(--blue)}.sw input:checked+i::after{left:23px}.sw input:focus-visible+i{outline:2px solid var(--blue);outline-offset:2px}
-.ib{width:38px;height:38px;flex:none;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--dim);font-size:16px;cursor:pointer}.ib.on{color:var(--warn);border-color:var(--warn)}.ib:disabled{opacity:.3}
+.lnk{background:none;border:0;padding:0;color:var(--blue);font:inherit;text-decoration:underline;cursor:pointer}.ib{width:38px;height:38px;flex:none;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--dim);font-size:16px;cursor:pointer}.ib.on{color:var(--warn);border-color:var(--warn)}.ib:disabled{opacity:.3}
 .banner{display:flex;gap:12px;align-items:center;border-color:rgba(106,167,255,.5)}.banner .t{flex:1}
 nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));width:min(528px,calc(100% - 24px));display:flex;padding:6px;border-radius:24px;background:rgba(18,20,34,.82);border:1px solid var(--line);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);box-shadow:0 12px 40px #000;z-index:5}
 nav button{flex:1;min-width:0;padding:11px 0;border:0;background:transparent;color:var(--dim);font:600 13px system-ui,-apple-system,sans-serif;border-radius:18px;white-space:nowrap;cursor:pointer}nav button.on{color:var(--ink);background:rgba(106,167,255,.22)}nav button em{font-style:normal;color:var(--blue)}
@@ -102,7 +102,7 @@ async function save(patch,okMsg){
 async function setFlag(id,flags,okMsg){
   note('Saving…');
   const r=await api('/entities',{body:Object.assign({id},flags)});
-  if(r.ok){const e=ents&&ents.entities.find(x=>x.id===id);if(e)Object.assign(e,flags.known?{new:false}:{},flags.fav!==undefined?{fav:flags.fav}:{},flags.hidden!==undefined?{hidden:flags.hidden}:{});note(okMsg||'Saved on PocketOS ✓','good');refreshInfo(true)}
+  if(r.ok){const e=ents&&ents.entities.find(x=>x.id===id);if(e)Object.assign(e,flags.known?{new:false}:{},flags.fav!==undefined?{fav:flags.fav}:{},flags.hidden!==undefined?{hidden:flags.hidden}:{});if(cfg&&flags.fav!==undefined){cfg.favourites=cfg.favourites.filter(x=>x!==id);if(flags.fav)cfg.favourites.push(id)}note(okMsg||'Saved on PocketOS ✓','good');refreshInfo(true)}
   else note(r.msg,'bad');
   render();return r.ok;
 }
@@ -297,9 +297,42 @@ function homeV(){
   return o;
 }
 function devRow(e){
-  return '<div class="row" data-n="'+esc((e.name+' '+e.area+' '+(DOMAIN[e.domain]||'')).toLowerCase())+'"><div class="t"><b>'+esc(e.name)+'</b><small>'+esc([e.status,e.controls].filter(Boolean).join(' · '))+'</small></div>'+
+  const ren=e.ha_name&&e.ha_name!==e.name;
+  return '<div class="row" data-n="'+esc((e.name+' '+(e.ha_name||'')+' '+e.area+' '+(DOMAIN[e.domain]||'')).toLowerCase())+'"><div class="t"><b>'+esc(e.name)+'</b><small>'+esc([ren?'In Home Assistant: '+e.ha_name:'',e.status].filter(Boolean).join(' · '))+'</small></div>'+
+    '<button class="ib" data-a="edit" data-id="'+esc(e.id)+'" aria-label="Edit '+esc(e.name)+'">✎</button>'+
     '<button class="ib '+(e.fav?'on':'')+'" data-a="fav" data-id="'+esc(e.id)+'" aria-pressed="'+!!e.fav+'" aria-label="Favourite '+esc(e.name)+'" '+(e.hidden?'disabled':'')+'>★</button>'+
     sw('data-k="show" data-id="'+esc(e.id)+'"',!e.hidden,'Show '+e.name+' on PocketOS')+'</div>';
+}
+/* One device: rename it, favourite it, or take it off PocketOS. Nothing changes in Home Assistant. */
+function editDev(id){
+  const e=ents&&ents.entities.find(x=>x.id===id);if(!e)return;
+  const ren=e.ha_name&&e.ha_name!==e.name;
+  sheet('<h2>'+esc(e.name)+'</h2><p style="margin-top:-4px">'+esc([e.area||'No room',e.controls].filter(Boolean).join(' · '))+'</p>'+
+    '<label for="dn"><b style="font-size:14px">Name on PocketOS</b></label><input type="text" id="dn" maxlength="32" value="'+esc(e.name)+'" placeholder="'+esc(e.ha_name||e.name)+'" autocomplete="off" style="margin:6px 0 4px">'+
+    '<p style="font-size:13px;margin:0 0 6px">'+(ren?'Called <b>'+esc(e.ha_name)+'</b> in Home Assistant. <button class="lnk" data-a="haname" data-id="'+esc(id)+'">Use that name</button>':'The name stays the same in Home Assistant.')+'</p><div id="dmsg" class="err"></div>'+
+    '<div class="row"><div class="t"><b>Favourite</b><small>Pinned under Favourites on PocketOS</small></div>'+sw('data-k="fav" data-id="'+esc(id)+'"',e.fav,'Favourite')+'</div>'+
+    '<div class="row"><div class="t"><b>Show on PocketOS</b><small>'+(e.hidden?'Hidden. It stays in Home Assistant':'Turn off to remove it from PocketOS')+'</small></div>'+sw('data-k="show" data-id="'+esc(id)+'"',!e.hidden,'Show on PocketOS')+'</div>'+
+    '<div class="btns"><button class="btn g" data-a="x">Close</button><button class="btn" data-a="rename" data-id="'+esc(id)+'">Save name</button></div>');
+}
+async function renameDev(id,name){
+  const e=ents&&ents.entities.find(x=>x.id===id);if(!e)return;
+  name=name.trim();if(!name)name=e.ha_name||e.name;
+  if(bytes(name)>32){$('#dmsg').textContent='Names can be up to 32 characters';return}
+  if(name===e.name){closeModal();return}
+  note('Saving…');
+  const r=await api('/entities',{body:{id,name}});
+  if(r.ok){e.name=name;closeModal();note('Name saved on PocketOS ✓','good');render()}
+  else{const m=$('#dmsg');if(m)m.textContent=r.msg;else note(r.msg,'bad')}
+}
+/* Favourites, in the order PocketOS shows them */
+function favCard(){
+  const by={};(ents?ents.entities:[]).forEach(e=>by[e.id]=e);
+  const list=(cfg.favourites||[]).map(id=>by[id]).filter(e=>e&&!e.hidden);
+  if(!list.length)return '<h3>Favourites</h3><div class="card"><p style="margin:0">No favourites yet. Tap ★ next to a device to pin it, or press and hold a device on PocketOS.</p></div>';
+  return '<h3>Favourites</h3><div class="card">'+list.map((e,i)=>'<div class="row"><div class="t"><b>'+esc(e.name)+'</b><small>'+esc(e.area||'No room')+'</small></div>'+
+    '<button class="ib" data-a="fmv" data-id="'+esc(e.id)+'" data-v="-1" '+(i?'':'disabled')+' aria-label="Move '+esc(e.name)+' up">▲</button>'+
+    '<button class="ib" data-a="fmv" data-id="'+esc(e.id)+'" data-v="1" '+(i<list.length-1?'':'disabled')+' aria-label="Move '+esc(e.name)+' down">▼</button>'+
+    '<button class="ib on" data-a="fav" data-id="'+esc(e.id)+'" aria-pressed="true" aria-label="Remove '+esc(e.name)+' from favourites">★</button></div>').join('')+'</div>';
 }
 function devV(){
   if(info.ha.status==='not_set')return '<div class="card"><h2>No smart home connected</h2><p>PocketOS gets its devices from Home Assistant. Connect it first, and your lights, heating and speakers appear here.</p><div class="btns"><button class="btn" data-a="tab" data-v="ha">Connect Home Assistant</button></div></div>';
@@ -309,13 +342,13 @@ function devV(){
   if(info.ha.status!=='connected')h+='<div class="card"><p style="color:var(--warn);margin:0">Home Assistant isn’t connected right now, so this list may be out of date.</p></div>';
   if(fresh.length)h+='<h3>New in Home Assistant</h3><div class="card"><p>Add them to PocketOS, or skip ones you don’t need on it.</p>'+fresh.map(e=>'<div class="row"><div class="t"><b>'+esc(e.name)+'</b><small>'+esc(e.area||'No room')+' · '+esc(e.controls||DOMAIN[e.domain]||'')+'</small></div><button class="btn s" data-a="add" data-id="'+esc(e.id)+'">Add</button><button class="btn g s" data-a="skip" data-id="'+esc(e.id)+'">Skip</button></div>').join('')+(fresh.length>1?'<div class="btns"><button class="btn g" data-a="addall">Add all '+fresh.length+'</button></div>':'')+'</div>';
   if(!rest.length&&!fresh.length)return h+'<div class="card"><h2>No devices yet</h2><p>Add devices in Home Assistant and they’ll appear here.</p><div class="btns"><a class="btn g" href="'+esc(safeHref(haUrl()))+'/config/integrations" target="_blank" rel="noopener noreferrer">Open Home Assistant ↗</a></div></div>';
-  h+='<input type="search" id="q" placeholder="Search devices" aria-label="Search devices" style="margin:6px 0 2px">';
+  h+=favCard()+'<h3>All devices</h3><input type="search" id="q" placeholder="Search devices" aria-label="Search devices" style="margin:6px 0 2px">';
   const groups={},scenes=[];
   rest.forEach(e=>{if(e.domain==='scene'||e.domain==='script')scenes.push(e);else(groups[e.area||'']=groups[e.area||'']||[]).push(e)});
   const names=Object.keys(groups).sort((a,b)=>a===''?1:b===''?-1:a.localeCompare(b));
   names.forEach(n=>{h+='<div class="grp"><h3>'+esc(n||'No room')+'</h3><div class="card">'+groups[n].sort((a,b)=>a.name.localeCompare(b.name)).map(devRow).join('')+'</div></div>'});
   if(scenes.length)h+='<div class="grp"><h3>Scenes and scripts</h3><div class="card">'+scenes.map(devRow).join('')+'</div></div>';
-  h+='<p class="edit">★ = favourite on PocketOS. Switch = show or hide it. Rooms come from Home Assistant.</p><div class="btns"><button class="btn g" data-a="reload">Refresh list</button></div><p id="noq" class="edit hide">No devices match.</p>';
+  h+='<p class="edit">✎ rename · ★ favourite · switch shows or removes it from PocketOS. Devices and rooms stay as they are in Home Assistant.</p><div class="btns"><button class="btn g" data-a="reload">Refresh list</button></div><p id="noq" class="edit hide">No devices match.</p>';
   return h;
 }
 function previewHtml(mode){
@@ -444,6 +477,10 @@ document.addEventListener('click',async e=>{
   else if(a==='mv'){const i=+b.dataset.i,j=i+(+v);save({tiles:tilesWith(t=>{[t[i],t[j]]=[t[j],t[i]]})},'Menu order saved ✓')}
   else if(a==='defl')ask('Restore look to default?','Clock, brightness, sleep and companion go back to normal. Tiles, devices and Home Assistant stay as they are.','Restore',()=>save({brightness:80,clock_24h:true,date_format:'dmy',sleep_s:30,eye:'blue',anim:'lively',alerts:true},'Look restored ✓'));
   else if(a==='fav')setFlag(id,{fav:!b.classList.contains('on')});
+  else if(a==='edit')editDev(id);
+  else if(a==='rename')renameDev(id,$('#dn').value);
+  else if(a==='haname'){const e=ents.entities.find(x=>x.id===id);if(e)renameDev(id,e.ha_name)}
+  else if(a==='fmv'){note('Saving…');const r=await api('/entities',{body:{id,move:+v}});if(r.ok){await loadCfg();note('Order saved ✓','good')}else note(r.msg,'bad');render()}
   else if(a==='add')setFlag(id,{known:true,hidden:false},'Added to PocketOS ✓');
   else if(a==='skip')setFlag(id,{known:true,hidden:true},'Skipped. You can still show it later.');
   else if(a==='addall'){note('Saving…');const r=await api('/entities',{body:{all_known:true}});if(r.ok){ents.entities.forEach(x=>x.new=false);await loadInfo();note('All added ✓','good')}else note(r.msg,'bad');render()}

@@ -182,7 +182,7 @@ static void test_model(void)
     CHECK(model_mood(&M, &S, &in) == MOOD_DANCE);
     feed(FX_EVT_DOOR_UNLOCKED, C.id_sub, &ev);
     CHECK(model_mood(&M, &S, &in) == MOOD_ALERT);
-    CHECK(!strcmp(mood_caption(MOOD_ALERT, &M, 9, b, sizeof b), "Front door is unlocked"));
+    CHECK(!strcmp(mood_caption(MOOD_ALERT, &M, NULL, 9, b, sizeof b), "Front door is unlocked"));
     in.ha_ok = false;  CHECK(model_mood(&M, &S, &in) == MOOD_WORRIED);
     in.home_wifi = false; CHECK(model_mood(&M, &S, &in) == MOOD_AWAY);
     in.charging = true; CHECK(model_mood(&M, &S, &in) == MOOD_CHARGE);
@@ -290,8 +290,41 @@ static void test_updates_setting(void)
     cJSON_Delete(p);
     cJSON *o = settings_to_json(&s, false);
     CHECK(!strcmp(cJSON_GetStringValue(cJSON_GetObjectItem(o, "updates")), "auto"));
-    CHECK(cJSON_GetObjectItem(o, "schema")->valueint == 3);
+    CHECK(cJSON_GetObjectItem(o, "schema")->valueint == 4);
     cJSON_Delete(o);
+}
+
+static void test_names_and_order(void)
+{
+    static settings_t s; settings_err_t err; const char *why;
+    settings_defaults(&s);
+    CHECK(settings_name_for(&s, "light.a") == NULL);
+    CHECK(settings_set_name(&s, "light.a", "Reading lamp", &why) && !strcmp(settings_name_for(&s, "light.a"), "Reading lamp"));
+    CHECK(settings_set_name(&s, "light.a", "Desk lamp", &why) && s.nnames == 1 && !strcmp(settings_name_for(&s, "light.a"), "Desk lamp"));
+    CHECK(!settings_set_name(&s, "light.a", "   ", &why) && why);
+    CHECK(!settings_set_name(&s, "light.a", "a name that is far too long for it", &why));
+    CHECK(!settings_set_name(&s, "light.a", "two\nlines", &why));
+    CHECK(!settings_set_name(&s, "Not An Id", "x", &why));
+    CHECK(settings_set_name(&s, "light.a", "", &why) && s.nnames == 0 && settings_name_for(&s, "light.a") == NULL);
+    // through a settings patch, and back out as JSON
+    cJSON *p = J("{\"names\":[{\"id\":\"light.a\",\"name\":\"Lamp\"},{\"id\":\"lock.b\",\"name\":\"Back door\"}]}");
+    CHECK(settings_patch(&s, p, false, &err) && s.nnames == 2);
+    cJSON_Delete(p);
+    p = J("{\"names\":[{\"id\":\"light.a\",\"name\":\"A\"},{\"id\":\"light.a\",\"name\":\"B\"}]}");
+    CHECK(!settings_patch(&s, p, false, &err) && !strcmp(err.field, "names") && s.nnames == 2);
+    cJSON_Delete(p);
+    cJSON *o = settings_to_json(&s, false);
+    CHECK(cJSON_GetArraySize(cJSON_GetObjectItem(o, "names")) == 2);
+    cJSON_Delete(o);
+    // the chosen name is what PocketOS shows, including in the companion's caption
+    entity_t e = {0};
+    snprintf(e.id, sizeof e.id, "lock.b"); snprintf(e.name, sizeof e.name, "Rear door lock");
+    CHECK(!strcmp(model_name(&s, &e), "Back door") && !strcmp(model_name(NULL, &e), "Rear door lock"));
+    // favourites keep the user's order
+    settings_set_flag(&s, "fav", "light.a", true); settings_set_flag(&s, "fav", "light.b", true); settings_set_flag(&s, "fav", "light.c", true);
+    CHECK(settings_fav_move(&s, "light.c", -1) && !strcmp(s.fav[1], "light.c") && !strcmp(s.fav[2], "light.b"));
+    CHECK(settings_fav_move(&s, "light.a", -1) && !strcmp(s.fav[0], "light.a"));   // already first
+    CHECK(!settings_fav_move(&s, "light.zz", 1));
 }
 
 static void test_versions(void)
@@ -367,6 +400,7 @@ int main(void)
     test_voice();
     test_auth_fail();
     test_updates_setting();
+    test_names_and_order();
     test_versions();
     test_battery();
     printf("%d checks, %d failed\n", checks, fails);

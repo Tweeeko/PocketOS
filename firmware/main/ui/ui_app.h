@@ -42,6 +42,8 @@ void app_settings_unlock(void);
 void app_status(app_status_t *out);
 bool app_settings_patch(const char *json);   // small changes made on the device itself (eye colour etc.)
 void app_act(const char *entity_id, act_t act, float value);   // sends to Home Assistant
+bool app_set_flag(const char *list, const char *entity_id, bool on);   // "fav", "hidden" or "known"; saved at once
+bool app_fav_move(const char *entity_id, int dir);                    // -1 up, +1 down in Favourites
 void app_brightness(int percent);                               // 0 = screen off
 void app_voice(bool start);                                     // push-to-talk
 uint32_t app_ms(void);

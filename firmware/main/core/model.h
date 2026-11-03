@@ -83,7 +83,9 @@ bool model_is_new(const model_t *m, const settings_t *s, int i);   // not yet re
 void model_status(const entity_t *e, char *buf, int len);     // "On · 70%", "21° · now 19.5°"
 void model_value(const entity_t *e, float v, char *buf, int len); // big number on the dial
 mood_t model_mood(const model_t *m, const settings_t *s, const mood_inputs_t *in);
-const char *mood_caption(mood_t mood, const model_t *m, int hour, char *buf, int len);
+const char *mood_caption(mood_t mood, const model_t *m, const settings_t *s, int hour, char *buf, int len);
+// The name to show: the one chosen on PocketOS, if any, otherwise Home Assistant's
+const char *model_name(const settings_t *s, const entity_t *e);
 
 // Pending commands: set when sent, cleared by the next state update for that entity
 void model_set_pending(model_t *m, int i, uint32_t now_ms, bool has_level, float level);
