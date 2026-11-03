@@ -112,7 +112,7 @@ esp_err_t net_start(void)
     char ssid[33] = {0}, pass[65] = {0};
     if (storage_wifi_get(ssid, sizeof(ssid), pass, sizeof(pass))) {
         s_st.mode = NET_NORMAL;
-        strncpy(s_st.ssid, ssid, sizeof(s_st.ssid) - 1);
+        snprintf(s_st.ssid, sizeof(s_st.ssid), "%s", ssid);
         wifi_config_t sta = {0};
         copy_field(sta.sta.ssid, sizeof(sta.sta.ssid), ssid);
         copy_field(sta.sta.password, sizeof(sta.sta.password), pass);
@@ -163,7 +163,7 @@ int net_scan(net_ap_t *out, int max)
         bool dup = false;
         for (int j = 0; j < k; j++) if (!strcmp(out[j].ssid, (char *)recs[i].ssid)) dup = true;
         if (dup) continue;
-        strncpy(out[k].ssid, (char *)recs[i].ssid, sizeof(out[k].ssid) - 1);
+        snprintf(out[k].ssid, sizeof(out[k].ssid), "%.32s", (const char *)recs[i].ssid);
         out[k].ssid[sizeof(out[k].ssid) - 1] = 0;
         out[k].rssi = recs[i].rssi;
         out[k].secure = recs[i].authmode != WIFI_AUTH_OPEN;
@@ -191,7 +191,7 @@ esp_err_t net_try_join(const char *ssid, const char *pass, char *ip_out, size_t 
         return ESP_FAIL;
     }
     snprintf(ip_out, ip_len, "%s", s_st.ip);
-    strncpy(s_st.ssid, ssid, sizeof(s_st.ssid) - 1);
+    snprintf(s_st.ssid, sizeof(s_st.ssid), "%s", ssid);
     return storage_wifi_set(ssid, pass);
 }
 

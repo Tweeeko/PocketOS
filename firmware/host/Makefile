@@ -7,7 +7,8 @@
 #   make sim LVGL_DIR=/tmp/lvgl
 
 CC      ?= gcc
-CFLAGS  += -std=c11 -O1 -g -Wall -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Werror=implicit-function-declaration -D_DEFAULT_SOURCE
+# Same warnings-as-errors as the ESP-IDF build, so slips are caught on the PC first
+CFLAGS  += -std=c11 -O2 -g -Wall -Werror=all -Wno-sign-compare -Wextra -Wno-unused-parameter -Wno-missing-field-initializers -Werror=implicit-function-declaration -D_DEFAULT_SOURCE
 CORE    := ../main/core
 CJSON   := third_party/cjson
 INC     := -I$(CORE) -I$(CJSON) -Itests
