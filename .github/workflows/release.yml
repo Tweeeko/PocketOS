@@ -60,22 +60,29 @@ jobs:
           [ "$INSIDE" = "$VER" ] || { echo "::error::binary says '$INSIDE', expected '$VER'"; exit 1; }
           SIZE=$(stat -c %s out/pocketos.bin)
           SHA=$(sha256sum out/pocketos.bin | cut -d' ' -f1)
-          python3 - "$VER" "$SIZE" "$SHA" "$GITHUB_REPOSITORY" <<'PY'
+          FULLSHA=$(sha256sum out/pocketos-full.bin | cut -d' ' -f1)
+          python3 - "$VER" "$SIZE" "$SHA" "$GITHUB_REPOSITORY" "$FULLSHA" <<'PY'
           import json, sys
-          ver, size, sha, repo = sys.argv[1:]
+          ver, size, sha, repo, full_sha = sys.argv[1:]
           notes = open("notes.md").read().strip()[:390]
-          json.dump({"version": ver, "size": int(size), "sha256": sha, "notes": notes,
+          json.dump({"version": ver, "size": int(size), "sha256": sha, "notes": notes, "full_sha256": full_sha,
                      "url": f"https://github.com/{repo}/releases/download/v{ver}/pocketos.bin"},
                     open("out/manifest.json", "w"), indent=2)
           PY
           cat out/manifest.json
+          # The factory tool, with this release's firmware already inside (for flashing new devices)
+          mkdir -p pkg/pocketos-factory
+          cp tools/factory/* pkg/pocketos-factory/
+          cp out/pocketos-full.bin pkg/pocketos-factory/
+          python3 -c "import json; m=json.load(open('out/manifest.json')); json.dump({'version': m['version'], 'full_sha256': m['full_sha256']}, open('pkg/pocketos-factory/pocketos-full.bin.json', 'w'))"
+          (cd pkg && zip -qr ../out/pocketos-factory.zip pocketos-factory)
 
       - name: Publish the release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           VER=${{ steps.v.outputs.version }}
-          gh release create "v$VER" out/pocketos.bin out/pocketos-full.bin out/manifest.json \
+          gh release create "v$VER" out/pocketos.bin out/pocketos-full.bin out/manifest.json out/pocketos-factory.zip \
             --title "PocketOS $VER" --notes-file notes.md --target "$GITHUB_SHA"
 
       - name: Update the website

@@ -1,0 +1,27 @@
+# PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
+# Adds pocketos-factory.zip (the PC flashing tool with the firmware inside) to the latest release.
+# New releases include it automatically; run this to refresh it after changing tools/factory.
+name: Factory package
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and attach pocketos-factory.zip
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG=$(gh release view --json tagName -q .tagName)
+          mkdir -p pkg/pocketos-factory
+          cp tools/factory/* pkg/pocketos-factory/
+          gh release download "$TAG" -p pocketos-full.bin -D pkg/pocketos-factory
+          VER=${TAG#v}
+          SHA=$(sha256sum pkg/pocketos-factory/pocketos-full.bin | cut -d' ' -f1)
+          echo "{\"version\": \"$VER\", \"full_sha256\": \"$SHA\"}" > pkg/pocketos-factory/pocketos-full.bin.json
+          (cd pkg && zip -qr ../pocketos-factory.zip pocketos-factory)
+          gh release upload "$TAG" pocketos-factory.zip --clobber
+          echo "Attached pocketos-factory.zip to $TAG"
