@@ -85,7 +85,14 @@
       <h2>Take a closer look.</h2>
       <p class="lede">The details that make PocketOS what it is.</p>
     </header>
-    <div class="closer-grid" data-closer></div>
+    <div class="slider" data-slider aria-roledescription="carousel" aria-label="PocketOS pictures">
+      <div class="slides" data-closer tabindex="0"></div>
+      <div class="slider-bar">
+        <button type="button" class="sl-btn" data-sl="-1" aria-label="Previous picture"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+        <div class="sl-dots" data-dots role="group" aria-label="Choose a picture"></div>
+        <button type="button" class="sl-btn" data-sl="1" aria-label="Next picture"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
   </section>
 
   <section class="pack" id="packaging">

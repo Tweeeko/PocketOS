@@ -25,8 +25,23 @@
   }
 
   const closer = document.querySelector('[data-closer]');
-  if (closer && P.closer) closer.innerHTML = P.closer.map(c =>
-    `<figure class="closer-item"><div class="shot${c.image ? '' : ' empty'}">${c.image ? shot(c.image) : '<span class="ph"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Photo coming with the finished PocketOS</span>'}</div><figcaption><h3>${esc(c.title)}</h3><p>${esc(c.text)}</p></figcaption></figure>`).join('');
+  if (closer && P.closer) {
+    const n = P.closer.length;
+    closer.innerHTML = P.closer.map((c, i) =>
+      `<figure class="slide" role="group" aria-roledescription="slide" aria-label="${i + 1} of ${n}: ${esc(c.title)}"><div class="shot${c.image ? '' : ' empty'}">${c.image ? shot(c.image) : '<span class="ph"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Photo coming with the finished PocketOS</span>'}</div><figcaption><span class="count">${i + 1} / ${n}</span><h3>${esc(c.title)}</h3><p>${esc(c.text)}</p></figcaption></figure>`).join('');
+    // Slider: swipe or scroll sideways, use the arrows or dots, or the keyboard's arrow keys
+    const dots = document.querySelector('[data-dots]'), slides = [...closer.children];
+    dots.innerHTML = slides.map((s, i) => `<button type="button" aria-label="Picture ${i + 1}"${i ? '' : ' aria-current="true"'}></button>`).join('');
+    const go = i => { i = Math.max(0, Math.min(n - 1, i)); closer.scrollTo({ left: slides[i].offsetLeft - closer.offsetLeft, behavior: 'smooth' }); };
+    const at = () => Math.round(closer.scrollLeft / (slides[0].offsetWidth || 1));
+    const mark = () => { const i = at(); [...dots.children].forEach((d, k) => d.toggleAttribute('aria-current', k === i));
+      document.querySelectorAll('[data-sl]').forEach(b => { b.disabled = (b.dataset.sl === '-1' && i === 0) || (b.dataset.sl === '1' && i === n - 1); }); };
+    closer.addEventListener('scroll', () => { clearTimeout(mark.t); mark.t = setTimeout(mark, 60); }, { passive: true });
+    dots.addEventListener('click', e => { const b = e.target.closest('button'); if (b) go([...dots.children].indexOf(b)); });
+    document.querySelectorAll('[data-sl]').forEach(b => b.addEventListener('click', () => go(at() + +b.dataset.sl)));
+    closer.addEventListener('keydown', e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); go(at() + (e.key === 'ArrowRight' ? 1 : -1)); } });
+    mark();
+  }
 
   // Price and availability come from the same place as everywhere else
   const a0 = P.availability, pr = document.querySelector('[data-price]'), stt = document.querySelector('[data-status]'), rn = document.querySelector('[data-region-note]');
