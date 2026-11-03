@@ -108,6 +108,18 @@ char *ha_msg_action(ha_ctx_t *c, const model_t *m, int i, act_t act, float value
     }
     switch (e->dom) {
     case D_LIGHT:
+        if (act == ACT_WARMTH && (e->caps & CAP_WARMTH)) {
+            float k = value < e->kelvin_min ? e->kelvin_min : value > e->kelvin_max ? e->kelvin_max : value;
+            return service(c, e, "light", "turn_on", one("color_temp_kelvin", (int)roundf(k / 50) * 50));
+        }
+        if (act == ACT_HUE && (e->caps & CAP_COLOUR)) {
+            cJSON *d = cJSON_CreateObject();
+            cJSON *hs = cJSON_AddArrayToObject(d, "hs_color");
+            float h = fmodf(value < 0 ? 0 : value, 360.0f);
+            cJSON_AddItemToArray(hs, cJSON_CreateNumber(roundf(h)));
+            cJSON_AddItemToArray(hs, cJSON_CreateNumber(100));
+            return service(c, e, "light", "turn_on", d);
+        }
         if (act == ACT_LEVEL) return service(c, e, "light", "turn_on", one("brightness_pct", value));
         if (act == ACT_TOGGLE) return service(c, e, "light", "toggle", NULL);
         break;

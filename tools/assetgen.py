@@ -131,10 +131,12 @@ ICONS = {
     'mic': 'M9 5a3 3 0 0 1 6 0v6a3 3 0 0 1-6 0zM5 11a7 7 0 0 0 14 0M12 18v3',
     'gear': 'M12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6zM12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1',
     'wifi': 'M2 8.5a15 15 0 0 1 20 0M5 12a10 10 0 0 1 14 0M8.5 15.5a5 5 0 0 1 7 0M12 19h.01',
+    'sun': 'M12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8zM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4',
+    'palette': 'M12 3a9 9 0 0 0 0 18c1.1 0 1.6-.9 1.2-1.8-.5-1.1.2-2.2 1.4-2.2H17a4 4 0 0 0 4-4c0-5.5-4-10-9-10zM7.5 11.5h.01M9.5 7.5h.01M14.5 7.5h.01M17 11h.01',
 }
 SIZES = {
     40: ['star', 'bulb', 'flame', 'play', 'lock', 'home', 'sparkles', 'dots', 'qr', 'plug', 'fan', 'blinds', 'thermo', 'gear'],
-    30: ['power', 'flame', 'minus', 'plus', 'prev', 'next', 'play', 'pause', 'up', 'down', 'stop'],
+    30: ['power', 'flame', 'minus', 'plus', 'prev', 'next', 'play', 'pause', 'up', 'down', 'stop', 'sun', 'palette'],
     84: ['lock', 'unlock', 'power', 'mic', 'play', 'pause'],
     22: ['wifi'],
 }

@@ -2,6 +2,7 @@
 #include "settings.h"
 #include "portable.h"
 #include <string.h>
+#include <ctype.h>
 #include <stdio.h>
 
 static const char *EYES[EYE_COUNT] = {"blue", "violet", "white"};
@@ -213,6 +214,8 @@ bool settings_patch(settings_t *out, const cJSON *patch, bool trusted, settings_
             s.anim = (anim_t)f;
         } else if (!strcmp(k, "tz")) {
             if (!cJSON_IsString(v) || strlen(v->valuestring) < 3 || strlen(v->valuestring) > 47) FAIL(k, "Time zone looks wrong");
+            for (const char *c = v->valuestring; *c; c++)            // POSIX TZ characters only
+                if (!isalnum((unsigned char)*c) && !strchr("<>+-:,./", *c)) FAIL(k, "Time zone looks wrong");
             copy(s.tz, sizeof(s.tz), v->valuestring);
         } else if (!strcmp(k, "auto_add")) {
             if (!cJSON_IsBool(v)) FAIL(k, "Must be true or false");

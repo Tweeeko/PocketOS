@@ -392,6 +392,57 @@ static void test_registry_updates(void)
     CHECK(E("light.floor_lamp")->area == -1);
 }
 
+static void test_tz_validation(void)
+{
+    settings_t *s = calloc(1, sizeof(settings_t)); settings_defaults(s);
+    settings_err_t err;
+    cJSON *p = J("{\"tz\":\"<-03>3\"}");
+    CHECK(settings_patch(s, p, true, &err) && !strcmp(s->tz, "<-03>3"));
+    cJSON_Delete(p);
+    p = J("{\"tz\":\"GMT0;rm\"}");
+    CHECK(!settings_patch(s, p, true, &err) && !strcmp(s->tz, "<-03>3"));
+    cJSON_Delete(p); free(s);
+}
+
+static void test_fahrenheit(void)
+{
+    model_t *fm = calloc(1, sizeof(model_t));
+    cJSON *st = J("{\"entity_id\":\"sensor.garden_temperature\",\"state\":\"38\",\"attributes\":{\"unit_of_measurement\":\"\u00b0F\",\"device_class\":\"temperature\",\"friendly_name\":\"Garden temperature\"}}");
+    model_apply_state(fm, st);
+    CHECK(fm->n == 1 && fm->e[0].lmin == 14 && fm->e[0].lmax == 104);
+    settings_t *s = calloc(1, sizeof(settings_t)); settings_defaults(s); s->auto_add = true;
+    mood_inputs_t in = {.ha_ok = true, .home_wifi = true, .battery = 80};
+    CHECK(model_mood(fm, s, &in) == MOOD_COLD);              // 38 °F is cold
+    cJSON_Delete(st);
+    st = J("{\"entity_id\":\"sensor.garden_temperature\",\"state\":\"50\",\"attributes\":{\"unit_of_measurement\":\"\u00b0F\",\"device_class\":\"temperature\"}}");
+    model_apply_state(fm, st);
+    CHECK(model_mood(fm, s, &in) == MOOD_IDLE);              // 50 °F isn't
+    cJSON_Delete(st); free(fm); free(s);
+}
+
+static void test_light_colour(void)
+{
+    sync_all();
+    bool lvl; float nl;
+    const entity_t *b = E("light.bedside");
+    CHECK((b->caps & CAP_WARMTH) && (b->caps & CAP_COLOUR) && !(E("light.floor_lamp")->caps & (CAP_WARMTH | CAP_COLOUR)));
+    int i = model_find(&M, "light.bedside");
+    char *s = ha_msg_action(&C, &M, i, ACT_WARMTH, 2712, &lvl, &nl);
+    CHECK(s && strstr(s, "\"color_temp_kelvin\":2700") && strstr(s, "turn_on") && !lvl);
+    free(s);
+    s = ha_msg_action(&C, &M, i, ACT_HUE, 240, &lvl, &nl);
+    CHECK(s && strstr(s, "\"hs_color\":[240,100]"));
+    free(s);
+    CHECK(ha_msg_action(&C, &M, model_find(&M, "light.floor_lamp"), ACT_HUE, 10, &lvl, &nl) == NULL);   // white-only bulb
+    // Home Assistant reports the colour back
+    ha_event_t ev;
+    feed("{\"id\":%d,\"type\":\"event\",\"event\":{\"event_type\":\"state_changed\",\"data\":{\"entity_id\":\"light.bedside\",\"new_state\":{\"entity_id\":\"light.bedside\",\"state\":\"on\",\"attributes\":{\"friendly_name\":\"Bedside lamp\",\"brightness\":128,\"color_mode\":\"color_temp\",\"color_temp_kelvin\":3000,\"min_color_temp_kelvin\":2200,\"max_color_temp_kelvin\":6500,\"supported_color_modes\":[\"color_temp\",\"hs\"]}}}}}", C.id_sub, &ev);
+    b = E("light.bedside");
+    CHECK(b->kelvin == 3000 && b->kelvin_min == 2200 && b->sat < 0);
+    feed("{\"id\":%d,\"type\":\"event\",\"event\":{\"event_type\":\"state_changed\",\"data\":{\"entity_id\":\"light.bedside\",\"new_state\":{\"entity_id\":\"light.bedside\",\"state\":\"on\",\"attributes\":{\"brightness\":128,\"color_mode\":\"hs\",\"hs_color\":[240,100],\"supported_color_modes\":[\"color_temp\",\"hs\"]}}}}}", C.id_sub, &ev);
+    CHECK(E("light.bedside")->hue == 240 && E("light.bedside")->sat == 100);
+}
+
 static void test_signed_updates(void)
 {
     uint8_t tail[UPDATE_TRAILER] = {0};
@@ -493,6 +544,9 @@ int main(void)
     test_ha_robustness();
     test_registry_updates();
     test_signed_updates();
+    test_light_colour();
+    test_fahrenheit();
+    test_tz_validation();
     test_versions();
     test_battery();
     printf("%d checks, %d failed\n", checks, fails);

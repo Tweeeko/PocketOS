@@ -35,7 +35,9 @@
     power: 'M12 3v8M6.3 7.5a8 8 0 1 0 11.4 0', minus: 'M6 12h12', plus: 'M12 6v12M6 12h12', up: 'M6 15l6-6 6 6', down: 'M6 9l6 6 6-6',
     mic: 'M9 5a3 3 0 0 1 6 0v6a3 3 0 0 1-6 0zM5 11a7 7 0 0 0 14 0M12 18v3',
     gear: 'M12 9a3 3 0 1 0 0 6a3 3 0 1 0 0-6zM12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1',
-    wifi: 'M2 8.5a15 15 0 0 1 20 0M5 12a10 10 0 0 1 14 0M8.5 15.5a5 5 0 0 1 7 0M12 19h.01'
+    wifi: 'M2 8.5a15 15 0 0 1 20 0M5 12a10 10 0 0 1 14 0M8.5 15.5a5 5 0 0 1 7 0M12 19h.01',
+    sun: 'M12 8a4 4 0 1 0 0 8a4 4 0 1 0 0-8zM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4',
+    palette: 'M12 3a9 9 0 0 0 0 18c1.1 0 1.6-.9 1.2-1.8-.5-1.1.2-2.2 1.4-2.2H17a4 4 0 0 0 4-4c0-5.5-4-10-9-10zM7.5 11.5h.01M9.5 7.5h.01M14.5 7.5h.01M17 11h.01'
   };
   const icon = (n, size) => {
     const d = ICON[n] || '', fill = d[0] === '!';
@@ -51,13 +53,13 @@
   const DOMAIN = { light: 'light', media: 'media_player', climate: 'climate', switch: 'switch', cover: 'cover', fan: 'fan', lock: 'lock', sensor: 'sensor', scene: 'scene' };
   const AREAS = ['Living room', 'Kitchen', 'Bedroom', 'Hallway', 'Garden'];
   const ENTITIES = () => [
-    { id: 'light.floor_lamp', name: 'Floor lamp', dom: 'light', area: 'Living room', on: true, level: 70, lmin: 1, lmax: 100, lstep: 1 },
+    { id: 'light.floor_lamp', name: 'Floor lamp', dom: 'light', area: 'Living room', on: true, level: 70, lmin: 1, lmax: 100, lstep: 1, warmth: true, colour: true, kelvin: 2700, kmin: 2200, kmax: 6500, hue: 30, sat: -1 },
     { id: 'media_player.tv', name: 'TV', dom: 'media', area: 'Living room', on: false, level: 35, lmin: 0, lmax: 100, lstep: 1, title: 'Nature documentary', prevnext: true },
     { id: 'climate.thermostat', name: 'Thermostat', dom: 'climate', area: 'Living room', on: false, level: 20.5, lmin: 7, lmax: 30, lstep: 0.5, cur: 19.5 },
     { id: 'light.kitchen', name: 'Ceiling light', dom: 'light', area: 'Kitchen', on: false, level: 100, lmin: 1, lmax: 100, lstep: 1 },
     { id: 'media_player.kitchen', name: 'Kitchen speaker', dom: 'media', area: 'Kitchen', on: false, level: 30, lmin: 0, lmax: 100, lstep: 1, title: 'Morning Jazz', prevnext: true },
     { id: 'switch.kettle', name: 'Kettle plug', dom: 'switch', area: 'Kitchen', on: false },
-    { id: 'light.bedside', name: 'Bedside lamp', dom: 'light', area: 'Bedroom', on: false, level: 40, lmin: 1, lmax: 100, lstep: 1 },
+    { id: 'light.bedside', name: 'Bedside lamp', dom: 'light', area: 'Bedroom', on: false, level: 40, lmin: 1, lmax: 100, lstep: 1, warmth: true, kelvin: 3000, kmin: 2200, kmax: 6500, sat: -1 },
     { id: 'cover.blinds', name: 'Blinds', dom: 'cover', area: 'Bedroom', on: true, level: 100, lmin: 0, lmax: 100, lstep: 1 },
     { id: 'fan.bedroom', name: 'Fan', dom: 'fan', area: 'Bedroom', on: false, level: 50, lmin: 1, lmax: 100, lstep: 1 },
     { id: 'lock.front', name: 'Front door', dom: 'lock', area: 'Hallway', on: true },
@@ -162,6 +164,8 @@
       switch (what) {
         case 'toggle': e.on = !e.on; if (e.dom === 'cover') e.level = e.on ? 100 : 0; break;
         case 'level': e.level = value; if (['light', 'fan'].includes(e.dom)) e.on = value > 0; break;
+        case 'warmth': e.kelvin = value; e.sat = -1; e.on = true; break;
+        case 'hue': e.hue = value; e.sat = 100; e.on = true; break;
         case 'up': e.level = clamp(e.level + e.lstep, e.lmin, e.lmax); break;
         case 'down': e.level = clamp(e.level - e.lstep, e.lmin, e.lmax); break;
         case 'open': e.level = 100; break;
@@ -344,6 +348,16 @@
   const R = 204, CX = 233, CY = 233, A0 = 135, SW = 270;
   const pt = a => [CX + R * Math.cos(a * Math.PI / 180), CY + R * Math.sin(a * Math.PI / 180)];
   const arcD = (a0, a1) => { const [x0, y0] = pt(a0), [x1, y1] = pt(a1); return `M${x0.toFixed(1)} ${y0.toFixed(1)}A${R} ${R} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${x1.toFixed(1)} ${y1.toFixed(1)}`; };
+  const HUES = ['Red', 'Orange', 'Yellow', 'Lime', 'Green', 'Teal', 'Cyan', 'Sky', 'Blue', 'Purple', 'Pink', 'Rose'];
+  const mixHex = (a, b, t) => '#' + [0, 2, 4].map(i => Math.round(parseInt(a.substr(i + 1, 2), 16) + (parseInt(b.substr(i + 1, 2), 16) - parseInt(a.substr(i + 1, 2), 16)) * clamp(t, 0, 1)).toString(16).padStart(2, '0')).join('');
+  function dialRange(e, ref) {
+    const m = ref.dmode || 0;
+    if (m === 1) return { min: e.kmin, max: e.kmax, step: 50, value: ref.held != null ? ref.held : e.kelvin || (e.kmin + e.kmax) / 2,
+      col: v => mixHex('#FFB15A', '#DDEBFF', (v - e.kmin) / (e.kmax - e.kmin)), text: v => Math.round(v / 50) * 50 + 'K', sub: 'Warmth · drag the ring' };
+    if (m === 2) return { min: 0, max: 359, step: 5, value: ref.held != null ? ref.held : (e.sat >= 0 ? e.hue : 0),
+      col: v => `hsl(${v} 100% 50%)`, text: v => HUES[Math.round(v / 30) % 12], sub: 'Colour · drag the ring' };
+    return null;
+  }
   function ctlHTML(ref) {
     const e = find(ref.id);
     if (!e || !visible(e)) return `<div class="ctl"><p class="empty">This device is no longer<br>in Home Assistant</p>${title('Back', true, true)}</div>`;
@@ -353,7 +367,9 @@
       const btn = (ic, a, size, on) => `<button class="rb${on ? ' on' : ''}" style="--d:${size}" data-act="${a}" aria-label="${a}">${icon(ic, 30)}</button>`;
       let row = '';
       if (e.dom === 'climate') row = btn('minus', 'down', 52) + btn('flame', 'toggle', 72, e.on) + btn('plus', 'up', 52);
-      if (e.dom === 'light' || e.dom === 'fan') row = btn('power', 'toggle', 72, e.on);
+      const modeBtn = (ic, m) => `<button class="rb${(ref.dmode || 0) === m ? ' on' : ''}" style="--d:52" data-mode="${m}" aria-label="${m === 1 ? 'Warmth' : 'Colour'}">${icon(ic, 30)}</button>`;
+      if (e.dom === 'light') row = (e.warmth ? modeBtn('sun', 1) : '') + btn('power', 'toggle', 72, e.on) + (e.colour ? modeBtn('palette', 2) : '');
+      if (e.dom === 'fan') row = btn('power', 'toggle', 72, e.on);
       if (e.dom === 'media') row = btn('prev', 'prev', 52) + btn(e.on ? 'pause' : 'play', 'toggle', 72, e.on) + btn('next', 'next', 52);
       if (e.dom === 'cover') row = btn('down', 'close', 52) + btn('stop', 'stop', 52) + btn('up', 'open', 52);
       return `<div class="ctl dial-ctl" style="--col:${col}" data-ro="${e.dom === 'sensor' ? 1 : 0}">
@@ -366,7 +382,19 @@
   }
   function ctlUpdate(ref, liveValue) {
     const e = find(ref.id), el = $('.ctl', layer); if (!e || !el) return;
+    const dr = $('.dial', el) && dialRange(e, ref);
+    if (dr) {   // a light's warmth or colour
+      const v = liveValue != null ? liveValue : dr.value, f = clamp((v - dr.min) / (dr.max - dr.min), 0, 1), a1 = A0 + SW * f;
+      $('.ind', el).setAttribute('d', f > 0.001 ? arcD(A0, a1) : ''); $('.ind', el).style.opacity = 1;
+      el.style.setProperty('--col', dr.col(v));
+      const [kx, ky] = pt(a1); const k = $('.knob', el); k.setAttribute('cx', kx); k.setAttribute('cy', ky);
+      $('.val', el).textContent = dr.text(v);
+      $('.sub', el).textContent = e.pending ? 'Sending...' : dr.sub;
+      $$('.rb[data-act=toggle]', el).forEach(b => b.classList.toggle('on', e.on));
+      return;
+    }
     if ($('.dial', el)) {
+      el.style.setProperty('--col', DIAL[e.dom] || '#8FD3FF');
       const v = liveValue != null ? liveValue : (e.pendingLevel != null ? e.pendingLevel : e.level);
       const f = clamp((v - e.lmin) / (e.lmax - e.lmin), 0, 1), a1 = A0 + SW * f;
       $('.ind', el).setAttribute('d', f > 0.001 ? arcD(A0, a1) : '');
@@ -394,16 +422,18 @@
     const r = svg.getBoundingClientRect(), s = r.width / 466;
     const x = (ev.clientX - r.left) / s - CX, y = (ev.clientY - r.top) / s - CY;
     const dist = Math.hypot(x, y); if (dist < 150) return false;   // only the ring, not the middle
+    const dr = dialRange(e, ref), lo = dr ? dr.min : e.lmin, hi = dr ? dr.max : e.lmax, st = dr ? dr.step : e.lstep;
     const at = cev => {
       const xx = (cev.clientX - r.left) / s - CX, yy = (cev.clientY - r.top) / s - CY;
       let a = Math.atan2(yy, xx) * 180 / Math.PI; a = (a - A0 + 720) % 360;
       if (a > SW) a = a > SW + 45 ? 0 : SW;
-      let v = e.lmin + (e.lmax - e.lmin) * a / SW; v = Math.round(v / e.lstep) * e.lstep;
-      return clamp(v, e.lmin, e.lmax);
+      let v = lo + (hi - lo) * a / SW; v = Math.round(v / st) * st;
+      return clamp(v, lo, hi);
     };
     dragging = true; let v = at(ev); ctlUpdate(ref, v);
     const mv = m => { v = at(m); ctlUpdate(ref, v); };
-    const up = () => { dragging = false; removeEventListener('pointermove', mv); removeEventListener('pointerup', up); removeEventListener('pointercancel', up); act(e.id, 'level', v); };
+    const up = () => { dragging = false; removeEventListener('pointermove', mv); removeEventListener('pointerup', up); removeEventListener('pointercancel', up);
+      if (dr) { ref.held = v; act(e.id, ref.dmode === 1 ? 'warmth' : 'hue', v); setTimeout(() => { ref.held = null; }, 1500); } else act(e.id, 'level', v); };
     addEventListener('pointermove', mv); addEventListener('pointerup', up); addEventListener('pointercancel', up);
     return true;
   }
@@ -581,6 +611,8 @@
       }
       return;
     }
+    const mb = t.closest('[data-mode]');
+    if (mb && ref.k === 'ctl') { const m = +mb.dataset.mode; ref.dmode = (ref.dmode || 0) === m ? 0 : m; ref.held = null; return render(); }
     const b = t.closest('[data-act]');
     if (b && ref.k === 'ctl') {
       const a = b.dataset.act, e = find(ref.id);
@@ -738,7 +770,8 @@
       if (path === '/battery') return R2(200, { percent: S.battery, mv: 3500 + S.battery * 6 + 100, present: true, charging: false, full: false, plugged: false, now: Math.floor(Date.now() / 1000),
         last_full: S.hist[21 * 6][0], estimate: { known: true, pct_per_h: 4.0, hours_left: Math.round(S.battery / 4 * 10) / 10, full_h: 25.0, basis_h: 22.0 }, history: S.hist });
       if (path === '/entities') return R2(200, { areas: [...new Set(ents().map(e => e.area).filter(Boolean))].sort(), entities: ents().map(e => ({
-        id: e.id, name: nm(e), ha_name: e.name, domain: DOMAIN[e.dom], area: e.area, status: status(e), controls: CONTROLS[e.dom], fav: c.favourites.includes(e.id), hidden: c.hidden.includes(e.id),
+        id: e.id, name: nm(e), ha_name: e.name, domain: DOMAIN[e.dom], area: e.area, status: status(e),
+        controls: e.dom === 'light' && (e.warmth || e.colour) ? 'On, off, brightness' + (e.warmth && e.colour ? ', warmth and colour' : e.colour ? ' and colour' : ' and warmth') : CONTROLS[e.dom], fav: c.favourites.includes(e.id), hidden: c.hidden.includes(e.id),
         new: !c.auto_add && !c.known.includes(e.id) })) });
       return R2(404, { error: 'Not found' });
     }

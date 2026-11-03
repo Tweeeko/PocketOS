@@ -22,6 +22,8 @@ enum {
     CAP_STOP     = 1 << 4,
     CAP_RUN      = 1 << 5,   // scenes/scripts: one tap
     CAP_READONLY = 1 << 6,   // sensors
+    CAP_WARMTH   = 1 << 7,   // lights: colour temperature (warm to cool white)
+    CAP_COLOUR   = 1 << 8,   // lights: any colour (hue)
 };
 
 typedef struct {
@@ -45,6 +47,9 @@ typedef struct {
     uint32_t pending_ms;      // when a command was sent (0 = none)
     float pending_level;
     bool has_pending_level;
+    // lights with colour
+    float kelvin, kelvin_min, kelvin_max;   // colour temperature now (0 = not in white mode) and its range
+    float hue, sat;                          // colour now (hue 0..360, saturation 0..100); sat < 0 = not in colour mode
 } entity_t;
 
 typedef struct { char id[40]; char name[32]; } area_t;

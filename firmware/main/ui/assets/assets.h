@@ -34,6 +34,8 @@ extern const lv_image_dsc_t ic_pause_30;
 extern const lv_image_dsc_t ic_up_30;
 extern const lv_image_dsc_t ic_down_30;
 extern const lv_image_dsc_t ic_stop_30;
+extern const lv_image_dsc_t ic_sun_30;
+extern const lv_image_dsc_t ic_palette_30;
 extern const lv_image_dsc_t ic_lock_84;
 extern const lv_image_dsc_t ic_unlock_84;
 extern const lv_image_dsc_t ic_power_84;

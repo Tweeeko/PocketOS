@@ -305,6 +305,19 @@ int main(void)
     shot("ctl_plug");
     open_ref(SCR_CONTROL, 0, "light.ceiling");
     shot("ctl_onoff_light");
+    // Warmth and colour: the buttons beside the power button switch what the dial sets
+    feed("{\"id\":%d,\"type\":\"event\",\"event\":{\"event_type\":\"state_changed\",\"data\":{\"entity_id\":\"light.bedside\",\"new_state\":{\"entity_id\":\"light.bedside\",\"state\":\"on\",\"attributes\":{\"friendly_name\":\"Bedside lamp\",\"brightness\":160,\"color_mode\":\"color_temp\",\"color_temp_kelvin\":2700,\"min_color_temp_kelvin\":2200,\"max_color_temp_kelvin\":6500,\"supported_color_modes\":[\"color_temp\",\"hs\"]}}}}}", C.id_sub);
+    open_ref(SCR_CONTROL, 0, "light.bedside");
+    shot("ctl_light_colour_buttons");
+    tap(233 - 78, 233 + 82); run(300);   // sun: warmth
+    shot("ctl_light_warmth");
+    dial_drag(0.12f, 0.8f); run(100);
+    expect(strstr(last_call, "color_temp_kelvin") != NULL, "the warmth dial sends color_temp_kelvin");
+    tap(233 + 78, 233 + 82); run(300);   // palette: colour
+    shot("ctl_light_colour_mode");
+    dial_drag(0.0f, 0.62f); run(100);
+    expect(strstr(last_call, "hs_color") != NULL, "the colour dial sends hs_color");
+    shot("ctl_light_colour");
     open_ref(SCR_CONTROL, 0, "sensor.garden_temperature");
     shot("ctl_sensor");
 

@@ -8,7 +8,10 @@
 #include <math.h>
 
 static lv_obj_t *arc, *val_lbl, *sub_lbl, *btn_row, *big_btn, *big_lbl;
-static lv_obj_t *b_tog, *b_l, *b_r;
+static lv_obj_t *b_tog, *b_l, *b_r, *b_warm, *b_col;
+static int dmode;          // lights: 0 brightness, 1 warmth (white), 2 colour
+static float held = -1;    // warmth/colour just chosen, shown until Home Assistant reports it
+static uint32_t held_at;
 static char ent_id[ID_LEN];
 static entity_t snap;      // copy of the entity, refreshed from the model
 static int scale = 1;      // arc works in integers: climate uses tenths
@@ -36,6 +39,48 @@ static bool load(void)
 
 static float shown_level(void) { return snap.has_pending_level ? snap.pending_level : snap.level; }
 
+/* ---------- lights: warmth and colour on the same dial ---------- */
+static uint32_t mix(uint32_t a, uint32_t b, float t)
+{
+    if (t < 0) t = 0;
+    if (t > 1) t = 1;
+    uint32_t r = 0;
+    for (int sh = 0; sh <= 16; sh += 8) r |= (uint32_t)(((a >> sh) & 0xFF) + (((int)((b >> sh) & 0xFF) - (int)((a >> sh) & 0xFF)) * t)) << sh;
+    return r;
+}
+static uint32_t kelvin_rgb(float k) { return mix(0xFFB15A, 0xDDEBFF, (k - snap.kelvin_min) / (snap.kelvin_max - snap.kelvin_min)); }
+static uint32_t hue_rgb(float h)
+{
+    h = fmodf(h, 360.0f) / 60.0f;
+    float x = 1 - fabsf(fmodf(h, 2.0f) - 1);
+    float r = 0, g = 0, b = 0;
+    if (h < 1) { r = 1; g = x; } else if (h < 2) { r = x; g = 1; } else if (h < 3) { g = 1; b = x; }
+    else if (h < 4) { g = x; b = 1; } else if (h < 5) { r = x; b = 1; } else { r = 1; b = x; }
+    return (uint32_t)(r * 255) << 16 | (uint32_t)(g * 255) << 8 | (uint32_t)(b * 255);
+}
+static const char *hue_name(float h)
+{
+    static const char *N[] = {"Red", "Orange", "Yellow", "Lime", "Green", "Teal", "Cyan", "Sky", "Blue", "Purple", "Pink", "Rose"};
+    return N[((int)roundf(fmodf(h + 360.0f, 360.0f) / 30.0f)) % 12];
+}
+static float mode_value(void)
+{
+    if (held >= 0 && (snap.pending_ms || app_ms() - held_at < 3000)) return held;
+    if (dmode == 1) return snap.kelvin > 0 ? snap.kelvin : (snap.kelvin_min + snap.kelvin_max) / 2;
+    if (dmode == 2) return snap.sat >= 0 ? snap.hue : 0;
+    return shown_level();
+}
+static void mode_text(float v)
+{
+    char b[24];
+    if (dmode == 1) snprintf(b, sizeof b, "%dK", (int)roundf(v / 50) * 50);
+    else snprintf(b, sizeof b, "%s", hue_name(v));
+    lv_label_set_text(val_lbl, b);
+    uint32_t c = dmode == 1 ? kelvin_rgb(v) : hue_rgb(v);
+    lv_obj_set_style_arc_color(arc, lv_color_hex(c), LV_PART_INDICATOR);
+    lv_obj_set_style_shadow_color(arc, lv_color_hex(c), LV_PART_KNOB);
+}
+
 static void set_sub(void)
 {
     char b[96];
@@ -46,7 +91,7 @@ static void set_sub(void)
         if (!isnan(snap.cur_temp)) snprintf(b, sizeof b, "%s · now %.1f°", snap.on ? "Heating" : "Heating off", (double)snap.cur_temp);
         else snprintf(b, sizeof b, "%s", snap.on ? "Heating" : "Heating off");
         break;
-    case D_LIGHT: snprintf(b, sizeof b, "%s", snap.on ? "Brightness" : "Off · drag the ring"); break;
+    case D_LIGHT: snprintf(b, sizeof b, "%s", dmode == 1 ? "Warmth · drag the ring" : dmode == 2 ? "Colour · drag the ring" : snap.on ? "Brightness" : "Off · drag the ring"); break;
     case D_FAN: snprintf(b, sizeof b, "%s", snap.on ? "Fan speed" : "Off · drag the ring"); break;
     case D_MEDIA: snprintf(b, sizeof b, "Volume%s%s%s", snap.title[0] ? " · " : "", snap.title, snap.on ? "" : " (paused)"); break;
     case D_COVER: model_status(&snap, b, sizeof b); if (!strcmp(b, "Open") || !strcmp(b, "Closed")) snprintf(b, sizeof b, "Position"); break;
@@ -65,6 +110,7 @@ static void show_value(float v)
 
 static void arc_changed(lv_event_t *e)
 {
+    if (dmode) { mode_text((float)lv_arc_get_value(arc)); return; }
     float v = (float)lv_arc_get_value(arc) / (float)scale;
     entity_t tmp = snap;
     tmp.has_pending_level = true;   // show "70%" rather than "Off" while dragging
@@ -76,7 +122,18 @@ static void arc_changed(lv_event_t *e)
 static void arc_released(lv_event_t *e)
 {
     float v = (float)lv_arc_get_value(arc) / (float)scale;
-    app_act(ent_id, ACT_LEVEL, v);
+    if (dmode) { v = (float)lv_arc_get_value(arc); held = v; held_at = app_ms(); }
+    app_act(ent_id, dmode == 1 ? ACT_WARMTH : dmode == 2 ? ACT_HUE : ACT_LEVEL, v);
+    ui_wake();
+}
+
+static void apply_mode(void);
+static void mode_cb(lv_event_t *e)
+{
+    int m = (int)(intptr_t)lv_event_get_user_data(e);
+    dmode = dmode == m ? 0 : m;   // tap again to go back to brightness
+    held = -1;
+    apply_mode();
     ui_wake();
 }
 
@@ -117,13 +174,31 @@ static void update_buttons(void)
 
 static void opts_cb(lv_event_t *e) { ui_device_options(ent_id); }
 
-static void del_cb(lv_event_t *e) { arc = NULL; val_lbl = sub_lbl = btn_row = big_btn = big_lbl = NULL; b_tog = b_l = b_r = NULL; }
+static void del_cb(lv_event_t *e) { arc = NULL; val_lbl = sub_lbl = btn_row = big_btn = big_lbl = NULL; b_tog = b_l = b_r = b_warm = b_col = NULL; }
+
+// Point the dial at brightness, warmth or colour
+static void apply_mode(void)
+{
+    if (!arc) return;
+    if (b_warm) { if (dmode == 1) lv_obj_add_state(b_warm, LV_STATE_CHECKED); else lv_obj_remove_state(b_warm, LV_STATE_CHECKED); }
+    if (b_col) { if (dmode == 2) lv_obj_add_state(b_col, LV_STATE_CHECKED); else lv_obj_remove_state(b_col, LV_STATE_CHECKED); }
+    if (dmode == 1) lv_arc_set_range(arc, (int32_t)snap.kelvin_min, (int32_t)snap.kelvin_max);
+    else if (dmode == 2) lv_arc_set_range(arc, 0, 359);
+    else {
+        lv_arc_set_range(arc, (int32_t)roundf(snap.lmin * scale), (int32_t)roundf(snap.lmax * scale));
+        lv_obj_set_style_arc_color(arc, lv_color_hex(dial_color(snap.dom)), LV_PART_INDICATOR);
+        lv_obj_set_style_shadow_color(arc, lv_color_hex(dial_color(snap.dom)), LV_PART_KNOB);
+    }
+    ctl_refresh();
+}
 
 void ctl_build(lv_obj_t *scr, scr_ref_t *r)
 {
     snprintf(ent_id, sizeof ent_id, "%s", r->arg);
     arc = val_lbl = sub_lbl = btn_row = big_btn = big_lbl = NULL;
-    b_tog = b_l = b_r = NULL;
+    b_tog = b_l = b_r = b_warm = b_col = NULL;
+    dmode = 0;
+    held = -1;
     lv_obj_add_event_cb(scr, del_cb, LV_EVENT_DELETE, NULL);
     if (!load()) {
         lv_obj_center(mk_label(scr, &inter_20, C_DIM, "This device is no longer\nin Home Assistant"));
@@ -183,7 +258,13 @@ void ctl_build(lv_obj_t *scr, scr_ref_t *r)
             if (snap.caps & CAP_TOGGLE) b_tog = button(btn_row, 72, &ic_flame_30, ACT_TOGGLE, snap.on);
             b_r = button(btn_row, 52, &ic_plus_30, ACT_STEP_UP, false);
             break;
-        case D_LIGHT: case D_FAN:
+        case D_LIGHT:
+            // Warmth and colour, for bulbs that have them: they switch what the dial sets
+            if (snap.caps & CAP_WARMTH) { b_warm = mk_round_btn(btn_row, 52, &ic_sun_30, false); lv_obj_add_style(b_warm, &st_btn_on, LV_STATE_CHECKED); lv_obj_add_event_cb(b_warm, mode_cb, LV_EVENT_CLICKED, (void *)(intptr_t)1); }
+            b_tog = button(btn_row, 72, &ic_power_30, ACT_TOGGLE, snap.on);
+            if (snap.caps & CAP_COLOUR) { b_col = mk_round_btn(btn_row, 52, &ic_palette_30, false); lv_obj_add_style(b_col, &st_btn_on, LV_STATE_CHECKED); lv_obj_add_event_cb(b_col, mode_cb, LV_EVENT_CLICKED, (void *)(intptr_t)2); }
+            break;
+        case D_FAN:
             b_tog = button(btn_row, 72, &ic_power_30, ACT_TOGGLE, snap.on);
             break;
         case D_MEDIA:
@@ -232,11 +313,14 @@ void ctl_refresh(void)
     if (!load()) { ui_back(); ui_toast("That device was removed", 2000); return; }
     if (arc) {
         bool dragging = lv_obj_has_state(arc, LV_STATE_PRESSED);
-        if (!dragging) {
+        if (!dragging && dmode) {
+            lv_arc_set_value(arc, (int32_t)roundf(mode_value()));
+            mode_text(mode_value());
+        } else if (!dragging) {
             lv_arc_set_value(arc, (int32_t)roundf(shown_level() * scale));
             show_value(shown_level());
         }
-        bool dim = (snap.dom == D_LIGHT || snap.dom == D_FAN || snap.dom == D_CLIMATE) && !snap.on && !snap.has_pending_level;
+        bool dim = !dmode && (snap.dom == D_LIGHT || snap.dom == D_FAN || snap.dom == D_CLIMATE) && !snap.on && !snap.has_pending_level;
         lv_obj_set_style_arc_opa(arc, dim ? 90 : 255, LV_PART_INDICATOR);
         set_sub();
     }

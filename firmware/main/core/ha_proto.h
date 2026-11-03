@@ -8,7 +8,10 @@
 #include <stdint.h>
 #include "model.h"
 
-typedef enum { ACT_TOGGLE, ACT_LEVEL, ACT_PREV, ACT_NEXT, ACT_OPEN, ACT_CLOSE, ACT_STOP, ACT_RUN, ACT_STEP_UP, ACT_STEP_DOWN } act_t;
+typedef enum { ACT_TOGGLE, ACT_LEVEL, ACT_PREV, ACT_NEXT, ACT_OPEN, ACT_CLOSE, ACT_STOP, ACT_RUN, ACT_STEP_UP, ACT_STEP_DOWN,
+               ACT_WARMTH,   // lights: value = colour temperature in kelvin
+               ACT_HUE       // lights: value = hue 0..360 (full saturation)
+} act_t;
 
 typedef enum {
     HA_EV_NONE, HA_EV_AUTH_REQUIRED, HA_EV_AUTH_OK, HA_EV_AUTH_INVALID,

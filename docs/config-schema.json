@@ -61,6 +61,7 @@
       "type": "string",
       "minLength": 3,
       "maxLength": 47,
+      "pattern": "^[A-Za-z0-9<>+\\-:,./]+$",
       "default": "GMT0BST,M3.5.0/1,M10.5.0",
       "label": "Time zone (POSIX TZ string)"
     },

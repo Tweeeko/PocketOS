@@ -107,6 +107,7 @@ int model_apply_state(model_t *m, const cJSON *st)
         copy(m->e[i].id, sizeof(m->e[i].id), id);
         m->e[i].area = -1;
         m->e[i].cur_temp = NAN;
+        m->e[i].sat = -1;
     }
     entity_t *e = &m->e[i];
     e->dom = d;
@@ -125,6 +126,20 @@ int model_apply_state(model_t *m, const cJSON *st)
         const cJSON *modes = cJSON_GetObjectItem(at, "supported_color_modes");
         bool dimmable = cJSON_IsArray(modes) && !(cJSON_GetArraySize(modes) == 1 && list_has(modes, "onoff"));
         if (dimmable) { e->caps |= CAP_LEVEL; e->lmin = 1; e->lmax = 100; e->lstep = 5; }
+        if (list_has(modes, "color_temp")) e->caps |= CAP_WARMTH;
+        if (list_has(modes, "hs") || list_has(modes, "xy") || list_has(modes, "rgb") || list_has(modes, "rgbw") || list_has(modes, "rgbww")) e->caps |= CAP_COLOUR;
+        e->kelvin_min = (float)num(at, "min_color_temp_kelvin", 2000);
+        e->kelvin_max = (float)num(at, "max_color_temp_kelvin", 6535);
+        if (e->kelvin_max <= e->kelvin_min) { e->kelvin_min = 2000; e->kelvin_max = 6535; }
+        const char *cm = str(at, "color_mode");
+        double k = num(at, "color_temp_kelvin", -1);
+        const cJSON *hs = cJSON_GetObjectItem(at, "hs_color");
+        bool white = cm && !strcmp(cm, "color_temp");
+        e->kelvin = (k > 0 && (white || !cm)) ? (float)k : (e->on ? 0 : e->kelvin);
+        if (cJSON_IsArray(hs) && cJSON_GetArraySize(hs) == 2 && !white) {
+            e->hue = (float)cJSON_GetArrayItem(hs, 0)->valuedouble;
+            e->sat = (float)cJSON_GetArrayItem(hs, 1)->valuedouble;
+        } else if (e->on) e->sat = -1;
         double b = num(at, "brightness", -1);
         if (b >= 0) e->level = (float)round(b * 100.0 / 255.0);
         else if (!e->on) { /* keep last known brightness for the dial */ }
@@ -183,7 +198,8 @@ int model_apply_state(model_t *m, const cJSON *st)
         e->caps = CAP_READONLY | CAP_LEVEL;
         e->level = (float)atof(state);
         copy(e->unit, sizeof(e->unit), str(at, "unit_of_measurement"));
-        if (!strcmp(e->unit, "°C") || !strcmp(e->unit, "°F")) { e->lmin = -10; e->lmax = 40; }
+        if (!strcmp(e->unit, "°C")) { e->lmin = -10; e->lmax = 40; }
+        else if (!strcmp(e->unit, "°F")) { e->lmin = 14; e->lmax = 104; }   // homes set to Fahrenheit
         else { e->lmin = 0; e->lmax = 100; }
         break;
     case D_SCENE:
@@ -349,9 +365,9 @@ static int outdoor_temp(const model_t *m)
 {
     for (int i = 0; i < m->n; i++) {
         const entity_t *e = &m->e[i];
-        if (e->dom != D_SENSOR || !e->avail || strcmp(e->unit, "°C")) continue;
+        if (e->dom != D_SENSOR || !e->avail || (strcmp(e->unit, "°C") && strcmp(e->unit, "°F"))) continue;
         const char *area = e->area >= 0 ? m->a[e->area].name : "";
-        if (name_has(e->name, "outdoor") || name_has(e->name, "outside") || name_has(area, "garden") || name_has(area, "outside"))
+        if (name_has(e->name, "outdoor") || name_has(e->name, "outside") || name_has(e->name, "garden") || name_has(area, "garden") || name_has(area, "outside"))
             return i;
     }
     return -1;
@@ -375,7 +391,7 @@ mood_t model_mood(const model_t *m, const settings_t *s, const mood_inputs_t *in
     if (playing) return MOOD_DANCE;
     if (heating) return MOOD_HOT;
     int o = outdoor_temp(m);
-    if (o >= 0 && m->e[o].level < 5) return MOOD_COLD;
+    if (o >= 0 && m->e[o].level < (!strcmp(m->e[o].unit, "°F") ? 41 : 5)) return MOOD_COLD;   // below 5 °C / 41 °F
     return MOOD_IDLE;
 }
 

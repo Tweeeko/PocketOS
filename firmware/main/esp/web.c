@@ -223,7 +223,11 @@ static esp_err_t h_config_post(httpd_req_t *req)
 static const char *controls_text(const entity_t *e)
 {
     switch (e->dom) {
-    case D_LIGHT: return (e->caps & CAP_LEVEL) ? "On, off and brightness" : "On and off";
+    case D_LIGHT:
+        if ((e->caps & CAP_WARMTH) && (e->caps & CAP_COLOUR)) return "On, off, brightness, warmth and colour";
+        if (e->caps & CAP_COLOUR) return "On, off, brightness and colour";
+        if (e->caps & CAP_WARMTH) return "On, off, brightness and warmth";
+        return (e->caps & CAP_LEVEL) ? "On, off and brightness" : "On and off";
     case D_SWITCH: return "On and off";
     case D_FAN: return (e->caps & CAP_LEVEL) ? "On, off and speed" : "On and off";
     case D_CLIMATE: return (e->caps & CAP_LEVEL) ? "Target temperature and heating on/off" : "Heating on and off";
