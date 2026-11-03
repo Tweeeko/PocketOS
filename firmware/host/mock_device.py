@@ -10,7 +10,7 @@ the website: same paths, status codes, validation rules and error messages. Noth
 Test hooks (not on the device): POST /mock/down {"down":true} makes every API call fail,
 POST /mock/new adds a "new" device, POST /mock/boot presses BOOT during a reset.
 """
-import json, sys, time, threading, copy, secrets, argparse
+import json, re, sys, time, threading, copy, secrets, argparse
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from pathlib import Path
 
@@ -23,7 +23,7 @@ TILE_KEYS = [("favourites", "Favourites"), ("lights", "Lights"), ("heating", "He
 
 def defaults():
     return {"schema": 4, "name": "PocketOS", "brightness": 80, "clock_24h": True, "date_format": "dmy", "sleep_s": 30,
-            "eye": "blue", "anim": "lively", "tz": "GMT0BST,M3.5.0/1,M10.5.0", "auto_add": False, "alerts": True, "updates": "notify",
+            "eye": "blue", "anim": "lively", "tz": "GMT0BST,M3.5.0/1,M10.5.0", "auto_add": False, "alerts": True, "speak": True, "volume": 60, "updates": "notify",
             "tiles": [{"key": k, "label": l, "show": i < 7} for i, (k, l) in enumerate(TILE_KEYS)],
             "favourites": [], "hidden": [], "known": [], "names": [], "ha_url": "", "ha_token": ""}
 
@@ -84,7 +84,9 @@ def validate(cur, patch, trusted):
             if not isinstance(v, str) or not 1 <= len(v.encode()) <= 24: return None, ("Name must be 1 to 24 characters", k)
         elif k == "brightness":
             if type(v) is not int or not 10 <= v <= 100: return None, ("Brightness must be 10 to 100", k)
-        elif k in ("clock_24h", "auto_add", "alerts"):
+        elif k == "volume":
+            if type(v) is not int or not 10 <= v <= 100: return None, ("Volume must be 10 to 100", k)
+        elif k in ("clock_24h", "auto_add", "alerts", "speak"):
             if type(v) is not bool: return None, ("Must be true or false", k)
         elif k == "date_format":
             if v not in ("dmy", "mdy"): return None, ("Must be dmy or mdy", k)
@@ -95,7 +97,7 @@ def validate(cur, patch, trusted):
         elif k == "anim":
             if v not in ("calm", "lively", "off"): return None, ("Animation must be calm, lively or off", k)
         elif k == "tz":
-            if not isinstance(v, str) or not 3 <= len(v) <= 47: return None, ("Time zone looks wrong", k)
+            if not isinstance(v, str) or not 3 <= len(v) <= 47 or not re.fullmatch(r"[A-Za-z0-9<>+\-:,./]+", v): return None, ("Time zone looks wrong", k)
         elif k == "tiles":
             keys = [t[0] for t in TILE_KEYS]
             if not isinstance(v, list) or len(v) != len(keys): return None, ("Tiles list must include every tile once", k)

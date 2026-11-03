@@ -257,7 +257,7 @@ bool ha_client_voice_start(void)
 {
     if (!ha_client_connected()) return false;
     xSemaphoreTake(s_ctx_lock, portMAX_DELAY);
-    char *msg = ha_msg_voice_start(&s_ctx, 16000);
+    char *msg = ha_msg_voice_start(&s_ctx, 16000, app_speak_settings(NULL, NULL, 0));
     xSemaphoreGive(s_ctx_lock);
     send_text(s_ws, msg);
     return true;

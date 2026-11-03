@@ -70,6 +70,18 @@
       "default": false,
       "label": "Show new Home Assistant devices without review"
     },
+    "speak": {
+      "type": "boolean",
+      "default": true,
+      "label": "Say voice replies out loud"
+    },
+    "volume": {
+      "type": "integer",
+      "minimum": 10,
+      "maximum": 100,
+      "default": 60,
+      "label": "Speaker volume for spoken replies"
+    },
     "alerts": {
       "type": "boolean",
       "default": true,

@@ -38,6 +38,8 @@ typedef struct {
     int ntiles;
     bool auto_add;           // show newly discovered devices without review
     bool alerts;             // companion reacts to unlocked doors etc.
+    bool speak;              // say Home Assistant's voice replies out loud
+    int volume;              // speaker volume for spoken replies, 10..100
     upd_mode_t updates;      // off, notify (default) or auto (installs while charging at night)
     char ha_url[96];
     char ha_token[320];      // write-only through the API; never returned

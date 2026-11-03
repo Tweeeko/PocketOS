@@ -166,15 +166,31 @@ char *ha_msg_action(ha_ctx_t *c, const model_t *m, int i, act_t act, float value
     return NULL;
 }
 
-char *ha_msg_voice_start(ha_ctx_t *c, int sample_rate)
+char *ha_msg_voice_start(ha_ctx_t *c, int sample_rate, bool speak)
 {
     cJSON *o = cmd(c, "assist_pipeline/run", &c->id_voice);
     cJSON_AddStringToObject(o, "start_stage", "stt");
-    cJSON_AddStringToObject(o, "end_stage", "intent");
+    cJSON_AddStringToObject(o, "end_stage", speak ? "tts" : "intent");
     cJSON *in = cJSON_AddObjectToObject(o, "input");
     cJSON_AddNumberToObject(in, "sample_rate", sample_rate);
     cJSON_AddNumberToObject(o, "timeout", 30);
     return print(o);
+}
+
+bool ha_audio_url(const char *ha_url, const char *path, char *out, size_t len)
+{
+    if (!path || !ha_url) return false;
+    if (!strncmp(path, "http://", 7) || !strncmp(path, "https://", 8)) {
+        if (strlen(path) >= len) return false;
+        snprintf(out, len, "%s", path);
+        return true;
+    }
+    if (path[0] != '/' || (strncmp(ha_url, "http://", 7) && strncmp(ha_url, "https://", 8))) return false;
+    size_t n = strlen(ha_url);
+    while (n && ha_url[n - 1] == '/') n--;
+    if (n + strlen(path) >= len) return false;
+    snprintf(out, len, "%.*s%s", (int)n, ha_url, path);
+    return true;
 }
 
 static void text(ha_event_t *ev, const char *s)
@@ -209,6 +225,16 @@ static void handle_voice_event(const cJSON *event, ha_event_t *ev)
             cJSON_GetObjectItem(data, "intent_output"), "response"), "speech"), "plain"), "speech");
         ev->kind = HA_EV_VOICE_REPLY;
         text(ev, cJSON_IsString(speech) ? speech->valuestring : "Done.");
+    } else if (!strcmp(t, "tts-end")) {
+        const cJSON *out = cJSON_GetObjectItem(data, "tts_output");
+        const char *url = cJSON_GetStringValue(cJSON_GetObjectItem(out, "url"));
+        const char *mime = cJSON_GetStringValue(cJSON_GetObjectItem(out, "mime_type"));
+        // Only a whole address is any use: a cut-off one would fetch the wrong thing
+        if (url && strlen(url) < sizeof(ev->text) && (url[0] == '/' || !strncmp(url, "http://", 7) || !strncmp(url, "https://", 8))) {
+            ev->kind = HA_EV_VOICE_AUDIO;
+            text(ev, url);
+            snprintf(ev->mime, sizeof(ev->mime), "%s", mime ? mime : "");
+        }
     } else if (!strcmp(t, "error")) {
         ev->kind = HA_EV_VOICE_ERROR;
         text(ev, cJSON_GetStringValue(cJSON_GetObjectItem(data, "message")));

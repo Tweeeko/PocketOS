@@ -8,3 +8,5 @@ dependencies:
     public: true
   espressif/mdns: "^1.4.0"
   espressif/esp_websocket_client: "^1.4.0"
+  # MP3 / WAV / FLAC decoding for spoken replies from Home Assistant (Espressif)
+  espressif/esp_audio_codec: "^2.4.0"

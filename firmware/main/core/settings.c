@@ -47,6 +47,8 @@ void settings_defaults(settings_t *s)
     }
     s->auto_add = false;
     s->alerts = true;
+    s->speak = true;
+    s->volume = 60;
     s->updates = UPD_NOTIFY;
 }
 
@@ -220,6 +222,12 @@ bool settings_patch(settings_t *out, const cJSON *patch, bool trusted, settings_
         } else if (!strcmp(k, "auto_add")) {
             if (!cJSON_IsBool(v)) FAIL(k, "Must be true or false");
             s.auto_add = cJSON_IsTrue(v);
+        } else if (!strcmp(k, "speak")) {
+            if (!cJSON_IsBool(v)) FAIL(k, "Must be true or false");
+            s.speak = cJSON_IsTrue(v);
+        } else if (!strcmp(k, "volume")) {
+            if (!is_int(v) || v->valueint < 10 || v->valueint > 100) FAIL(k, "Volume must be 10 to 100");
+            s.volume = v->valueint;
         } else if (!strcmp(k, "alerts")) {
             if (!cJSON_IsBool(v)) FAIL(k, "Must be true or false");
             s.alerts = cJSON_IsTrue(v);
@@ -303,6 +311,8 @@ cJSON *settings_to_json(const settings_t *s, bool include_secret)
     cJSON_AddStringToObject(o, "tz", s->tz);
     cJSON_AddBoolToObject(o, "auto_add", s->auto_add);
     cJSON_AddBoolToObject(o, "alerts", s->alerts);
+    cJSON_AddBoolToObject(o, "speak", s->speak);
+    cJSON_AddNumberToObject(o, "volume", s->volume);
     cJSON_AddStringToObject(o, "updates", settings_updates_name(s->updates));
     cJSON *t = cJSON_AddArrayToObject(o, "tiles");
     for (int i = 0; i < s->ntiles; i++) {

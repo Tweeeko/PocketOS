@@ -158,6 +158,11 @@ with sync_playwright() as pw:
 
         # ---------- 6. smart home tab ----------
         pg.locator("nav button", has_text="Smart home").click()
+        pg.get_by_label("Say replies out loud").uncheck(force=True); toast(pg, "Replies will only be shown")
+        check(pg.locator('input[data-k="volume"]').count() == 0, "volume hidden when replies aren't spoken")
+        pg.get_by_label("Say replies out loud").check(force=True); toast(pg, "Replies will be spoken")
+        pg.locator('input[data-k="volume"]').fill("35"); toast(pg, "Saved on PocketOS")
+        check("Volume 35%" in pg.locator("#vl").inner_text(), "volume confirmed")
         expect(pg.get_by_text("Connected. PocketOS can see")).to_be_visible()
         check(pg.locator("#tok").input_value() == "" and "A token is saved" in pg.locator("#tok").get_attribute("placeholder"), "saved token is never shown")
         shot(pg, "13-smarthome")

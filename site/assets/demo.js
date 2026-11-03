@@ -70,7 +70,7 @@
   ];
   const defaults = () => ({
     schema: 4, name: 'PocketOS', brightness: 80, clock_24h: true, date_format: 'dmy', sleep_s: 30, eye: 'blue', anim: 'lively',
-    tz: 'GMT0BST,M3.5.0/1,M10.5.0', auto_add: false, alerts: true, updates: 'notify',
+    tz: 'GMT0BST,M3.5.0/1,M10.5.0', auto_add: false, alerts: true, speak: true, volume: 60, updates: 'notify',
     tiles: TILE_KEYS.map(([key, label], i) => ({ key, label, show: i < 7 })),
     favourites: ['light.floor_lamp', 'climate.thermostat', 'lock.front'], hidden: [], known: [], names: [], ha_url: 'http://homeassistant.local:8123', ha_token: 'demo'
   });
@@ -458,6 +458,7 @@
     setTimeout(() => {
       if (overlay !== 'voice') return;
       $('.vt', o).textContent = 'Done'; $('.said', o).textContent = `“${v.said}”`; $('.reply', o).textContent = v.reply; v.run();
+      if (S.cfg.speak) try { const u = new SpeechSynthesisUtterance(v.reply); u.lang = 'en-GB'; u.volume = S.cfg.volume / 100; speechSynthesis.cancel(); speechSynthesis.speak(u); } catch (e) {}   // like the speaker on PocketOS
       setTimeout(() => { if (overlay === 'voice') hideOverlay(); }, 2600);
     }, 900);
   }
@@ -714,12 +715,13 @@
       const bad = m => [null, m, k];
       if (k === 'name') { if (typeof v !== 'string' || bytes(v) < 1 || bytes(v) > 24) return bad('Name must be 1 to 24 characters'); }
       else if (k === 'brightness') { if (!Number.isInteger(v) || v < 10 || v > 100) return bad('Brightness must be 10 to 100'); }
-      else if (['clock_24h', 'auto_add', 'alerts'].includes(k)) { if (typeof v !== 'boolean') return bad('Must be true or false'); }
+      else if (k === 'volume') { if (!Number.isInteger(v) || v < 10 || v > 100) return bad('Volume must be 10 to 100'); }
+      else if (['clock_24h', 'auto_add', 'alerts', 'speak'].includes(k)) { if (typeof v !== 'boolean') return bad('Must be true or false'); }
       else if (k === 'date_format') { if (!['dmy', 'mdy'].includes(v)) return bad('Must be dmy or mdy'); }
       else if (k === 'sleep_s') { if (![15, 30, 60, 0].includes(v)) return bad('Sleep time must be 15, 30, 60 or 0'); }
       else if (k === 'eye') { if (!EYES[v]) return bad('Eye colour must be blue, violet or white'); }
       else if (k === 'anim') { if (!['calm', 'lively', 'off'].includes(v)) return bad('Animation must be calm, lively or off'); }
-      else if (k === 'tz') { if (typeof v !== 'string' || v.length < 3 || v.length > 47) return bad('Time zone looks wrong'); }
+      else if (k === 'tz') { if (typeof v !== 'string' || v.length < 3 || v.length > 47 || !/^[A-Za-z0-9<>+\-:,./]+$/.test(v)) return bad('Time zone looks wrong'); }
       else if (k === 'updates') { if (!['off', 'notify', 'auto'].includes(v)) return bad('Updates must be off, notify or auto'); }
       else if (k === 'tiles') {
         const keysOk = TILE_KEYS.map(t => t[0]), seen = new Set();

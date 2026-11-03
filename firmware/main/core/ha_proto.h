@@ -23,6 +23,7 @@ typedef enum {
     HA_EV_VOICE_HEARD,     // .text = what HA heard
     HA_EV_VOICE_REPLY,     // .text = what HA says back
     HA_EV_VOICE_ERROR,     // .text = reason
+    HA_EV_VOICE_AUDIO,     // spoken reply ready: .text = its address on Home Assistant, .mime = audio type
     HA_EV_VOICE_END,
     HA_EV_ERROR,           // other command failure (.text)
     HA_EV_REGISTRY_CHANGED,// rooms or devices changed in Home Assistant: fetch the registries again
@@ -33,6 +34,7 @@ typedef struct {
     int entity;
     int handler_id;
     char text[160];
+    char mime[24];
 } ha_event_t;
 
 typedef struct {
@@ -58,7 +60,9 @@ char *ha_msg_sync(ha_ctx_t *c, int step);        // 0 states, 1 areas, 2 entity 
 // Build a service call for an action on entity i. Returns NULL if the entity can't do it.
 // *new_level is set for level-type actions so the UI can show it as pending.
 char *ha_msg_action(ha_ctx_t *c, const model_t *m, int i, act_t act, float value, bool *has_level, float *new_level);
-char *ha_msg_voice_start(ha_ctx_t *c, int sample_rate);
+// The full address of a spoken reply: Home Assistant gives a path ("/api/tts_proxy/...") on its own address
+bool ha_audio_url(const char *ha_url, const char *path, char *out, size_t len);
+char *ha_msg_voice_start(ha_ctx_t *c, int sample_rate, bool speak);   // speak: also ask for the reply as audio
 
 // Incoming text frame. May produce one event (most messages) per call.
 void ha_handle(ha_ctx_t *c, model_t *m, const char *json, size_t len, ha_event_t *ev);

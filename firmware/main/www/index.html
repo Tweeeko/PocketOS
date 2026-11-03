@@ -383,7 +383,9 @@ function haV(){
   '<div class="card"><h2>Need help connecting?</h2><p>New to Home Assistant? We’ll walk you through it step by step.</p><div class="btns"><button class="btn g" data-a="wz" data-v="connect">Guide me</button><button class="btn g" data-a="wz" data-v="none">I don’t have Home Assistant</button></div></div>'+
   '<div class="card"><div class="row"><div class="t"><b style="white-space:normal">Add new devices automatically</b><small style="white-space:normal">When you add something in Home Assistant, PocketOS shows it straight away. Turn off to review each one first.</small></div>'+sw('data-k="auto_add"',c.auto_add,'Add new devices automatically')+'</div></div>'+
   '<div class="card"><h2>Add more smart devices</h2><p>New lights, plugs and speakers are added inside Home Assistant, on your home Wi-Fi. PocketOS picks them up by itself.</p><div class="btns"><a class="btn g" href="'+esc(safeHref(haUrl()))+'/config/integrations" target="_blank" rel="noopener noreferrer">Open Home Assistant ↗</a><button class="btn" data-a="find">Check for new devices</button></div></div>'+
-  '<div class="card"><h2>Voice</h2><p>Hold the <b>Boot button</b>, say what you’d like, then let go. PocketOS uses the voice assistant in your Home Assistant (Settings → Voice assistants), so what you say goes only to your own home.</p></div>';
+  '<div class="card"><h2>Voice</h2><p>Hold the <b>Boot button</b>, say what you’d like, then let go. PocketOS uses the voice assistant in your Home Assistant (Settings → Voice assistants), so what you say goes only to your own home.</p>'+
+   '<div class="row"><div class="t"><b>Say replies out loud</b><small>Uses your voice assistant’s text-to-speech. The reply is always shown on screen too.</small></div>'+sw('data-k="speak"',c.speak!==false,'Say replies out loud')+'</div>'+
+   (c.speak!==false?'<p id="vl" style="margin-top:10px">Volume '+(c.volume||60)+'%</p><input type="range" min="10" max="100" step="5" value="'+(c.volume||60)+'" data-k="volume" aria-label="Speaker volume">':'')+'</div>';
 }
 function moreV(){
   return '<div class="card"><h2>This PocketOS</h2><div class="grid">'+st('Name',cfg.name)+st('Device ID',info.id)+st('Firmware','v'+info.firmware)+st('Address',info.host||'—')+st('IP address',info.wifi.ip||'—')+st('Wi-Fi',info.wifi.ssid||'—')+'</div><p style="margin-top:12px">Each PocketOS has its own address and keeps its own settings. If you have two, add each one to your Home Screen.</p></div>'+
@@ -513,12 +515,15 @@ document.addEventListener('change',e=>{
   if(k==='show'){setFlag(t.dataset.id,{hidden:!t.checked});return}
   if(k==='brightness'){save({brightness:+t.value});return}
   if(k==='tz'){save({tz:t.value},'Time zone saved ✓');return}
+  if(k==='volume'){save({volume:+t.value});return}
+  if(k==='speak'){const on=t.checked;save({speak:on},on?'Replies will be spoken ✓':'Replies will only be shown ✓');return}
   if(k==='auto_add'||k==='alerts'){const on=t.checked;save({[k]:on},k==='auto_add'?(on?'New devices will appear automatically ✓':'You’ll review new devices first ✓'):undefined);return}
   if(k==='ts'){const i=+t.dataset.i,on=t.checked;save({tiles:tilesWith(x=>{x[i].show=on})},on?'On the main menu ✓':'Moved under More ✓');return}
   if(k==='tn'){const i=+t.dataset.i,n=t.value.trim();if(!n||bytes(n)>12){note('Tile names are 1 to 12 characters','bad');t.value=cfg.tiles[i].label;return}if(n!==cfg.tiles[i].label)save({tiles:tilesWith(x=>{x[i].label=n})},'Tile renamed ✓')}
 });
 document.addEventListener('input',e=>{const t=e.target;
   if(t.id==='q')filter(t.value);
+  if(t.dataset.k==='volume'){const l=$('#vl');if(l)l.textContent='Volume '+t.value+'%'}
   if(t.dataset.k==='brightness'){const l=$('#bl');if(l)l.textContent='Brightness '+t.value+'%';const p=$('#pv');if(p)p.style.filter='brightness('+(.4+t.value*.006).toFixed(2)+')'}
   if(t.id==='pin'){t.value=t.value.replace(/\D/g,'').slice(0,6);if(t.value.length===6)pair()}});
 document.addEventListener('keydown',e=>{if(e.key==='Enter'){const t=e.target;if(t.id==='pin')pair();else if(t.id==='wpw')join();else if(t.id==='nm')$('[data-a=name]').click();else if(t.dataset&&t.dataset.k==='tn')t.blur()}if(e.key==='Escape'&&$('#modal').innerHTML)closeModal()});

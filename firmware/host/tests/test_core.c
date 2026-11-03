@@ -260,14 +260,39 @@ static void test_actions(void)
 static void test_voice(void)
 {
     sync_all();
-    char *s = ha_msg_voice_start(&C, 16000);
+    char *s = ha_msg_voice_start(&C, 16000, false);
     CHECK(s && strstr(s, "assist_pipeline/run") && strstr(s, "\"start_stage\":\"stt\"") && strstr(s, "\"sample_rate\":16000"));
+    CHECK(strstr(s, "\"end_stage\":\"intent\""));
+    free(s);
+    s = ha_msg_voice_start(&C, 16000, true);
+    CHECK(s && strstr(s, "\"end_stage\":\"tts\""));
     free(s);
     ha_event_t ev;
     feed(FX_VOICE_START, C.id_voice, &ev);  CHECK(ev.kind == HA_EV_VOICE_READY && ev.handler_id == 1);
     feed(FX_VOICE_STT, C.id_voice, &ev);    CHECK(ev.kind == HA_EV_VOICE_HEARD && !strcmp(ev.text, "Turn on the floor lamp"));
     feed(FX_VOICE_INTENT, C.id_voice, &ev); CHECK(ev.kind == HA_EV_VOICE_REPLY && !strcmp(ev.text, "Turned on the light"));
+    feed(FX_VOICE_TTS, C.id_voice, &ev);
+    CHECK(ev.kind == HA_EV_VOICE_AUDIO && !strcmp(ev.text, "/api/tts_proxy/abc.mp3") && !strcmp(ev.mime, "audio/mpeg"));
     feed(FX_VOICE_END, C.id_voice, &ev);    CHECK(ev.kind == HA_EV_VOICE_END);
+
+    char u[160];
+    CHECK(ha_audio_url("http://homeassistant.local:8123/", "/api/tts_proxy/abc.mp3", u, sizeof u)
+          && !strcmp(u, "http://homeassistant.local:8123/api/tts_proxy/abc.mp3"));
+    CHECK(ha_audio_url("http://h:8123", "https://x.ui.nabu.casa/api/tts_proxy/a.mp3", u, sizeof u) && !strcmp(u, "https://x.ui.nabu.casa/api/tts_proxy/a.mp3"));
+    CHECK(!ha_audio_url("http://h:8123", "api/tts_proxy/a.mp3", u, sizeof u));       // not a path
+    CHECK(!ha_audio_url("http://h:8123", "/api/tts_proxy/a.mp3", u, 20));            // wouldn't fit: refuse rather than cut
+    CHECK(!ha_audio_url("ftp://h", "/a.mp3", u, sizeof u));
+
+    // speak and volume settings
+    settings_t *st = calloc(1, sizeof(settings_t)); settings_defaults(st);
+    CHECK(st->speak && st->volume == 60);
+    settings_err_t err;
+    cJSON *p = J("{\"speak\":false,\"volume\":35}");
+    CHECK(settings_patch(st, p, false, &err) && !st->speak && st->volume == 35);
+    cJSON_Delete(p);
+    p = J("{\"volume\":150}");
+    CHECK(!settings_patch(st, p, false, &err) && st->volume == 35);
+    cJSON_Delete(p); free(st);
 }
 
 static void test_auth_fail(void)

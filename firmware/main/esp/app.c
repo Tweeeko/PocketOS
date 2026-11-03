@@ -112,6 +112,16 @@ void app_settings_copy(settings_t *out)
     xSemaphoreGive(s_lock);
 }
 
+bool app_speak_settings(int *volume, char *ha_url, size_t len)
+{
+    xSemaphoreTake(s_lock, portMAX_DELAY);
+    bool on = s_settings.speak;
+    if (volume) *volume = s_settings.volume;
+    if (ha_url && len) snprintf(ha_url, len, "%s", s_settings.ha_url);
+    xSemaphoreGive(s_lock);
+    return on;
+}
+
 bool app_set_flag(const char *list, const char *entity_id, bool on)
 {
     xSemaphoreTake(s_lock, portMAX_DELAY);

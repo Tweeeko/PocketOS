@@ -16,6 +16,7 @@ void app_init(void);   // loads settings; call before anything else
 // endpoint and flash loading use it). On success the change is saved and applied everywhere.
 bool app_update_settings(const cJSON *patch, bool trusted, settings_err_t *err);
 void app_settings_copy(settings_t *out);
+bool app_speak_settings(int *volume, char *ha_url, size_t len);   // spoken replies on? (+ volume, Home Assistant address)
 bool app_set_flag(const char *list, const char *entity_id, bool on);   // fav/hidden/known
 bool app_fav_move(const char *entity_id, int dir);
 bool app_set_name(const char *entity_id, const char *name, const char **why);   // "" = use Home Assistant's name

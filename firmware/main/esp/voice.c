@@ -9,6 +9,7 @@
 #include "bsp/esp-bsp.h"
 #include "app.h"
 #include "ha_client.h"
+#include "speaker.h"
 #include "ui.h"
 
 static const char *TAG = "voice";
@@ -89,6 +90,7 @@ static void capture_task(void *arg)
 void voice_start(void)
 {
     if (s_recording || s_task) return;
+    speaker_stop();                       // talking again cuts off a reply that is still playing
     if (!ha_client_connected()) {
         ui_state(VOICE_LISTENING, NULL);
         ui_state(VOICE_ERROR, "Connect Home Assistant first");
@@ -117,6 +119,13 @@ void voice_on_event(const ha_event_t *ev)
     // These arrive on the Home Assistant connection's task: post to the screen, don't lock it
     case HA_EV_VOICE_HEARD: app_ui_post(UI_POST_VOICE, VOICE_HEARD, ev->text); break;
     case HA_EV_VOICE_REPLY: app_ui_post(UI_POST_VOICE, VOICE_REPLY, ev->text); break;
+    case HA_EV_VOICE_AUDIO: {
+        int vol;
+        char base[96], url[160];
+        if (app_speak_settings(&vol, base, sizeof base) && ha_audio_url(base, ev->text, url, sizeof url))
+            speaker_play(url, ev->mime, vol);
+        break;
+    }
     case HA_EV_VOICE_ERROR: s_recording = false; app_ui_post(UI_POST_VOICE, VOICE_ERROR, ev->text[0] ? ev->text : "Voice didn't work"); break;
     case HA_EV_VOICE_END: s_handler = -1; break;
     default: break;
