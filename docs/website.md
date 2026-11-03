@@ -40,3 +40,20 @@ addresses in its logs. The installer button loads ESP Web Tools from unpkg.com.
 sh site/build.sh && python3 -m http.server -d _site 8000
 ```
 The installer only works over `https://` or `localhost`, in Chrome or Edge.
+
+## Contact form
+
+`site/contact.html` posts to `api/contact.js`, a Vercel function that emails each message through
+iCloud Mail. No address is written anywhere in the website or the code: it comes from three
+environment variables, set in Vercel under **Project → Settings → Environment Variables**
+(Production):
+
+| Name | Value |
+|---|---|
+| `CONTACT_SMTP_USER` | the iCloud Mail address messages are sent from |
+| `CONTACT_SMTP_PASS` | an app-specific password for that Apple Account (appleid.apple.com → Sign-In and Security → App-Specific Passwords) |
+| `CONTACT_TO` | where messages arrive (can be the same address) |
+
+Redeploy after setting them. Until they're set, the form says messages can't be sent right now.
+Visitors' replies go straight to them (the email's Reply-To is the visitor). Nothing is stored.
+Tests: `python3 firmware/host/test_contact.py`.

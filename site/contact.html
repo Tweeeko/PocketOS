@@ -1,0 +1,90 @@
+<!doctype html>
+<!-- PocketOS, created by Leeko. Copyright (c) 2026 Leeko. -->
+<html lang="en-GB"><head><meta charset="utf-8">
+<meta name="author" content="Leeko">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Contact PocketOS</title>
+<meta name="description" content="Contact the PocketOS team about buying, setting up, orders or returns.">
+<meta name="theme-color" content="#070b1c">
+<meta property="og:title" content="Contact PocketOS"><meta property="og:description" content="Contact the PocketOS team about buying, setting up, orders or returns."><meta property="og:image" content="media/poster.jpg">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><meta name="apple-mobile-web-app-title" content="PocketOS">
+<link rel="preload" href="fonts/unbounded.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="assets/site.css">
+</head><body>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar" id="top">
+  <div class="bar">
+    <a class="brand" href="./"><img src="assets/logo.svg" alt="PocketOS" width="190" height="18"></a>
+    <nav class="links" aria-label="Main"><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="demo.html">Try it</a><a href="setup.html">Setup</a><a href="help.html" aria-current="page">Support</a><a href="changes.html">What’s new</a></nav>
+    <a class="btn small cta" href="buy.html">Where to buy</a>
+    <button class="menu" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menu"><i></i><i></i></button>
+  </div>
+  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="demo.html">Try it</a><a href="setup.html">Setup</a><a href="help.html" aria-current="page">Support</a><a href="changes.html">What’s new</a><a href="buy.html">Where to buy</a></nav>
+</header>
+
+<main id="main" class="page">
+  <header class="intro">
+    <h1>Contact us</h1>
+    <p class="lede">Questions about PocketOS, an order or a return? Send us a message and we’ll reply by email.</p>
+  </header>
+  <div class="contact-wrap">
+  <section class="block glass" aria-labelledby="form-h">
+    <h2 id="form-h">Send us a message</h2>
+    <form id="contact" novalidate>
+      <div class="fields two-up">
+        <label>Your name<input name="name" autocomplete="name" maxlength="80" required></label>
+        <label>Email address<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+      </div>
+      <div class="fields two-up">
+        <label>What’s it about?<select name="topic" required>
+          <option value="">Choose one</option>
+          <option>Buying PocketOS</option>
+          <option>An order or delivery</option>
+          <option>Setup or using PocketOS</option>
+          <option>Returns or a fault</option>
+          <option>Something else</option>
+        </select></label>
+        <label>Order number <span class="opt">(if you have one)</span><input name="order" maxlength="40" autocomplete="off"></label>
+      </div>
+      <label>Message<textarea name="message" rows="7" maxlength="4000" required></textarea></label>
+      <label class="hp" aria-hidden="true">Leave this empty<input name="website" tabindex="-1" autocomplete="off"></label>
+      <p class="form-msg" role="status" aria-live="polite"></p>
+      <button class="btn" type="submit">Send message</button>
+      <p class="fine">We use your details only to reply to you. See <a href="privacy.html">Privacy</a>.</p>
+    </form>
+    <div class="sent" hidden>
+      <h3>Thanks, your message has been sent.</h3>
+      <p>We’ll reply by email as soon as we can.</p>
+      <button class="btn ghost" type="button" id="again">Send another message</button>
+    </div>
+  </section>
+  <aside class="block glass">
+    <h2>Quick answers</h2>
+    <ul class="plain">
+      <li><a href="faq.html">Questions</a> about buying and using PocketOS</li>
+      <li><a href="setup.html">Getting started</a>, step by step</li>
+      <li><a href="help.html#troubleshooting">Troubleshooting</a></li>
+      <li><a href="returns.html">Returns and warranty</a></li>
+      <li>Found a security problem? Please use <a href="security.html#report">Security</a>, so it can be handled privately.</li>
+    </ul>
+    <p class="note">Post: Leeeko LTD, 32 Ferndale Avenue, Newcastle, NE28 7NE, United Kingdom.</p>
+  </aside>
+  </div>
+<script src="assets/contact.js" defer></script>
+</main>
+
+<footer class="end">
+  <div class="foot">
+    <div><img src="assets/logo.svg" alt="PocketOS" width="150" height="14"><p>The pocket-sized smart-home companion.<br>Designed by Leeko.</p></div>
+    <nav aria-label="Product"><h4>Product</h4><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="demo.html">Try PocketOS</a><a href="buy.html">Where to buy</a><a href="changes.html">What’s new</a></nav>
+    <nav aria-label="Support"><h4>Support</h4><a href="setup.html">Getting started</a><a href="help.html">Support</a><a href="faq.html">Questions</a><a href="recovery.html">Software recovery</a><a href="contact.html">Contact us</a></nav>
+    <nav aria-label="Legal"><h4>Legal</h4><a href="terms.html">Terms of sale</a><a href="returns.html">Returns and warranty</a><a href="privacy.html">Privacy</a><a href="security.html">Security</a><a href="compliance.html">Statement of compliance</a></nav>
+    <nav aria-label="Developers"><h4>Developers</h4><a href="https://github.com/Tweeeko/PocketOS">Open source</a><a href="https://github.com/Tweeeko/PocketOS/releases">Software releases</a></nav>
+  </div>
+  <p class="legal">© 2026 Leeeko LTD. PocketOS is sold by Leeeko LTD, 32 Ferndale Avenue, Newcastle, NE28 7NE, United Kingdom. Home Assistant is a trademark of its respective owner. PocketOS is not affiliated with or endorsed by Home Assistant.</p>
+</footer>
+<script src="assets/site.js"></script>
+</body></html>
