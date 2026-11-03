@@ -34,6 +34,12 @@ def mock(port, path, body=None):
 def shot(page, name):
     if SHOTS: page.screenshot(path=str(SHOTS / f"{name}.png"), full_page=True)
 
+def section(page, name):
+    """Open a section the way a person would: back to the home menu if needed, then its tile."""
+    if page.locator("header .back").count(): page.locator("header .back").click()
+    page.locator("nav.menu button", has_text=name).click()
+    expect(page.locator("header .t b")).to_have_text(name)
+
 def toast(page, text, timeout=8000):
     expect(page.locator("#toast")).to_contain_text(text, timeout=timeout)
 
@@ -100,7 +106,7 @@ with sync_playwright() as pw:
         check(pg.locator("#pin").count() == 0, "still paired after reload")
 
         # ---------- 3. devices ----------
-        pg.locator("nav button", has_text="Devices").click()
+        section(pg, "Devices")
         expect(pg.locator("h3", has_text="Living room")).to_be_visible(); shot(pg, "09-devices")
         dev = lambda name: pg.locator(".grp .row", has_text=name)
         dev("Ceiling light").locator("[data-a=fav]").click(); toast(pg, "Saved on PocketOS")
@@ -129,12 +135,14 @@ with sync_playwright() as pw:
         mock(P, "/mock/new", {})
         pg.get_by_role("button", name="Refresh list").click()
         expect(pg.get_by_text("New in Home Assistant")).to_be_visible(); shot(pg, "10-devices-new")
-        expect(pg.locator("nav button", has_text="Devices")).to_contain_text("•")
+        pg.locator("header .back").click()
+        expect(pg.locator("nav.menu button", has_text="Devices")).to_contain_text("new to review")
+        section(pg, "Devices")
         pg.locator(".row", has_text="Hue Go lamp").get_by_role("button", name="Add", exact=True).click(); toast(pg, "Added to PocketOS")
         expect(pg.get_by_text("New in Home Assistant")).to_have_count(0)
 
         # ---------- 4. look ----------
-        pg.locator("nav button", has_text="Look").click()
+        section(pg, "Look")
         pg.get_by_role("button", name="Violet").click(); toast(pg, "Saved on PocketOS")
         expect(pg.get_by_role("button", name="Violet")).to_have_class("on")
         pg.get_by_role("button", name="12-hour").click(); toast(pg, "Saved on PocketOS")
@@ -157,7 +165,7 @@ with sync_playwright() as pw:
         mock(P, "/mock/down", {"down": False})
 
         # ---------- 6. smart home tab ----------
-        pg.locator("nav button", has_text="Smart home").click()
+        section(pg, "Smart home")
         pg.get_by_label("Say replies out loud").uncheck(force=True); toast(pg, "Replies will only be shown")
         check(pg.locator('input[data-k="volume"]').count() == 0, "volume hidden when replies aren't spoken")
         pg.get_by_label("Say replies out loud").check(force=True); toast(pg, "Replies will be spoken")
@@ -171,7 +179,7 @@ with sync_playwright() as pw:
         check(pg.get_by_role("button", name="Disconnect").count() == 1, "cancel leaves it connected")
 
         # ---------- 7. backup and restore ----------
-        pg.locator("nav button", has_text="More").click(); shot(pg, "15-more")
+        section(pg, "More"); shot(pg, "15-more")
         with pg.expect_download() as dl: pg.get_by_role("button", name="Download backup").click()
         data = json.loads(Path(dl.value.path()).read_text())
         check("ha_token" not in data and data.get("ha_token_set") is True, "backup has no token")
@@ -199,14 +207,14 @@ with sync_playwright() as pw:
 
 
         # ---------- 8b. battery ----------
-        pg.locator("nav button[data-v=home]").click()
+        pg.locator("header .back").click()
         expect(pg.get_by_text("left, going by how you’ve used it lately")).to_be_visible(timeout=8000)
         check(pg.locator('svg[aria-label="Battery level over the last 48 hours"] path').count() == 1, "battery chart drawn")
         check("Last fully charged" in pg.locator(".card:has(svg)").first.inner_text(), "last full charge shown")
         shot(pg, "17b-battery")
 
         # ---------- 8c. online updates ----------
-        pg.locator("nav button", has_text="More").click()
+        section(pg, "More")
         pg.get_by_role("button", name="Check now").click()
         toast(pg, "PocketOS is up to date")
         expect(pg.get_by_text("You’re on the latest version")).to_be_visible()
@@ -216,7 +224,7 @@ with sync_playwright() as pw:
         pg.get_by_role("button", name="Check now").click()
         toast(pg, "Version 0.3.0 is ready")
         shot(pg, "17c-update-ready")
-        pg.locator("nav button[data-v=home]").click()
+        pg.locator("header .back").click()
         expect(pg.get_by_text("PocketOS 0.3.0 is ready")).to_be_visible()
         mock(P, "/mock/battery", {"percent": 20})
         pg.get_by_role("button", name="Install", exact=True).click()
@@ -231,7 +239,7 @@ with sync_playwright() as pw:
         shot(pg, "17e-update-done")
 
         # ---------- 9. reset needs BOOT ----------
-        pg.locator("nav button[data-v=more]").click()
+        section(pg, "More")
         pg.get_by_role("button", name="Reset everything").click()
         pg.get_by_role("button", name="Erase it").click()
         expect(pg.get_by_text("Confirm on PocketOS")).to_be_visible(); shot(pg, "18-reset-boot")

@@ -4,6 +4,10 @@ Each release needs a section here headed with its version, exactly as in `firmwa
 The text under it (keep it short and plain) is shown on the settings website when the update
 is offered.
 
+## 0.1.6
+- The settings page now looks and works like PocketOS: the same glass tiles and lists, PocketOS’s own lettering, and a live picture of your PocketOS at the top
+- Open a section from its tile, then tap ‹ or swipe right to go back, just like on PocketOS. Your phone’s back gesture works too
+
 ## 0.1.5
 - Replies to voice requests are now spoken out loud as well as shown. Turn it off, or set the volume, under Smart home → Voice on the settings page
 - Lights that support it can be set warmer or cooler, or to a colour: use the buttons beside the power button on a light’s screen
