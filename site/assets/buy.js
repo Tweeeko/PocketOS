@@ -25,7 +25,7 @@
 
   const a = P.availability;
   document.querySelectorAll('[data-availability]').forEach(el => {
-    el.innerHTML = `<div class="avail-rows"><div><dt>Price</dt><dd>${esc(a.price)}</dd></div><div><dt>Availability</dt><dd>${esc(a.status)}</dd></div></div>`
+    el.innerHTML = `<div class="avail-rows"><div><dt>Price</dt><dd>${esc(a.price)}</dd></div><div><dt>Availability</dt><dd>${esc(a.status)}</dd></div>${a.region ? `<div><dt>Delivers to</dt><dd>${esc(a.region)}</dd></div>` : ''}</div>`
       + (el.hasAttribute('data-note') ? `<p class="avail-note">${esc(a.note)}</p>` : '')
       + (a.links && a.links.length ? `<div class="row">${a.links.map((l, i) => `<a class="btn${i ? ' ghost' : ''}" href="${esc(l.href)}">${esc(l.label)}</a>`).join('')}</div>` : '');
   });

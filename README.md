@@ -1,34 +1,44 @@
 # PocketOS
 
-**Created by Leeko.**
+**Your home, at a glance.** PocketOS is a pocket-sized smart-home companion with a round
+touchscreen. It connects to [Home Assistant](https://www.home-assistant.io) and puts every
+light, thermostat, lock and speaker in your hand, with a friendly companion on the home screen.
 
-A pocket-sized smart-home companion: a round 1.75" AMOLED screen with an animated
-character, controlled by touch and two side buttons, configured from a phone over
-the home Wi-Fi. Local-first: no PocketOS account, cloud, subscription or tracking.
+Designed and written by **Leeko**. Sold by Leeeko LTD in the UK (coming soon, £99.99).
 
-Built for two units, each with its own independent settings.
+- **Website:** [pocketos-orpin.vercel.app](https://pocketos-orpin.vercel.app) — features, [try it in your browser](https://pocketos-orpin.vercel.app/demo.html), setup and support
+- **What's new:** [CHANGELOG.md](CHANGELOG.md) and [Releases](https://github.com/Tweeeko/PocketOS/releases)
+- **Report a security problem:** [SECURITY.md](SECURITY.md)
+
+## What it does
+
+- **Every room, every device.** Lights (brightness, warmth and colour), heating, fans, blinds,
+  locks, plugs, speakers, scenes and scripts, organised by room or by type, straight from Home Assistant.
+- **Confirmed control.** Turn the dial; a change shows as done only when your home confirms it.
+- **Talk to your home.** Hold the Boot button and speak. Your own Home Assistant voice assistant
+  answers, on screen and out loud.
+- **Yours to arrange.** Favourites, hidden devices, your own names and menu order, on the device
+  or from your phone.
+- **Private by design.** No PocketOS account, app, cloud, subscription, advertising or tracking.
+  Everything stays between PocketOS and your Home Assistant.
+- **Looked after.** Signed updates over Wi-Fi, released gradually, with security updates until at
+  least 31 December 2029.
+
+## What you need
+
+Home Assistant on your home network, 2.4 GHz Wi-Fi, and a phone to set it up. PocketOS arrives
+with its software installed.
 
 ## Status
 
-Everything is written. Nothing has run on the real board yet, because it hasn't been bought.
+The software is complete and tested on a PC (unit tests, a full simulator of the screens, and
+browser tests of the settings website); every push is built for the device by GitHub Actions,
+and releases are signed. It hasn't run on the production board yet: the hardware checklist in
+[docs/hardware-test-checklist.md](docs/hardware-test-checklist.md) covers what to check when it arrives.
 
-| Part | Written | Checked so far |
-|---|---|---|
-| Device OS: companion and moods, glass menus, dials, lists, Settings QR, first-run welcome | Yes | Runs in a PC simulator with a fake Home Assistant; screenshots checked |
-| Home Assistant connection: rooms, devices, live updates, every control type | Yes | Message building and parsing unit-tested against real Home Assistant message shapes |
-| Settings website served by the device | Yes | End-to-end browser tests against a mock device |
-| Voice (hold BOOT), power saving, away/arrival detection | Yes | Checked against the ESP-IDF, board and codec headers only |
-| Battery measurement: level, voltage, 48 h history, time-left estimate | Yes | Estimate unit-tested; website chart tested; chip readings checked against XPowersLib |
-| Online updates from GitHub releases, release workflow | Yes | Manifest and version checks unit-tested; website flow tested; download code syntax-checked |
-| ESP32 firmware build | Yes | **Not compiled yet.** GitHub Actions does that; the first run will probably need small fixes |
-| On real hardware | No | Checklist in `docs/testing.md` |
+---
 
-Things to know:
-- Voice needs a voice assistant with speech-to-text set up in Home Assistant.
-- Battery life hasn't been measured on a real unit yet. PocketOS measures it itself once it's running.
-- Online updates need this repository to be public. See `docs/releasing.md`.
-- PocketOS remembers up to 96 favourites, hidden and reviewed devices each, and handles up to
-  128 Home Assistant devices.
+*The rest of this file is for developers.*
 
 ## Website
 
@@ -53,7 +63,7 @@ firmware/          ESP-IDF project for the device (C, LVGL 9)
   main/www/        the settings website the device serves itself
   host/            PC tests, simulator and a mock device for the website
 design/            browser prototypes of the OS and settings website (reference only)
-site/              the public website (GitHub Pages)
+site/              the public website (Vercel)
 docs/              architecture, API, settings schema, hardware, flashing, releasing, testing
 .devcontainer/     GitHub Codespaces setup with ESP-IDF, for building from an iPad
 .github/workflows/ cloud build that produces flashable firmware files

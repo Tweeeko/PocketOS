@@ -1,0 +1,72 @@
+<!doctype html>
+<!-- PocketOS, created by Leeko. Copyright (c) 2026 Leeko. -->
+<html lang="en-GB"><head><meta charset="utf-8">
+<meta name="author" content="Leeko">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PocketOS Questions</title>
+<meta name="description" content="Answers to common questions about the PocketOS Device: what you need, what it controls, voice, battery, privacy, updates and returns.">
+<meta name="theme-color" content="#070b1c">
+<meta property="og:title" content="PocketOS Questions"><meta property="og:description" content="Answers to common questions about the PocketOS Device: what you need, what it controls, voice, battery, privacy, updates and returns."><meta property="og:image" content="media/poster.jpg">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><meta name="apple-mobile-web-app-title" content="PocketOS">
+<link rel="preload" href="fonts/unbounded.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="assets/site.css">
+</head><body>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar" id="top">
+  <div class="bar">
+    <a class="brand" href="./"><img src="assets/logo.svg" alt="PocketOS" width="190" height="18"></a>
+    <nav class="links" aria-label="Main"><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="demo.html">Try it</a><a href="setup.html">Setup</a><a href="help.html" aria-current="page">Support</a><a href="changes.html">What’s new</a></nav>
+    <a class="btn small cta" href="buy.html">Where to buy</a>
+    <button class="menu" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menu"><i></i><i></i></button>
+  </div>
+  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="demo.html">Try it</a><a href="setup.html">Setup</a><a href="help.html" aria-current="page">Support</a><a href="changes.html">What’s new</a><a href="buy.html">Where to buy</a></nav>
+</header>
+
+<main id="main" class="page">
+  <header class="intro">
+    <h1>Questions</h1>
+    <p class="lede">Answers to the questions people ask most about PocketOS.</p>
+  </header>
+  <section class="block glass">
+    <h2>Before you buy</h2>
+      <details><summary>What do I need to use PocketOS?</summary><p>Home Assistant running on your home network, 2.4 GHz Wi-Fi, and a phone to set it up. PocketOS arrives with its software installed, so there’s nothing to download. See <a href="./#requirements">What you’ll need</a>.</p></details>
+      <details><summary>Does it work without Home Assistant?</summary><p>No. PocketOS is a remote for Home Assistant: your devices, rooms and names all come from there. If you don’t use Home Assistant yet, set that up first.</p></details>
+      <details><summary>Does it work with Alexa, Google Home, Hue or SmartThings?</summary><p>Through Home Assistant, yes. Anything you’ve added to Home Assistant, such as Hue lights or a Nest thermostat, appears on PocketOS. PocketOS doesn’t connect to those services directly.</p></details>
+      <details><summary>Is there an app, account or subscription?</summary><p>No. You set PocketOS up from your phone’s web browser, and there’s no PocketOS account, subscription, advertising or tracking.</p></details>
+      <details><summary>How much is it, and where can I buy it?</summary><p>PocketOS will cost £99.99 and will be sold in the United Kingdom only to begin with. It isn’t on sale yet. <a href="buy.html">Where to buy</a> will be updated when it is.</p></details>
+      <details><summary>What’s in the box?</summary><p>The PocketOS Device, a USB-C charging cable and a printed quick start guide. A charger isn’t included. Any USB-C phone charger works.</p></details>
+  </section>
+  <section class="block glass">
+    <h2>Using PocketOS</h2>
+      <details><summary>What can it control?</summary><p>Lights (brightness, and warmth and colour where the light supports them), switches and plugs, heating and air conditioning, fans, blinds and curtains, locks, speakers and TVs, scenes and scripts. It also shows sensors, such as temperature.</p></details>
+      <details><summary>Does it work when I’m away from home?</summary><p>PocketOS joins one Wi-Fi network: your home’s. Away from it, PocketOS shows that you’re out and about, and controls work again when you’re back.</p></details>
+      <details><summary>Does it work with 5 GHz Wi-Fi?</summary><p>No. PocketOS uses 2.4 GHz Wi-Fi. Most home routers offer both, often under the same network name, so this usually needs no change.</p></details>
+      <details><summary>How does voice work?</summary><p>Hold the Boot button, speak, then let go. PocketOS sends what you said to the voice assistant in your own Home Assistant, then shows and says the reply. Voice needs a voice assistant set up in Home Assistant. You can turn spoken replies off on the settings page.</p></details>
+      <details><summary>Is PocketOS always listening?</summary><p>No. It has no wake word. The microphones are only used while you hold the Boot button.</p></details>
+      <details><summary>How long does the battery last?</summary><p>It depends on how you use it: mostly on how long the screen stays on. The screen turns off after 30 seconds by default, and PocketOS shows the battery level and an estimate of the time left, based on your own use.</p></details>
+      <details><summary>Can I have more than one?</summary><p>Yes. Each PocketOS has its own settings, favourites and names, so one in the kitchen and one by the bed can show different things.</p></details>
+  </section>
+  <section class="block glass">
+    <h2>Privacy, updates and support</h2>
+      <details><summary>What does PocketOS send, and where?</summary><p>Your commands and voice go only to your own Home Assistant. Once a day, PocketOS checks GitHub for a software update, and sends nothing about you or your home. See <a href="privacy.html">Privacy</a>.</p></details>
+      <details><summary>How do updates work?</summary><p>PocketOS checks for updates once a day and lets you know when one is ready. You can install it from PocketOS or from the settings page, or turn update checks off. Every update is signed, and PocketOS won’t install one that isn’t. Security updates are provided until at least 31 December 2029.</p></details>
+      <details><summary>Something isn’t working. What should I try?</summary><p>Start with <a href="help.html#troubleshooting">Support</a>. If PocketOS won’t start properly, <a href="recovery.html">Software recovery</a> reinstalls its software from a computer.</p></details>
+      <details><summary>How do I return PocketOS or claim under warranty?</summary><p>See <a href="returns.html">Returns and warranty</a>.</p></details>
+  </section>
+</main>
+
+<footer class="end">
+  <div class="foot">
+    <div><img src="assets/logo.svg" alt="PocketOS" width="150" height="14"><p>The pocket-sized smart-home companion.<br>Designed by Leeko.</p></div>
+    <nav aria-label="Product"><h4>Product</h4><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="demo.html">Try PocketOS</a><a href="buy.html">Where to buy</a><a href="changes.html">What’s new</a></nav>
+    <nav aria-label="Support"><h4>Support</h4><a href="setup.html">Getting started</a><a href="help.html">Support</a><a href="faq.html">Questions</a><a href="recovery.html">Software recovery</a></nav>
+    <nav aria-label="Legal"><h4>Legal</h4><a href="terms.html">Terms of sale</a><a href="returns.html">Returns and warranty</a><a href="privacy.html">Privacy</a><a href="security.html">Security</a><a href="compliance.html">Statement of compliance</a></nav>
+    <nav aria-label="Project"><h4>Project</h4><a href="https://github.com/Tweeeko/PocketOS">Source code</a><a href="https://github.com/Tweeeko/PocketOS/releases">Releases</a></nav>
+  </div>
+  <p class="legal">© 2026 Leeeko LTD. PocketOS is sold by Leeeko LTD, 32 Ferndale Avenue, Newcastle, NE28 7NE, United Kingdom. Home Assistant is a trademark of its respective owner. PocketOS is not affiliated with or endorsed by Home Assistant.</p>
+</footer>
+<script src="assets/site.js"></script>
+</body></html>

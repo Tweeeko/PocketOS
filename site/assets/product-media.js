@@ -34,9 +34,10 @@ window.POCKETOS_PRODUCT = {
   },
 
   availability: {
-    price: 'TBC',
+    price: '£99.99',
     status: 'Coming soon',
-    note: 'PocketOS is in development. Pricing and purchasing details will be announced here when it’s ready.',
+    region: 'UK only',
+    note: 'PocketOS isn’t on sale yet. Ordering details will appear here when it is. To begin with, PocketOS is sold and delivered in the United Kingdom only.',
     links: [] // e.g. { label: 'Buy now', href: 'https://…' }
   }
 };

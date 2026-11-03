@@ -17,6 +17,10 @@ This project depends on, and is informed by, the following third-party work:
   https://github.com/lewisxhe/XPowersLib
   AXP2101 battery voltage and charger-status register use in firmware/main/esp/pmu.c follows it.
 
+- Espressif esp_audio_codec (Espressif Modified MIT License: use with Espressif chips only,
+  which the ESP32-S3 is). Decodes Home Assistant's spoken replies. Used as an ESP-IDF
+  component dependency.
+
 - LVGL (MIT), ESP-IDF (Apache-2.0), espressif/mdns and esp_websocket_client (Apache-2.0),
   cJSON (MIT, bundled with ESP-IDF and in firmware/host/third_party).
 

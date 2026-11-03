@@ -362,7 +362,7 @@ esp-web-install-button:not(:defined) [slot=unsupported],esp-web-install-button:n
 .badge{position:absolute;left:16px;bottom:14px;font:500 12.5px var(--text);color:var(--mist);padding:5px 11px;border-radius:999px;
   background:rgba(7,11,28,.55);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
 .avail{margin:0;border-radius:26px;padding:20px 24px}
-.avail-rows{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.avail-rows{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:20px}
 .avail dt{font:600 13.5px var(--text);color:var(--haze);margin-bottom:4px}
 .avail dd{margin:0;font:500 clamp(22px,2.4vw,28px) var(--display);letter-spacing:-.03em}
 .avail-note{color:var(--mist);font-size:16px;margin:16px 0 0;max-width:44ch}
@@ -418,7 +418,8 @@ esp-web-install-button:not(:defined) [slot=unsupported],esp-web-install-button:n
 
 /* footer */
 footer.end{max-width:1240px;margin:40px auto 0;padding:46px 28px 50px;border-top:1px solid rgba(255,255,255,.08);color:var(--haze);font-size:15px}
-.foot{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:30px}
+.foot{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1fr;gap:30px}
+.note.draft{border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:12px 16px;margin:0 0 18px}
 .foot img{height:15px;width:auto;margin-bottom:12px}
 .foot p{margin:0}
 .foot nav{display:flex;flex-direction:column;gap:9px}
@@ -463,3 +464,7 @@ footer.end{max-width:1240px;margin:40px auto 0;padding:46px 28px 50px;border-top
   *,*::before,*::after{animation:none!important;transition:none!important}
   html{scroll-behavior:auto}
 }
+.kv{display:grid;gap:0;margin:16px 0 0}
+.kv div{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:16px;padding:12px 0;border-top:1px solid rgba(255,255,255,.08)}
+.kv dt{color:var(--mist);margin:0}.kv dd{margin:0}
+@media (max-width:640px){.kv div{grid-template-columns:1fr;gap:4px}}
