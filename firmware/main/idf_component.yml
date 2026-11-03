@@ -1,0 +1,10 @@
+dependencies:
+  idf: ">=5.5,<6.0"
+  # Official Waveshare board support: display, touch, brightness, I2C, audio codecs (Apache-2.0)
+  waveshare/esp32_s3_touch_amoled_1_75c:
+    version: "^3.0.0"
+  lvgl/lvgl:
+    version: "9.5.0"
+    public: true
+  espressif/mdns: "^1.4.0"
+  espressif/esp_websocket_client: "^1.4.0"

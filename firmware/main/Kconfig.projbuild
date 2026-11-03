@@ -1,0 +1,11 @@
+menu "PocketOS"
+
+    config POCKETOS_UPDATE_URL
+        string "Update manifest address"
+        default "https://github.com/Tweeeko/PocketOS/releases/latest/download/manifest.json"
+        help
+            Where PocketOS looks for new firmware. The release workflow publishes manifest.json
+            (version, download address, size, SHA-256) with every release. Must be https://.
+            Leave empty to turn online update checks off in this build.
+
+endmenu

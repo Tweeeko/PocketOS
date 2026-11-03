@@ -1,0 +1,10 @@
+firmware/build/
+firmware/managed_components/
+firmware/dependencies.lock
+firmware/sdkconfig
+firmware/sdkconfig.old
+.DS_Store
+firmware/host/build/
+firmware/host/shots/
+__pycache__/
+firmware/sdkconfig.release
