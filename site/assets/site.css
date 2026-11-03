@@ -64,7 +64,7 @@ a:hover{color:#fff}
 .bar{max-width:1240px;margin:0 auto;padding:0 28px;height:66px;display:flex;align-items:center;gap:28px}
 .brand{display:flex;align-items:center;gap:11px;color:var(--ink);text-decoration:none;font:600 19px var(--display);letter-spacing:-.03em}
 .brand:hover{color:#fff}
-.brand img{width:30px;height:30px;border-radius:9px;box-shadow:0 0 0 1px rgba(255,255,255,.18),0 0 18px rgba(106,167,255,.35)}
+.brand img{height:19px;width:auto;filter:drop-shadow(0 0 14px rgba(106,167,255,.35))}
 .links{display:flex;gap:2px;margin:0 auto}
 .links a,.drawer a{color:var(--mist);text-decoration:none;font:500 15px var(--text);padding:9px 14px;border-radius:999px;white-space:nowrap}
 .links a:hover{color:var(--ink);background:rgba(255,255,255,.07)}
@@ -99,17 +99,23 @@ p{margin:0 0 1em}
 .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 
 /* ---------- the device ---------- */
-.pocket{--s:min(78vw,520px);position:relative;width:var(--s);height:var(--s);flex:none;border-radius:50%;
+.pocket{--s:min(78vw,520px);position:relative;width:var(--s);height:var(--s);flex:none;border-radius:50%;isolation:isolate;
+  cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+/* the aluminium case: brushed rim lit from the top left, with its own contact shadow */
+.case{position:absolute;inset:0;border-radius:50%;z-index:1;
   background:conic-gradient(from 210deg,#8e94a8,#f4f6fb 12%,#7d8396 25%,#e3e7f1 38%,#6c7285 52%,#f7f8fc 64%,#8a90a3 78%,#dfe3ee 90%,#8e94a8);
-  box-shadow:0 50px 120px -30px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.35),0 0 140px -20px rgba(106,167,255,.45);cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-.pocket::before{content:"";position:absolute;inset:2.2%;border-radius:50%;background:linear-gradient(160deg,#20232d,#08090d);box-shadow:inset 0 2px 3px rgba(255,255,255,.35)}
-/* side buttons (PWR and BOOT), set into the rim at an angle like the real case */
-.key{position:absolute;width:3.4%;height:13%;border-radius:999px;pointer-events:none;
-  left:calc(50% + 50.8% * cos(var(--a)));top:calc(50% + 50.8% * sin(var(--a)));transform:translate(-50%,-50%) rotate(var(--a));
-  background:linear-gradient(90deg,#8a90a3 0%,#eef1f7 38%,#ffffff 52%,#b9bfcd 100%);
-  box-shadow:inset 0 0 0 .5px rgba(0,0,0,.35),inset -1px 0 1px rgba(0,0,0,.25),1px 0 3px rgba(0,0,0,.45)}
+  box-shadow:0 0 0 1px rgba(255,255,255,.3),0 0 2px 1px rgba(0,0,0,.55),0 50px 120px -30px rgba(0,0,0,.9),0 0 140px -20px rgba(106,167,255,.45)}
+.case::before{content:"";position:absolute;inset:2.2%;border-radius:50%;background:linear-gradient(160deg,#20232d,#08090d);box-shadow:inset 0 2px 3px rgba(255,255,255,.35)}
+/* PWR and BOOT sit in the side of the case, so from the front only the part that stands proud of
+   the rim shows: they're drawn behind the case and shaded as rounded aluminium caps */
+.key{position:absolute;z-index:0;width:5.2%;height:12.5%;border-radius:999px;pointer-events:none;
+  left:calc(50% + 49.6% * cos(var(--a)));top:calc(50% + 49.6% * sin(var(--a)));transform:translate(-50%,-50%) rotate(var(--a));
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.35),rgba(255,255,255,0) 35%,rgba(0,0,0,0) 60%,rgba(0,0,0,.35)),
+    linear-gradient(90deg,#4d5262 0%,#4d5262 50%,#8d93a4 56%,#e6e9f1 70%,#c5cad6 82%,#7d8394 96%,#5d6272 100%);
+  box-shadow:inset 0 0 0 .5px rgba(0,0,0,.45),2px 3px 5px rgba(0,0,0,.55)}
 .key.k1{--a:-34deg}.key.k2{--a:30deg}
-.screen{position:absolute;inset:6.5%;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 50% 38%,#14193a,#04050b 72%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),inset 0 0 40px rgba(0,0,0,.8);container-type:size;font-family:var(--text)}
+.screen{position:absolute;z-index:2;inset:6.5%;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 50% 38%,#14193a,#04050b 72%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),inset 0 0 40px rgba(0,0,0,.8);container-type:size;font-family:var(--text)}
 .screen::after{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;background:linear-gradient(150deg,rgba(255,255,255,.14),transparent 30%)}
 .scr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transform:scale(.94);transition:opacity .5s ease,transform .6s cubic-bezier(.2,.8,.2,1);pointer-events:none}
 .pocket[data-screen=companion] .s-companion,.pocket[data-screen=menu] .s-menu,.pocket[data-screen=heat] .s-heat,.pocket[data-screen=music] .s-music{opacity:1;transform:none}

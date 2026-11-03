@@ -120,7 +120,7 @@
   let n = 0;
   function build(el) {
     const k = n++;
-    el.innerHTML = `<span class="key k1"></span><span class="key k2"></span><div class="screen">
+    el.innerHTML = `<span class="key k1"></span><span class="key k2"></span><div class="case"></div><div class="screen">
       <div class="scr s-companion"><div class="status">${icon.wifi}<span>78%</span></div><div class="clock">08:24</div>
         <div class="orbx"><div class="orb"><svg class="face" viewBox="10 15 80 80" aria-hidden="true"></svg></div></div>
         <div class="cap"><i class="cap-dot"></i><span class="cap-text">Good morning</span></div></div>
