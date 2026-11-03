@@ -7,7 +7,7 @@
 
 #define SETTINGS_SCHEMA 4
 #define MAX_TILES  12
-#define MAX_IDS    96     // favourites / hidden / known entity lists
+#define MAX_IDS    256    // favourites / hidden / known entity lists (must cover MAX_ENT)
 #define ID_LEN     64
 #define MAX_NAMES  48     // devices the user has renamed
 #define NAME_LEN   33     // up to 32 bytes of UTF-8

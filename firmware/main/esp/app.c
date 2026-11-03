@@ -6,6 +6,7 @@
 #include <time.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
+#include "freertos/queue.h"
 #include "esp_log.h"
 #include "esp_timer.h"
 #include "esp_attr.h"
@@ -23,6 +24,7 @@ EXT_RAM_BSS_ATTR static model_t s_model;
 EXT_RAM_BSS_ATTR static settings_t s_settings;
 static SemaphoreHandle_t m_lock, s_lock, st_lock;
 static app_status_t s_status;
+static QueueHandle_t s_ui_q;
 
 /* ---------- ui_app.h ---------- */
 
@@ -82,7 +84,7 @@ bool app_update_settings(const cJSON *patch, bool trusted, settings_err_t *err)
 
 static bool update_settings(const cJSON *patch, bool trusted, settings_err_t *err, bool on_ui_task)
 {
-    static settings_t before;   // ~20 KB: keep off task stacks
+    EXT_RAM_BSS_ATTR static settings_t before;   // ~55 KB: in PSRAM, off task stacks and internal RAM
     xSemaphoreTake(s_lock, portMAX_DELAY);
     before = s_settings;
     bool ok = settings_patch(&s_settings, patch, trusted, err);
@@ -201,11 +203,22 @@ void app_set_update(upd_state_t st, const char *version, int progress)
 }
 void app_set_time_ok(bool ok) { ST_SET(s_status.time_ok = ok); }
 
+void app_ui_post(ui_post_kind_t kind, int arg, const char *text)
+{
+    if (!s_ui_q) return;
+    ui_post_t p = {.kind = kind, .arg = arg};
+    snprintf(p.text, sizeof p.text, "%s", text ? text : "");
+    xQueueSend(s_ui_q, &p, 0);   // if the screen is that far behind, drop it
+}
+
+bool app_ui_take(ui_post_t *out) { return s_ui_q && xQueueReceive(s_ui_q, out, 0) == pdTRUE; }
+
 void app_init(void)
 {
     m_lock = xSemaphoreCreateMutex();
     s_lock = xSemaphoreCreateMutex();
     st_lock = xSemaphoreCreateMutex();
+    s_ui_q = xQueueCreate(8, sizeof(ui_post_t));
     model_clear(&s_model);
     if (!storage_load_settings(&s_settings)) ESP_LOGI(TAG, "no saved settings: defaults");
     apply_tz(&s_settings);

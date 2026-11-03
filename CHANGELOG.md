@@ -4,6 +4,14 @@ Each release needs a section here headed with its version, exactly as in `firmwa
 The text under it (keep it short and plain) is shown on the settings website when the update
 is offered.
 
+## 0.1.3
+- Works with larger homes: up to 256 devices, with lights, heating and locks always loaded before sensors
+- Sensors now show room temperature and humidity only, so power and signal readings don't crowd your lists
+- “Sending…” clears as soon as Home Assistant confirms a change, and a refused change shows Home Assistant’s reason once
+- Rooms update by themselves when you move a device to another room in Home Assistant
+- No more brief “Can’t reach home” while PocketOS starts up or Home Assistant restarts
+- Lists say when they're waiting for Home Assistant, instead of looking empty
+
 ## 0.1.2
 - Press and hold any device on PocketOS, or tap ··· on its screen, to add it to favourites, change its place in Favourites, or hide it
 - Hidden devices are listed under More, so you can bring them back at any time

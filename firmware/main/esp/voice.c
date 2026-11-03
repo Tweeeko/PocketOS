@@ -114,9 +114,10 @@ void voice_on_event(const ha_event_t *ev)
 {
     switch (ev->kind) {
     case HA_EV_VOICE_READY: s_handler = ev->handler_id; break;
-    case HA_EV_VOICE_HEARD: ui_state(VOICE_HEARD, ev->text); break;
-    case HA_EV_VOICE_REPLY: ui_state(VOICE_REPLY, ev->text); break;
-    case HA_EV_VOICE_ERROR: s_recording = false; ui_state(VOICE_ERROR, ev->text[0] ? ev->text : "Voice didn't work"); break;
+    // These arrive on the Home Assistant connection's task: post to the screen, don't lock it
+    case HA_EV_VOICE_HEARD: app_ui_post(UI_POST_VOICE, VOICE_HEARD, ev->text); break;
+    case HA_EV_VOICE_REPLY: app_ui_post(UI_POST_VOICE, VOICE_REPLY, ev->text); break;
+    case HA_EV_VOICE_ERROR: s_recording = false; app_ui_post(UI_POST_VOICE, VOICE_ERROR, ev->text[0] ? ev->text : "Voice didn't work"); break;
     case HA_EV_VOICE_END: s_handler = -1; break;
     default: break;
     }

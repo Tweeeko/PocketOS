@@ -44,6 +44,7 @@ bool app_settings_patch(const char *json)
     return ok;
 }
 
+bool app_ui_take(ui_post_t *out) { (void)out; return false; }
 bool app_set_flag(const char *list, const char *id, bool on) { bool ok = settings_set_flag(&S, list, id, on); M.version++; return ok; }
 bool app_fav_move(const char *id, int dir) { bool ok = settings_fav_move(&S, id, dir); M.version++; return ok; }
 

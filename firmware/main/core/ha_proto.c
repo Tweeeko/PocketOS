@@ -48,11 +48,17 @@ char *ha_msg_sync(ha_ctx_t *c, int step)
     switch (step) {
     case 0: c->got = 0; c->synced = false; return print(cmd(c, "get_states", &c->id_states));
     case 1: return print(cmd(c, "config/area_registry/list", &c->id_areas));
-    case 2: return print(cmd(c, "config/entity_registry/list", &c->id_entities));
+    case 2: return print(cmd(c, "config/entity_registry/list_for_display", &c->id_entities));   // compact
     case 3: return print(cmd(c, "config/device_registry/list", &c->id_devices));
     case 4: {
         cJSON *o = cmd(c, "subscribe_events", &c->id_sub);
         cJSON_AddStringToObject(o, "event_type", "state_changed");
+        return print(o);
+    }
+    case 5: case 6: case 7: {   // allowed for non-admin users (SUBSCRIBE_ALLOWLIST)
+        static const char *EV[] = {"area_registry_updated", "entity_registry_updated", "device_registry_updated"};
+        cJSON *o = cmd(c, "subscribe_events", &c->id_regsub[step - 5]);
+        cJSON_AddStringToObject(o, "event_type", EV[step - 5]);
         return print(o);
     }
     }
@@ -61,7 +67,11 @@ char *ha_msg_sync(ha_ctx_t *c, int step)
 
 static char *service(ha_ctx_t *c, const entity_t *e, const char *domain, const char *svc, cJSON *data)
 {
-    cJSON *o = cmd(c, "call_service", NULL);
+    int id;
+    cJSON *o = cmd(c, "call_service", &id);
+    int k = c->ncall++ % 8;
+    c->calls[k].id = id;
+    snprintf(c->calls[k].entity, ID_LEN, "%s", e->id);
     cJSON_AddStringToObject(o, "domain", domain);
     cJSON_AddStringToObject(o, "service", svc);
     if (data) cJSON_AddItemToObject(o, "service_data", data);
@@ -221,9 +231,16 @@ void ha_handle(ha_ctx_t *c, model_t *m, const char *json, size_t len, ha_event_t
         if (id == c->id_states) {
             if (!ok || !cJSON_IsArray(res)) { ev->kind = HA_EV_ERROR; text(ev, msg ? msg : "Couldn't read devices"); goto done; }
             uint32_t v = m->version;
-            m->n = 0;   // full refresh
-            const cJSON *st;
-            cJSON_ArrayForEach(st, res) model_apply_state(m, st);
+            m->n = 0;   // full refresh: things you control first, then room sensors, so a home
+            const cJSON *st;   // with many sensors can't crowd out its lights
+            cJSON_ArrayForEach(st, res) {
+                const char *eid = cJSON_GetStringValue(cJSON_GetObjectItem(st, "entity_id"));
+                if (eid && strncmp(eid, "sensor.", 7)) model_apply_state(m, st);
+            }
+            cJSON_ArrayForEach(st, res) {
+                const char *eid = cJSON_GetStringValue(cJSON_GetObjectItem(st, "entity_id"));
+                if (eid && !strncmp(eid, "sensor.", 7)) model_apply_state(m, st);
+            }
             m->version = v + 1;
             c->got |= 1;
         } else if (id == c->id_areas) {
@@ -231,27 +248,43 @@ void ha_handle(ha_ctx_t *c, model_t *m, const char *json, size_t len, ha_event_t
             if (ok && cJSON_IsArray(res)) model_apply_areas(m, res);
             c->got |= 2;
         } else if (id == c->id_entities) {
-            c->reg_entities = (ok && cJSON_IsArray(res)) ? cJSON_DetachItemFromObject(o, "result") : cJSON_CreateArray();
+            c->reg_entities = (ok && (cJSON_IsArray(res) || cJSON_IsObject(res))) ? cJSON_DetachItemFromObject(o, "result") : cJSON_CreateArray();
             c->got |= 4;
             maybe_registry(c, m);
         } else if (id == c->id_devices) {
             c->reg_devices = (ok && cJSON_IsArray(res)) ? cJSON_DetachItemFromObject(o, "result") : cJSON_CreateArray();
             c->got |= 8;
             maybe_registry(c, m);
-        } else if (id == c->id_sub) {
+        } else if (id == c->id_sub || id == c->id_regsub[0] || id == c->id_regsub[1] || id == c->id_regsub[2]) {
             if (!ok) { ev->kind = HA_EV_ERROR; text(ev, msg ? msg : "Couldn't subscribe to updates"); }
             goto done;
         } else if (id == c->id_voice) {
             if (!ok) { ev->kind = HA_EV_VOICE_ERROR; text(ev, msg ? msg : "Voice isn't set up in Home Assistant"); }
             goto done;
         } else {
+            // A service call's result: Home Assistant has done it, or refused it
+            for (int k = 0; k < 8; k++) {
+                if (c->calls[k].id != id || !c->calls[k].entity[0]) continue;
+                int i = model_find(m, c->calls[k].entity);
+                c->calls[k].entity[0] = 0;
+                ev->entity = i;
+                if (i >= 0) {
+                    entity_t *e = &m->e[i];
+                    e->pending_ms = 0;   // confirmed (or refused): stop showing "Sending..."
+                    if (!ok) e->has_pending_level = false;   // refused: show the real value again
+                    m->version++;
+                }
+                break;
+            }
             if (!ok) { ev->kind = HA_EV_CALL_FAILED; text(ev, msg ? msg : "Home Assistant refused that"); }
+            else ev->kind = HA_EV_CALL_OK;
             goto done;
         }
         if (c->got == 15 && !c->synced) { c->synced = true; ev->kind = HA_EV_SYNCED; }
     } else if (!strcmp(type, "event")) {
         const cJSON *event = cJSON_GetObjectItem(o, "event");
         if (id == c->id_voice) { handle_voice_event(event, ev); goto done; }
+        if (id > 0 && (id == c->id_regsub[0] || id == c->id_regsub[1] || id == c->id_regsub[2])) { ev->kind = HA_EV_REGISTRY_CHANGED; goto done; }
         const char *et = cJSON_GetStringValue(cJSON_GetObjectItem(event, "event_type"));
         if (et && !strcmp(et, "state_changed")) {
             const cJSON *data = cJSON_GetObjectItem(event, "data");

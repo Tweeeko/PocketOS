@@ -26,6 +26,8 @@ static const char *FX_STATES =
 "{\"entity_id\":\"switch.kettle\",\"state\":\"off\",\"attributes\":{\"friendly_name\":\"Kettle plug\"}},"
 "{\"entity_id\":\"switch.kettle_child_lock\",\"state\":\"off\",\"attributes\":{\"friendly_name\":\"Kettle child lock\"}},"
 "{\"entity_id\":\"sensor.garden_temperature\",\"state\":\"12.4\",\"attributes\":{\"friendly_name\":\"Garden temperature\",\"unit_of_measurement\":\"°C\",\"device_class\":\"temperature\"}},"
+"{\"entity_id\":\"sensor.kettle_power\",\"state\":\"0.0\",\"attributes\":{\"friendly_name\":\"Kettle power\",\"unit_of_measurement\":\"W\",\"device_class\":\"power\"}},"
+"{\"entity_id\":\"sensor.bathroom_humidity\",\"state\":\"61\",\"attributes\":{\"friendly_name\":\"Bathroom humidity\",\"unit_of_measurement\":\"%%\",\"device_class\":\"humidity\"}},"
 "{\"entity_id\":\"sensor.router_status\",\"state\":\"online\",\"attributes\":{\"friendly_name\":\"Router status\"}},"
 "{\"entity_id\":\"scene.goodnight\",\"state\":\"2026-11-01T22:00:00+00:00\",\"attributes\":{\"friendly_name\":\"Goodnight\"}},"
 "{\"entity_id\":\"script.movie_time\",\"state\":\"off\",\"attributes\":{\"friendly_name\":\"Movie time\"}},"
@@ -37,20 +39,24 @@ static const char *FX_AREAS =
 "{\"area_id\":\"living_room\",\"name\":\"Living room\"},{\"area_id\":\"kitchen\",\"name\":\"Kitchen\"},"
 "{\"area_id\":\"bedroom\",\"name\":\"Bedroom\"},{\"area_id\":\"hallway\",\"name\":\"Hallway\"},{\"area_id\":\"garden\",\"name\":\"Garden\"}]}";
 
+// config/entity_registry/list_for_display: the compact form PocketOS asks for
 static const char *FX_ENTITY_REG =
-"{\"id\":%d,\"type\":\"result\",\"success\":true,\"result\":["
-"{\"entity_id\":\"light.floor_lamp\",\"area_id\":\"living_room\",\"device_id\":null,\"entity_category\":null,\"hidden_by\":null},"
-"{\"entity_id\":\"light.ceiling\",\"area_id\":null,\"device_id\":\"dev_kitchen_light\",\"entity_category\":null,\"hidden_by\":null},"
-"{\"entity_id\":\"light.bedside\",\"area_id\":\"bedroom\",\"device_id\":null,\"entity_category\":null,\"hidden_by\":null},"
-"{\"entity_id\":\"climate.thermostat\",\"area_id\":\"living_room\",\"device_id\":null,\"entity_category\":null,\"hidden_by\":null},"
-"{\"entity_id\":\"media_player.living_room_tv\",\"area_id\":\"living_room\",\"device_id\":null,\"entity_category\":null,\"hidden_by\":null},"
-"{\"entity_id\":\"media_player.kitchen_speaker\",\"area_id\":\"kitchen\",\"device_id\":null,\"entity_category\":null,\"hidden_by\":null},"
-"{\"entity_id\":\"cover.bedroom_blinds\",\"area_id\":\"bedroom\",\"device_id\":null,\"entity_category\":null,\"hidden_by\":null},"
-"{\"entity_id\":\"fan.bedroom_fan\",\"area_id\":\"bedroom\",\"device_id\":null,\"entity_category\":null,\"hidden_by\":null},"
-"{\"entity_id\":\"lock.front_door\",\"area_id\":\"hallway\",\"device_id\":null,\"entity_category\":null,\"hidden_by\":null},"
-"{\"entity_id\":\"switch.kettle\",\"area_id\":null,\"device_id\":\"dev_kettle\",\"entity_category\":null,\"hidden_by\":null},"
-"{\"entity_id\":\"switch.kettle_child_lock\",\"area_id\":null,\"device_id\":\"dev_kettle\",\"entity_category\":\"config\",\"hidden_by\":null},"
-"{\"entity_id\":\"sensor.garden_temperature\",\"area_id\":\"garden\",\"device_id\":null,\"entity_category\":null,\"hidden_by\":null}]}";
+"{\"id\":%d,\"type\":\"result\",\"success\":true,\"result\":{\"entity_categories\":{\"0\":\"config\",\"1\":\"diagnostic\"},\"entities\":["
+"{\"ei\":\"light.floor_lamp\",\"pl\":\"demo\",\"ai\":\"living_room\"},"
+"{\"ei\":\"light.ceiling\",\"pl\":\"demo\",\"di\":\"dev_kitchen_light\"},"
+"{\"ei\":\"light.bedside\",\"pl\":\"demo\",\"ai\":\"bedroom\"},"
+"{\"ei\":\"climate.thermostat\",\"pl\":\"demo\",\"ai\":\"living_room\"},"
+"{\"ei\":\"media_player.living_room_tv\",\"pl\":\"demo\",\"ai\":\"living_room\"},"
+"{\"ei\":\"media_player.kitchen_speaker\",\"pl\":\"demo\",\"ai\":\"kitchen\"},"
+"{\"ei\":\"cover.bedroom_blinds\",\"pl\":\"demo\",\"ai\":\"bedroom\"},"
+"{\"ei\":\"fan.bedroom_fan\",\"pl\":\"demo\",\"ai\":\"bedroom\"},"
+"{\"ei\":\"lock.front_door\",\"pl\":\"demo\",\"ai\":\"hallway\"},"
+"{\"ei\":\"switch.kettle\",\"pl\":\"demo\",\"di\":\"dev_kettle\"},"
+"{\"ei\":\"switch.kettle_child_lock\",\"pl\":\"demo\",\"di\":\"dev_kettle\",\"ec\":0},"
+"{\"ei\":\"sensor.garden_temperature\",\"pl\":\"demo\",\"ai\":\"garden\"}]}}";
+
+// The full config/entity_registry/list form, which older code used
+static const char *FX_ENTITY_REG_FULL_ROWS = "[{\"entity_id\":\"light.floor_lamp\",\"area_id\":\"living_room\",\"device_id\":null,\"entity_category\":null,\"hidden_by\":null},{\"entity_id\":\"switch.kettle_child_lock\",\"area_id\":null,\"device_id\":\"dev_kettle\",\"entity_category\":\"config\",\"hidden_by\":null}]";
 
 static const char *FX_DEVICE_REG =
 "{\"id\":%d,\"type\":\"result\",\"success\":true,\"result\":["

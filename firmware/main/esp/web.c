@@ -206,7 +206,7 @@ static esp_err_t h_config_get(httpd_req_t *req)
 static esp_err_t h_config_post(httpd_req_t *req)
 {
     REQUIRE_AUTH(req);
-    cJSON *j = read_json(req, 32768);
+    cJSON *j = read_json(req, 65536);   // a full settings import with every device list
     if (!j) return send_error(req, "400 Bad Request", "That wasn't valid settings data", NULL);
     settings_err_t err;
     bool ok = app_update_settings(j, false, &err);

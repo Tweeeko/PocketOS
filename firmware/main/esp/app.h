@@ -19,7 +19,8 @@ void app_settings_copy(settings_t *out);
 bool app_set_flag(const char *list, const char *entity_id, bool on);   // fav/hidden/known
 bool app_fav_move(const char *entity_id, int dir);
 bool app_set_name(const char *entity_id, const char *name, const char **why);   // "" = use Home Assistant's name
-void app_mark_all_known(void);   // "add all new devices" in one save
+void app_mark_all_known(void);
+void app_ui_post(ui_post_kind_t kind, int arg, const char *text);   // never blocks   // "add all new devices" in one save
 
 // Status fields updated by other modules
 void app_set_wifi(bool setup_mode, bool connected, const char *ip, const char *host, const char *ap_ssid, const char *ap_pass);

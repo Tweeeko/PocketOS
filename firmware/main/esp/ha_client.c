@@ -11,6 +11,7 @@
 #include "esp_websocket_client.h"
 #include "esp_crt_bundle.h"
 #include "esp_timer.h"
+#include "esp_attr.h"
 #include "app.h"
 #include "voice.h"
 #include "ui.h"
@@ -22,12 +23,25 @@ static esp_websocket_client_handle_t s_ws;
 static SemaphoreHandle_t s_ctx_lock;
 static ha_ctx_t s_ctx;
 static bool s_synced, s_auth_failed;
+static int64_t s_fail_since;   // first failed attempt since the last good connection (0 = none)
 static char *s_buf;
 static size_t s_cap, s_len;
 static char s_token[320];
 static esp_timer_handle_t s_stop_timer;
 static void stop_client(void);
 static void stop_cb(void *arg) { stop_client(); }
+static esp_timer_handle_t s_reg_timer;
+static void send_text(esp_websocket_client_handle_t ws, char *msg);
+static void reg_cb(void *arg)
+{
+    if (!s_ws || !s_synced) return;
+    for (int st = 1; st <= 3; st++) {   // areas, entity registry, device registry
+        xSemaphoreTake(s_ctx_lock, portMAX_DELAY);
+        char *msg = ha_msg_sync(&s_ctx, st);
+        xSemaphoreGive(s_ctx_lock);
+        send_text(s_ws, msg);
+    }
+}
 
 bool ha_ws_url(const char *u, char *out, size_t len)
 {
@@ -84,18 +98,22 @@ static void handle_message(const char *txt, size_t len)
         break;
     case HA_EV_SYNCED:
         s_synced = true;
+        s_fail_since = 0;
         app_set_ha(HA_OK, NULL);
         app_on_ha_synced();
         ESP_LOGI(TAG, "synced");
         break;
-    case HA_EV_CALL_FAILED: {
-        UI_LOCK();
-        ui_toast(ev.text[0] ? ev.text : "Home Assistant refused that", 2500);
-        UI_UNLOCK();
+    case HA_EV_CALL_FAILED:
+        // Not UI_LOCK here: the UI task may be waiting on this connection to send a command
+        app_ui_post(UI_POST_TOAST, 2500, ev.text[0] ? ev.text : "Home Assistant refused that");
         break;
-    }
     case HA_EV_ERROR:
         ESP_LOGW(TAG, "error: %s", ev.text);
+        break;
+    case HA_EV_REGISTRY_CHANGED:
+        // A room or device changed in Home Assistant. Changes come in bursts: wait for it to settle.
+        esp_timer_stop(s_reg_timer);
+        esp_timer_start_once(s_reg_timer, 2000 * 1000);
         break;
     case HA_EV_VOICE_READY: case HA_EV_VOICE_HEARD: case HA_EV_VOICE_REPLY: case HA_EV_VOICE_ERROR: case HA_EV_VOICE_END:
         voice_on_event(&ev);
@@ -120,12 +138,21 @@ static void ws_event(void *arg, esp_event_base_t base, int32_t id, void *data)
     case WEBSOCKET_EVENT_DISCONNECTED:
     case WEBSOCKET_EVENT_CLOSED:
         s_synced = false;
-        if (!s_auth_failed) app_set_ha(HA_CONNECTING, "Reconnecting...");
+        if (!s_fail_since) s_fail_since = esp_timer_get_time();
+        if (!s_auth_failed && esp_timer_get_time() - s_fail_since <= 30LL * 1000000) app_set_ha(HA_CONNECTING, "Reconnecting...");
+        else if (!s_auth_failed) app_set_ha(HA_ERROR, "Can't reach Home Assistant");
         break;
-    case WEBSOCKET_EVENT_ERROR:
+    case WEBSOCKET_EVENT_ERROR: {
+        // Wi-Fi takes a few seconds after starting up, and Home Assistant restarts now and then:
+        // only call it a problem once it has been unreachable for a while.
         s_synced = false;
-        if (!s_auth_failed) app_set_ha(HA_ERROR, "Can't reach Home Assistant");
+        int64_t now = esp_timer_get_time();
+        if (!s_fail_since) s_fail_since = now;
+        if (s_auth_failed) break;
+        if (now - s_fail_since > 30LL * 1000000) app_set_ha(HA_ERROR, "Can't reach Home Assistant");
+        else app_set_ha(HA_CONNECTING, NULL);
         break;
+    }
     case WEBSOCKET_EVENT_DATA: {
         // Text messages may arrive in pieces (payload_offset) and/or as continuation frames.
         if (d->op_code == 0x1 && d->payload_offset == 0) s_len = 0;          // new text message
@@ -172,6 +199,7 @@ static void start_client(void)
     free(s);
     if (!have) { app_set_ha(HA_NOT_SET, NULL); return; }
     s_auth_failed = false;
+    s_fail_since = 0;
     esp_websocket_client_config_t cfg = {
         .uri = uri,
         .buffer_size = 4096,
@@ -195,6 +223,8 @@ void ha_client_start(void)
         ha_init(&s_ctx);
         const esp_timer_create_args_t ta = {.callback = stop_cb, .name = "ha_stop"};
         esp_timer_create(&ta, &s_stop_timer);
+        const esp_timer_create_args_t tr = {.callback = reg_cb, .name = "ha_reg"};
+        esp_timer_create(&tr, &s_reg_timer);
     }
     start_client();
 }
@@ -289,7 +319,7 @@ static void test_event(void *arg, esp_event_base_t base, int32_t id, void *data)
         snprintf(t->msg, sizeof t->msg, "Home Assistant rejected the token");
         xEventGroupSetBits(t->ev, T_FAIL);
     } else if (type && !strcmp(type, "result")) {
-        static model_t probe;   // count what PocketOS would show
+        EXT_RAM_BSS_ATTR static model_t probe;   // count what PocketOS would show (~80 KB, in PSRAM)
         model_clear(&probe);
         const cJSON *st;
         cJSON_ArrayForEach(st, cJSON_GetObjectItem(j, "result")) model_apply_state(&probe, st);

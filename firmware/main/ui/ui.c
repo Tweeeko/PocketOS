@@ -98,6 +98,11 @@ void ui_toggle_settings_qr(void)
 
 static void refresh_cb(lv_timer_t *t)
 {
+    ui_post_t p;
+    while (app_ui_take(&p)) {
+        if (p.kind == UI_POST_TOAST) ui_toast(p.text, p.arg);
+        else ui_voice((voice_state_t)p.arg, p.text[0] ? p.text : NULL);
+    }
     app_status_t st;
     app_status(&st);
     model_t *m = app_model_lock();

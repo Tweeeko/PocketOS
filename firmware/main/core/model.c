@@ -73,6 +73,19 @@ static bool list_has(const cJSON *arr, const char *s)
     return false;
 }
 
+bool model_wanted_sensor(const cJSON *st)
+{
+    const cJSON *at = cJSON_GetObjectItem(st, "attributes");
+    const char *dc = str(at, "device_class"), *unit = str(at, "unit_of_measurement"), *state = str(st, "state");
+    bool kind = (dc && (!strcmp(dc, "temperature") || !strcmp(dc, "humidity"))) ||
+                (unit && (!strcmp(unit, "°C") || !strcmp(unit, "°F")));
+    if (!kind || !state) return false;
+    if (!strcmp(state, "unavailable") || !strcmp(state, "unknown")) return true;
+    char *end = NULL;
+    strtod(state, &end);
+    return end != state;
+}
+
 int model_apply_state(model_t *m, const cJSON *st)
 {
     const char *id = str(st, "entity_id");
@@ -82,14 +95,9 @@ int model_apply_state(model_t *m, const cJSON *st)
     const char *state = str(st, "state");
     if (!state) return -1;
 
-    // Sensors: only numeric ones with a unit are shown
-    if (d == D_SENSOR) {
-        char *end = NULL;
-        strtod(state, &end);
-        if (!str(at, "unit_of_measurement") || end == state) {
-            if (strcmp(state, "unavailable") && strcmp(state, "unknown")) return -1;
-        }
-    }
+    // Sensors: only room readings (temperature and humidity). Homes have hundreds of other
+    // sensors (power, signal, battery...) that would crowd out lights and locks.
+    if (d == D_SENSOR && !model_wanted_sensor(st)) return -1;
 
     int i = model_find(m, id);
     if (i < 0) {
@@ -219,16 +227,20 @@ void model_apply_areas(model_t *m, const cJSON *areas)
 
 void model_apply_registry(model_t *m, const cJSON *entities, const cJSON *devices)
 {
+    // config/entity_registry/list_for_display: {"entities": [{"ei", "ai", "di", "hb", "ec"}]}
+    // config/entity_registry/list: [{"entity_id", "area_id", "device_id", "hidden_by", "entity_category"}]
+    const cJSON *list = cJSON_IsObject(entities) ? cJSON_GetObjectItem(entities, "entities") : entities;
     const cJSON *r;
-    cJSON_ArrayForEach(r, entities) {
-        const char *id = str(r, "entity_id");
+    cJSON_ArrayForEach(r, list) {
+        bool compact = cJSON_GetObjectItem(r, "ei") != NULL;
+        const char *id = str(r, compact ? "ei" : "entity_id");
         int i = id ? model_find(m, id) : -1;
         if (i < 0) continue;
         entity_t *e = &m->e[i];
-        copy(e->device_id, sizeof(e->device_id), str(r, "device_id"));
-        const char *area = str(r, "area_id");
-        if (area) copy(e->area_id, sizeof(e->area_id), area);
-        e->registry_hidden = str(r, "hidden_by") != NULL || str(r, "entity_category") != NULL;
+        copy(e->device_id, sizeof(e->device_id), str(r, compact ? "di" : "device_id"));
+        copy(e->area_id, sizeof(e->area_id), str(r, compact ? "ai" : "area_id"));   // none = clear (moved out of a room)
+        e->registry_hidden = compact ? (cJSON_IsTrue(cJSON_GetObjectItem(r, "hb")) || cJSON_GetObjectItem(r, "ec") != NULL)
+                                     : (str(r, "hidden_by") != NULL || str(r, "entity_category") != NULL);
     }
     // Entities without their own area inherit their device's area
     const cJSON *d;

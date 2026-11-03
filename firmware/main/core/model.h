@@ -8,7 +8,7 @@
 #include "cJSON.h"
 #include "settings.h"
 
-#define MAX_ENT  128
+#define MAX_ENT  256       // controllable devices first, then temperature/humidity sensors
 #define MAX_AREA 32
 
 typedef enum { D_LIGHT, D_SWITCH, D_CLIMATE, D_MEDIA, D_FAN, D_COVER, D_LOCK, D_SENSOR, D_SCENE, D_SCRIPT, D_COUNT } dom_t;
@@ -70,6 +70,7 @@ bool dom_from_entity_id(const char *entity_id, dom_t *out);
 
 // Home Assistant payloads (see ha_proto.c)
 int  model_apply_state(model_t *m, const cJSON *state);          // returns index or -1 if ignored
+bool model_wanted_sensor(const cJSON *state);                     // temperature / humidity readings
 int  model_remove(model_t *m, const char *entity_id);
 void model_apply_areas(model_t *m, const cJSON *areas);
 void model_apply_registry(model_t *m, const cJSON *entities, const cJSON *devices);

@@ -109,7 +109,7 @@ def validate(cur, patch, trusted):
         elif k == "updates":
             if v not in ("off", "notify", "auto"): return None, ("Updates must be off, notify or auto", k)
         elif k in ("favourites", "hidden", "known"):
-            if not isinstance(v, list) or len(v) > 96 or any(not isinstance(x, str) or not 0 < len(x) < 64 for x in v): return None, ("List of device ids expected", k)
+            if not isinstance(v, list) or len(v) > 256 or any(not isinstance(x, str) or not 0 < len(x) < 64 for x in v): return None, ("List of device ids expected", k)
         elif k == "names":
             if not isinstance(v, list) or len(v) > 48: return None, ("You can rename up to 48 devices", k)
             seen = set()

@@ -181,7 +181,7 @@
     },
     "favourites": {
       "type": "array",
-      "maxItems": 96,
+      "maxItems": 256,
       "items": {
         "type": "string",
         "minLength": 1,
@@ -192,7 +192,7 @@
     },
     "hidden": {
       "type": "array",
-      "maxItems": 96,
+      "maxItems": 256,
       "items": {
         "type": "string",
         "minLength": 1,
@@ -203,7 +203,7 @@
     },
     "known": {
       "type": "array",
-      "maxItems": 96,
+      "maxItems": 256,
       "items": {
         "type": "string",
         "minLength": 1,

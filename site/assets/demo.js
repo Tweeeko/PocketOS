@@ -699,7 +699,7 @@
           seen.add(x.id);
         }
       }
-      else if (['favourites', 'hidden', 'known'].includes(k)) { if (!Array.isArray(v) || v.length > 96 || v.some(x => typeof x !== 'string' || !x || x.length >= 64)) return bad('List of device ids expected'); }
+      else if (['favourites', 'hidden', 'known'].includes(k)) { if (!Array.isArray(v) || v.length > 256 || v.some(x => typeof x !== 'string' || !x || x.length >= 64)) return bad('List of device ids expected'); }
       else return bad('Unknown setting');
       s[k] = k === 'tiles' ? v.map(t => ({ key: t.key, label: t.label, show: t.show })) : k === 'names' ? v.map(x => ({ id: x.id, name: x.name })) : v;
     }

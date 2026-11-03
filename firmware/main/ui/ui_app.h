@@ -47,3 +47,9 @@ bool app_fav_move(const char *entity_id, int dir);                    // -1 up, 
 void app_brightness(int percent);                               // 0 = screen off
 void app_voice(bool start);                                     // push-to-talk
 uint32_t app_ms(void);
+
+// Messages for the screen from tasks that must not wait for the UI lock (the Home Assistant
+// connection holds its own lock while it handles a message). The UI shows them on its next tick.
+typedef enum { UI_POST_TOAST, UI_POST_VOICE } ui_post_kind_t;
+typedef struct { ui_post_kind_t kind; int arg; char text[160]; } ui_post_t;   // arg: toast ms, or voice_state_t
+bool app_ui_take(ui_post_t *out);

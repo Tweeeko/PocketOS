@@ -129,6 +129,8 @@ static void test_model(void)
     // which entities are kept
     CHECK(E("light.floor_lamp") && E("sensor.garden_temperature"));
     CHECK(E("sensor.router_status") == NULL);   // non-numeric sensor dropped
+    CHECK(E("sensor.kettle_power") == NULL);    // only room readings: power meters etc. would crowd the list
+    CHECK(E("sensor.bathroom_humidity") && E("sensor.bathroom_humidity")->level == 61);
     CHECK(E("sun.sun") == NULL);                // unsupported domain
     CHECK(M.na == 5);
 
@@ -327,6 +329,69 @@ static void test_names_and_order(void)
     CHECK(!settings_fav_move(&s, "light.zz", 1));
 }
 
+// What PocketOS asks Home Assistant for, and how it copes with real-world homes
+static void test_ha_robustness(void)
+{
+    ha_event_t ev;
+    // sync asks for the compact entity registry
+    ha_init(&C);
+    char *m = NULL;
+    for (int st = 0; st < HA_SYNC_STEPS; st++) { free(m); m = ha_msg_sync(&C, st); if (st == 2) CHECK(strstr(m, "config/entity_registry/list_for_display") != NULL); }
+    free(m);
+
+    // the full registry form is still understood
+    sync_all();
+    cJSON *full = J(FX_ENTITY_REG_FULL_ROWS), *devs = cJSON_CreateArray();
+    model_apply_registry(&M, full, devs);
+    CHECK(E("switch.kettle_child_lock")->registry_hidden && !E("light.floor_lamp")->registry_hidden);
+    cJSON_Delete(full); cJSON_Delete(devs);
+
+    // a home with hundreds of sensors still shows every light: devices are loaded before sensors
+    static char big[400000];
+    int n = snprintf(big, sizeof big, "{\"id\":%d,\"type\":\"result\",\"success\":true,\"result\":[", C.id_states);
+    for (int k = 0; k < 300; k++)
+        n += snprintf(big + n, sizeof big - n, "{\"entity_id\":\"sensor.t%d\",\"state\":\"20\",\"attributes\":{\"unit_of_measurement\":\"\u00b0C\",\"device_class\":\"temperature\"}},", k);
+    for (int k = 0; k < 40; k++)
+        n += snprintf(big + n, sizeof big - n, "{\"entity_id\":\"light.l%d\",\"state\":\"off\",\"attributes\":{\"supported_color_modes\":[\"onoff\"]}}%s", k, k < 39 ? "," : "");
+    snprintf(big + n, sizeof big - n, "]}");
+    ha_handle(&C, &M, big, strlen(big), &ev);
+    CHECK(M.n == MAX_ENT && E("light.l0") && E("light.l39"));
+
+    // service calls: Home Assistant's result settles "Sending..." even if nothing changes
+    sync_all();
+    bool lvl; float nl;
+    int lamp = model_find(&M, "light.floor_lamp");
+    char *call = ha_msg_action(&C, &M, lamp, ACT_LEVEL, 70, &lvl, &nl);
+    int id = (int)cJSON_GetObjectItem(cJSON_Parse(call), "id")->valueint;   // small leak in a test is fine
+    free(call);
+    model_set_pending(&M, lamp, 1000, lvl, nl);
+    feed("{\"id\":%d,\"type\":\"result\",\"success\":true,\"result\":{\"context\":{}}}", id, &ev);
+    CHECK(ev.kind == HA_EV_CALL_OK && ev.entity == lamp && M.e[lamp].pending_ms == 0);
+    CHECK(!model_expire_pending(&M, 99999, 6000));   // no false "No response"
+    // ...and a refusal is reported once, with Home Assistant's reason, and the real value comes back
+    call = ha_msg_action(&C, &M, model_find(&M, "lock.front_door"), ACT_TOGGLE, 0, &lvl, &nl);
+    id = (int)cJSON_GetObjectItem(cJSON_Parse(call), "id")->valueint;
+    free(call);
+    model_set_pending(&M, model_find(&M, "lock.front_door"), 1000, false, 0);
+    feed("{\"id\":%d,\"type\":\"result\",\"success\":false,\"error\":{\"code\":\"home_assistant_error\",\"message\":\"Lock is jammed\"}}", id, &ev);
+    CHECK(ev.kind == HA_EV_CALL_FAILED && !strcmp(ev.text, "Lock is jammed") && M.e[model_find(&M, "lock.front_door")].pending_ms == 0);
+}
+
+static void test_registry_updates(void)
+{
+    ha_event_t ev;
+    sync_all();
+    // the sync subscribes to room and device changes as well as state changes
+    CHECK(C.id_regsub[0] && C.id_regsub[1] && C.id_regsub[2]);
+    feed("{\"id\":%d,\"type\":\"event\",\"event\":{\"event_type\":\"entity_registry_updated\",\"data\":{\"action\":\"update\",\"entity_id\":\"light.floor_lamp\"}}}", C.id_regsub[1], &ev);
+    CHECK(ev.kind == HA_EV_REGISTRY_CHANGED);
+    // fetching again applies the move: the lamp now has no room of its own
+    char *m = ha_msg_sync(&C, 2); free(m); m = ha_msg_sync(&C, 3); free(m);
+    feed("{\"id\":%d,\"type\":\"result\",\"success\":true,\"result\":{\"entity_categories\":{},\"entities\":[{\"ei\":\"light.floor_lamp\",\"pl\":\"demo\"}]}}", C.id_entities, &ev);
+    feed(FX_DEVICE_REG, C.id_devices, &ev);
+    CHECK(E("light.floor_lamp")->area == -1);
+}
+
 static void test_versions(void)
 {
     CHECK(version_cmp("0.1.0", "0.2.0") < 0);
@@ -401,6 +466,8 @@ int main(void)
     test_auth_fail();
     test_updates_setting();
     test_names_and_order();
+    test_ha_robustness();
+    test_registry_updates();
     test_versions();
     test_battery();
     printf("%d checks, %d failed\n", checks, fails);

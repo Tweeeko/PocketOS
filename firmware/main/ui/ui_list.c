@@ -387,7 +387,13 @@ void list_build(lv_obj_t *scr, scr_ref_t *r)
     lv_obj_add_event_cb(scroller, del_cb, LV_EVENT_DELETE, NULL);
     char tb[80];
     mk_title(scr, title_for(r, tb, sizeof tb), false);
-    empty_lbl = mk_label(scr, &inter_18, C_DIM, r->list == L_FAVS ? "No favourites yet.\nPress and hold a device\nto add it." : r->list == L_HIDDEN ? "Nothing is hidden." : "Nothing here yet.\nAdd devices in Home Assistant,\nthen review them on the\nsettings website.");
+    app_status_t hs;
+    app_status(&hs);
+    bool device_list = r->list == L_CATEGORY || r->list == L_ROOMS || r->list == L_ROOM || r->list == L_FAVS;
+    // An empty list while Home Assistant is still connecting shouldn't look like an empty home
+    const char *waiting = hs.ha == HA_NOT_SET ? "Home Assistant isn't\nset up yet.\nPress the Boot button\nto open the settings page."
+                        : hs.ha != HA_OK ? "Waiting for\nHome Assistant..." : NULL;
+    empty_lbl = mk_label(scr, &inter_18, C_DIM, (device_list && waiting) ? waiting : r->list == L_FAVS ? "No favourites yet.\nPress and hold a device\nto add it." : r->list == L_HIDDEN ? "Nothing is hidden." : "Nothing here yet.\nAdd devices in Home Assistant,\nthen review them on the\nsettings website.");
     lv_obj_center(empty_lbl);
     fill();
     if (r->scroll) lv_obj_scroll_to_y(scroller, r->scroll, LV_ANIM_OFF);
