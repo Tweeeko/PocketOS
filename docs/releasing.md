@@ -34,8 +34,8 @@ GitHub hosts the files.
    - checks the version inside the build matches `version.txt`;
    - publishes release `v0.2.0` with `pocketos.bin` (the update), `pocketos-full.bin` (first
      USB flash of a new board) and `manifest.json` (version, size and SHA-256 of `pocketos.bin`).
-5. The **Website** workflow then runs by itself and updates the website's installer and
-   "What's new" page.
+5. The workflow then asks Vercel to rebuild the website, which picks up the new installer
+   firmware and "What's new" (needs the one-time deploy hook in `docs/website.md`).
 6. Done. Each PocketOS notices within a day. To see it straight away, open its settings website,
    **More → Updates → Check now**.
 
