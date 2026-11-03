@@ -217,6 +217,16 @@
     g.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
   }, { passive: true });
 
+  // Collapsible sections: a link to one opens it; "Open all" opens or closes every spec group
+  const openHash = () => { const t = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1))); if (t && t.tagName === 'DETAILS') t.open = true; };
+  openHash(); addEventListener('hashchange', openHash);
+  const all = $('[data-open-all]');
+  if (all) all.addEventListener('click', () => {
+    const open = all.getAttribute('aria-pressed') !== 'true';
+    $$('details.spec-group').forEach(d => { d.open = open; });
+    all.setAttribute('aria-pressed', String(open)); all.textContent = open ? 'Close all' : 'Open all';
+  });
+
   // Header: firmer glass once the page scrolls; the menu opens a drawer on phones
   const bar = $('.topbar'), menu = $('.menu'), drawer = $('#drawer');
   if (bar) { const f = () => bar.classList.toggle('scrolled', scrollY > 8); f(); addEventListener('scroll', f, { passive: true }); }

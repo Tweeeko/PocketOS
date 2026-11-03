@@ -47,10 +47,10 @@
     </div>
   </section>
 
-  <nav class="spec-jump" aria-label="Specifications"><a href="#display">Display</a><a href="#performance">Performance</a><a href="#connectivity">Connectivity</a><a href="#audio">Audio and sensors</a><a href="#battery">Battery</a><a href="#physical">Design and size</a><a href="#in-the-box">In the box</a></nav>
+  <nav class="spec-jump" aria-label="Specifications"><button type="button" class="spec-all" data-open-all aria-pressed="false">Open all</button><a href="#display">Display</a><a href="#performance">Performance</a><a href="#connectivity">Connectivity</a><a href="#audio">Audio and sensors</a><a href="#battery">Battery</a><a href="#physical">Design and size</a><a href="#in-the-box">In the box</a></nav>
 
-  <section class="block alu spec-group" id="display">
-    <div class="sg-head"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/></svg><h2>Display</h2></div>
+  <details class="block alu spec-group" id="display">
+    <summary class="sg-head"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/></svg><span class="sg-t"><h2>Display</h2><small>1.75-inch round AMOLED touchscreen, 466 × 466</small></span></summary>
     <dl class="spec-list">
           <div><dt>Screen</dt><dd><b>1.75-inch round AMOLED</b><span class="mean">Every pixel makes its own light, so blacks are truly black and colours look rich.</span></dd></div>
           <div><dt>Resolution</dt><dd><b>466 × 466 pixels</b><span class="mean">Sharp text and icons on a screen the size of a large watch face.</span></dd></div>
@@ -59,40 +59,40 @@
           <div><dt>Contrast and viewing angle</dt><dd><b>100,000:1 · 178°</b><span class="mean">Easy to read from the side, not just straight on.</span></dd></div>
           <div><dt>Touch</dt><dd><b>Capacitive touchscreen</b><span class="mean">Tap, swipe and turn the dial with your finger, like a phone.</span></dd></div>
     </dl>
-  </section>
+  </details>
 
-  <section class="block alu spec-group" id="performance">
-    <div class="sg-head"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg><h2>Performance</h2></div>
+  <details class="block alu spec-group" id="performance">
+    <summary class="sg-head"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg><span class="sg-t"><h2>Performance</h2><small>Dual-core ESP32-S3, 8 MB PSRAM, 32 MB storage</small></span></summary>
     <dl class="spec-list">
           <div><dt>Processor</dt><dd><b>Espressif ESP32-S3, dual-core, up to 240 MHz</b><span class="mean">Runs PocketOS, its companion and its controls on the device itself.</span></dd></div>
           <div><dt>Memory</dt><dd><b>8 MB PSRAM · 512 KB SRAM</b></dd></div>
           <div><dt>Storage</dt><dd><b>32 MB flash</b><span class="mean">Holds PocketOS, a spare copy for safe updates, and your settings.</span></dd></div>
           <div><dt>Software</dt><dd><b>PocketOS, installed and ready</b><span class="mean">Updates arrive over Wi-Fi and are signed before they install.</span></dd></div>
     </dl>
-  </section>
+  </details>
 
-  <section class="block alu spec-group" id="connectivity">
-    <div class="sg-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M12 19.5h.01"/></svg><h2>Connectivity</h2></div>
+  <details class="block alu spec-group" id="connectivity">
+    <summary class="sg-head"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 9a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0M12 19.5h.01"/></svg><span class="sg-t"><h2>Connectivity</h2><small>2.4 GHz Wi-Fi, Bluetooth 5 hardware, USB-C</small></span></summary>
     <dl class="spec-list">
           <div><dt>Wi-Fi</dt><dd><b>2.4 GHz, 802.11 b/g/n, built-in antenna</b><span class="mean">Joins your home network to talk to Home Assistant. Most home routers provide 2.4 GHz.</span></dd></div>
           <div><dt>Bluetooth</dt><dd><b>Bluetooth 5 (LE) hardware</b><span class="mean">Built into the chip. PocketOS doesn’t use Bluetooth today.</span></dd></div>
           <div><dt>USB</dt><dd><b>USB-C</b><span class="mean">For charging, and for reinstalling PocketOS from a computer if ever needed.</span></dd></div>
           <div><dt>Works with</dt><dd><b>Home Assistant on your home network</b><span class="mean">Your lights, heating, speakers and more come from Home Assistant.</span></dd></div>
     </dl>
-  </section>
+  </details>
 
-  <section class="block alu spec-group" id="audio">
-    <div class="sg-head"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg><h2>Audio and sensors</h2></div>
+  <details class="block alu spec-group" id="audio">
+    <summary class="sg-head"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg><span class="sg-t"><h2>Audio and sensors</h2><small>Two microphones, built-in speaker, motion sensor</small></span></summary>
     <dl class="spec-list">
           <div><dt>Microphones</dt><dd><b>Two microphones with echo cancellation</b><span class="mean">Hold the Boot button and speak. Your voice goes only to your own Home Assistant.</span></dd></div>
           <div><dt>Speaker</dt><dd><b>Built-in speaker with amplifier</b><span class="mean">Says Home Assistant’s replies out loud. You can turn this off or set the volume.</span></dd></div>
           <div><dt>Audio chips</dt><dd><b>ES7210 microphone converter · ES8311 audio codec</b></dd></div>
           <div><dt>Motion sensor</dt><dd><b>6-axis (accelerometer and gyroscope)</b><span class="mean">Built in. PocketOS doesn’t use it today.</span></dd></div>
     </dl>
-  </section>
+  </details>
 
-  <section class="block alu spec-group" id="battery">
-    <div class="sg-head"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="18" height="10" rx="2.5"/><path d="M22 11v2M6 10v4M9.5 10v4"/></svg><h2>Battery and charging</h2></div>
+  <details class="block alu spec-group" id="battery">
+    <summary class="sg-head"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="18" height="10" rx="2.5"/><path d="M22 11v2M6 10v4M9.5 10v4"/></svg><span class="sg-t"><h2>Battery and charging</h2><small>Rechargeable 3.7 V lithium battery, USB-C charging</small></span></summary>
     <dl class="spec-list">
           <div><dt>Battery</dt><dd><b>Built-in rechargeable 3.7 V lithium battery</b></dd></div>
           <div><dt>Charging</dt><dd><b>USB-C, from any USB charger or computer</b><span class="mean">A USB-C cable is in the box.</span></dd></div>
@@ -100,10 +100,10 @@
           <div><dt>Power management</dt><dd><b>X-Powers AXP2101</b></dd></div>
           <div><dt>Capacity and battery life</dt><dd><b>To be confirmed</b><span class="note-s">The manufacturer doesn’t publish the battery’s capacity. Battery life will be measured with PocketOS on finished units before it goes on sale.</span></dd></div>
     </dl>
-  </section>
+  </details>
 
-  <section class="block alu spec-group" id="physical">
-    <div class="sg-head"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M20.5 9v2M20.5 13v2"/></svg><h2>Design and size</h2></div>
+  <details class="block alu spec-group" id="physical">
+    <summary class="sg-head"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M20.5 9v2M20.5 13v2"/></svg><span class="sg-t"><h2>Design and size</h2><small>Aluminium case, two side buttons, about 55 mm across</small></span></summary>
     <dl class="spec-list">
           <div><dt>Case</dt><dd><b>One-piece CNC-machined aluminium, anodised finish</b><span class="mean">Machined from a single piece of aluminium.</span></dd></div>
           <div><dt>Buttons</dt><dd><b>Power and Boot, on the side</b><span class="mean">Power turns the screen and PocketOS on and off. Boot shows the settings code, goes home, and talks to your home.</span></dd></div>
@@ -111,7 +111,7 @@
           <div><dt>Size</dt><dd><b>About 55 mm across, 15 mm deep</b><span class="note-s">Supplier figure. Exact measurements will be confirmed on finished units.</span></dd></div>
           <div><dt>Weight</dt><dd><b>To be confirmed</b><span class="note-s">Will be weighed on finished units, with the battery fitted.</span></dd></div>
     </dl>
-  </section>
+  </details>
 
   <section class="block alu" id="in-the-box">
     <h2>In the box</h2>
