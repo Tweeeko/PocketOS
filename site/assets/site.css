@@ -2,8 +2,14 @@
 /* The site is built around the device: round forms, layered liquid glass over a slow aurora,
    Unbounded (wide and round, like the dial) for display type and Onest for reading. */
 
-@font-face{font-family:"Unbounded";src:url(../fonts/unbounded.woff) format("woff");font-weight:200 900;font-display:swap}
-@font-face{font-family:"Onest";src:url(../fonts/onest.woff) format("woff");font-weight:100 900;font-display:swap}
+/* fixed weights, not one variable font: renders the same crisp shapes in every browser, including Safari */
+@font-face{font-family:"Unbounded";src:url(../fonts/unbounded-400.woff) format("woff");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Unbounded";src:url(../fonts/unbounded-500.woff) format("woff");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"Unbounded";src:url(../fonts/unbounded-600.woff) format("woff");font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:"Onest";src:url(../fonts/onest-400.woff) format("woff");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Onest";src:url(../fonts/onest-500.woff) format("woff");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"Onest";src:url(../fonts/onest-600.woff) format("woff");font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:"Onest";src:url(../fonts/onest-700.woff) format("woff");font-weight:700;font-style:normal;font-display:swap}
 
 :root{
   --night:#070b1c;      /* page */
@@ -23,7 +29,7 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--night);color:var(--ink);font:400 18px/1.6 var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{margin:0;font-synthesis:none;background:var(--night);color:var(--ink);font:400 18px/1.6 var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img,video,svg{display:block;max-width:100%}
 a{color:var(--cyan);text-underline-offset:3px;text-decoration-thickness:1px}
 a:hover{color:#fff}
@@ -99,7 +105,7 @@ a:hover{color:#fff}
 section[id],.chapters[id]{scroll-margin-top:72px}
 
 /* ---------- type ---------- */
-h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:-.035em;margin:0;text-wrap:balance}
+h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:-.02em;margin:0;text-wrap:balance}
 h1{font-size:clamp(40px,5.4vw,78px);line-height:1;font-weight:500}
 h2{font-size:clamp(30px,4.6vw,58px);line-height:1.02;font-weight:500}
 h3{font-size:20px;line-height:1.2;letter-spacing:-.02em}
@@ -353,7 +359,7 @@ esp-web-install-button:not(:defined) [slot=unsupported],esp-web-install-button:n
 .eyebrow{font:600 14px var(--text);color:var(--cyan);margin:0 0 14px;letter-spacing:.02em}
 .buy-hero{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(28px,5vw,70px);align-items:center;min-height:calc(100svh - 150px)}
 .buy-hero h1{margin-bottom:22px}
-.buy-hero h1 span{display:block;color:var(--mist);font-size:.62em;margin-top:.3em;letter-spacing:-.03em}
+.buy-hero h1 span{display:block;color:var(--mist);font-size:.62em;margin-top:.3em;letter-spacing:-.02em}
 .buy-hero .lede{margin-bottom:28px}
 /* product images: a fixed 4:3 frame; the picture fills it without stretching, so any photo can replace a render */
 .shot{position:relative;margin:0;aspect-ratio:4/3;border-radius:32px;overflow:hidden;background:#0b1024;
@@ -364,7 +370,7 @@ esp-web-install-button:not(:defined) [slot=unsupported],esp-web-install-button:n
 .avail{margin:0;border-radius:26px;padding:20px 24px}
 .avail-rows{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:20px}
 .avail dt{font:600 13.5px var(--text);color:var(--haze);margin-bottom:4px}
-.avail dd{margin:0;font:500 clamp(22px,2.4vw,28px) var(--display);letter-spacing:-.03em}
+.avail dd{margin:0;font:500 clamp(22px,2.4vw,28px) var(--display);letter-spacing:-.02em}
 .avail-note{color:var(--mist);font-size:16px;margin:16px 0 0;max-width:44ch}
 .avail .row{margin-top:18px}
 .buy-feature,.in-box{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(22px,4vw,48px);align-items:center;padding:clamp(50px,8vw,100px) 0 0}
