@@ -1,0 +1,11 @@
+# PocketOS partition table (32 MB flash)
+# Two app slots so updates over Wi-Fi can roll back if a new version fails.
+# nvs is 128 KB: settings (with device lists), paired phones and 48 h of battery history,
+# with room for flash wear-levelling. Changing this table needs a full (USB) re-flash.
+# Name,    Type, SubType, Offset,   Size,  Flags
+nvs,       data, nvs,     0x9000,   0x20000,
+otadata,   data, ota,     0x29000,  0x2000,
+phy_init,  data, phy,     0x2b000,  0x1000,
+ota_0,     app,  ota_0,   0x30000,  6M,
+ota_1,     app,  ota_1,   ,         6M,
+storage,   data, spiffs,  ,         8M,

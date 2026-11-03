@@ -1,0 +1,231 @@
+{
+  "$comment": "PocketOS settings contract, schema 3. Firmware (firmware/main/core/settings.c, unit-tested in firmware/host/tests) validates exactly these rules, and the settings website follows them. Lengths are in UTF-8 bytes. Bump schema_version on any change.",
+  "schema_version": 3,
+  "settings": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 24,
+      "default": "PocketOS",
+      "label": "Device name"
+    },
+    "brightness": {
+      "type": "integer",
+      "minimum": 10,
+      "maximum": 100,
+      "default": 80,
+      "label": "Screen brightness (%)"
+    },
+    "clock_24h": {
+      "type": "boolean",
+      "default": true,
+      "label": "24-hour clock"
+    },
+    "date_format": {
+      "enum": [
+        "dmy",
+        "mdy"
+      ],
+      "default": "dmy",
+      "label": "Date order"
+    },
+    "sleep_s": {
+      "enum": [
+        15,
+        30,
+        60,
+        0
+      ],
+      "default": 30,
+      "label": "Screen off after (seconds, 0 = never)"
+    },
+    "eye": {
+      "enum": [
+        "blue",
+        "violet",
+        "white"
+      ],
+      "default": "blue",
+      "label": "Companion eye colour"
+    },
+    "anim": {
+      "enum": [
+        "calm",
+        "lively",
+        "off"
+      ],
+      "default": "lively",
+      "label": "Companion animation"
+    },
+    "tz": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 47,
+      "default": "GMT0BST,M3.5.0/1,M10.5.0",
+      "label": "Time zone (POSIX TZ string)"
+    },
+    "auto_add": {
+      "type": "boolean",
+      "default": false,
+      "label": "Show new Home Assistant devices without review"
+    },
+    "alerts": {
+      "type": "boolean",
+      "default": true,
+      "label": "Companion looks alert when a lock is left unlocked"
+    },
+    "updates": {
+      "enum": [
+        "off",
+        "notify",
+        "auto"
+      ],
+      "default": "notify",
+      "label": "New firmware: don't check, tell me, or install overnight while charging"
+    },
+    "tiles": {
+      "type": "array",
+      "description": "Every tile exactly once, in menu order. show=false puts it under More.",
+      "minItems": 11,
+      "maxItems": 11,
+      "items": {
+        "type": "object",
+        "required": [
+          "key",
+          "label",
+          "show"
+        ],
+        "properties": {
+          "key": {
+            "enum": [
+              "favourites",
+              "lights",
+              "heating",
+              "media",
+              "locks",
+              "rooms",
+              "scenes",
+              "plugs",
+              "fans",
+              "blinds",
+              "sensors"
+            ]
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 12
+          },
+          "show": {
+            "type": "boolean"
+          }
+        }
+      },
+      "default": [
+        {
+          "key": "favourites",
+          "label": "Favourites",
+          "show": true
+        },
+        {
+          "key": "lights",
+          "label": "Lights",
+          "show": true
+        },
+        {
+          "key": "heating",
+          "label": "Heating",
+          "show": true
+        },
+        {
+          "key": "media",
+          "label": "Media",
+          "show": true
+        },
+        {
+          "key": "locks",
+          "label": "Locks",
+          "show": true
+        },
+        {
+          "key": "rooms",
+          "label": "Rooms",
+          "show": true
+        },
+        {
+          "key": "scenes",
+          "label": "Scenes",
+          "show": true
+        },
+        {
+          "key": "plugs",
+          "label": "Plugs",
+          "show": false
+        },
+        {
+          "key": "fans",
+          "label": "Fans",
+          "show": false
+        },
+        {
+          "key": "blinds",
+          "label": "Blinds",
+          "show": false
+        },
+        {
+          "key": "sensors",
+          "label": "Sensors",
+          "show": false
+        }
+      ]
+    },
+    "favourites": {
+      "type": "array",
+      "maxItems": 96,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 63
+      },
+      "default": [],
+      "label": "Favourite device ids"
+    },
+    "hidden": {
+      "type": "array",
+      "maxItems": 96,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 63
+      },
+      "default": [],
+      "label": "Device ids hidden from PocketOS"
+    },
+    "known": {
+      "type": "array",
+      "maxItems": 96,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 63
+      },
+      "default": [],
+      "label": "Device ids already reviewed"
+    },
+    "ha_url": {
+      "type": "string",
+      "maxLength": 95,
+      "default": "",
+      "label": "Home Assistant address",
+      "writeOnlyVia": "POST /api/v2/ha"
+    },
+    "ha_token": {
+      "type": "string",
+      "maxLength": 319,
+      "default": "",
+      "label": "Home Assistant long-lived token",
+      "writeOnlyVia": "POST /api/v2/ha",
+      "neverReturned": true
+    }
+  }
+}
