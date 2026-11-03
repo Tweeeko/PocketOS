@@ -1,0 +1,27 @@
+# One-off: removes old work branches and points release tags at the current history.
+name: Tidy branches and tags
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  tidy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Remove old work branches
+        run: |
+          for b in clean-history credit-leeko pocketos-firmware vercel website; do
+            git push origin --delete "$b" || true
+          done
+      - name: Point release tags at the current history
+        run: |
+          git push -f origin \
+            e343556b88f5394d78ee6e1f64c87fb550a494a4:refs/tags/v0.1.5 \
+            11d6e8cde9fa63fa21a3938d02eaac254ef58658:refs/tags/v0.1.4 \
+            0e405ab3309c63a4c3b1cd0ceb46e378966a4696:refs/tags/v0.1.3 \
+            d49d4f63658d1a07ecf291f87882dc0e42c1f8ec:refs/tags/v0.1.2 \
+            cc55d868e7c87ba673b163f8a8a4fdcff27882d3:refs/tags/v0.1.1 \
+            97ffab5190989066d36bd652179f30013f7ffce7:refs/tags/v0.1.0
