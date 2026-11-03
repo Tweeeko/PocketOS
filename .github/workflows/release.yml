@@ -80,9 +80,12 @@ jobs:
 
       - name: Update the website
         # Vercel rebuilds the site, which fetches this release for the browser installer.
-        # Set up once: see docs/website.md (VERCEL_DEPLOY_HOOK secret).
+        # Set up once: see docs/website.md (VERCEL_DEPLOY_HOOK secret). The release is already
+        # published at this point, so a problem here only warns.
         env:
           HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
         run: |
-          if [ -n "$HOOK" ]; then curl -fsS -X POST "$HOOK" && echo "Website rebuild started"
-          else echo "::notice::VERCEL_DEPLOY_HOOK isn't set, so the website keeps the previous installer until its next deploy"; fi
+          if [ -z "$HOOK" ]; then echo "::notice::VERCEL_DEPLOY_HOOK isn't set, so the website keeps the previous installer until its next deploy"; exit 0; fi
+          code=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$HOOK" || echo 000)
+          case "$code" in 2*) echo "Website rebuild started";;
+            *) echo "::warning::Vercel answered $code. Check VERCEL_DEPLOY_HOOK is the Deploy Hook link (https://api.vercel.com/v1/integrations/deploy/...) from Vercel → Settings → Git → Deploy Hooks";; esac

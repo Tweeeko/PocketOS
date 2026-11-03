@@ -95,29 +95,37 @@ p{margin:0 0 1em}
 .screen::after{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;background:linear-gradient(150deg,rgba(255,255,255,.14),transparent 30%)}
 .scr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transform:scale(.94);transition:opacity .5s ease,transform .6s cubic-bezier(.2,.8,.2,1);pointer-events:none}
 .pocket[data-screen=companion] .s-companion,.pocket[data-screen=menu] .s-menu,.pocket[data-screen=heat] .s-heat,.pocket[data-screen=music] .s-music{opacity:1;transform:none}
-.status{position:absolute;top:13%;display:flex;gap:6px;align-items:center;font-size:4cqw;color:var(--mist)}
-.status .bat{width:6cqw;height:3cqw;border-radius:.8cqw;border:1px solid rgba(255,255,255,.5);position:relative}
-.status .bat::after{content:"";position:absolute;inset:1px;right:25%;border-radius:.5cqw;background:#7be3a4}
-.clock{position:absolute;top:19%;font:500 10cqw var(--display);letter-spacing:-.04em}
-
-/* companion */
-.orb{position:relative;width:46cqw;height:46cqw;border-radius:50%;margin-top:4cqw;
-  background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.22),transparent 26%),radial-gradient(circle at 50% 60%,#1d2b66,#0a0f2a 70%);
-  box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),inset 0 -10px 30px rgba(106,167,255,.25),0 0 50px rgba(106,167,255,.25);transition:box-shadow .6s,transform .6s}
-.eyes{position:absolute;left:50%;top:50%;display:flex;gap:9cqw;transform:translate(calc(-50% + var(--ex,0px)),calc(-50% + var(--ey,0px)));transition:transform .18s ease-out}
-.eyes i{width:7.5cqw;height:11cqw;border-radius:50%;background:var(--ec,var(--eye));box-shadow:0 0 16px var(--ec,var(--eye));animation:blink 5.5s infinite;transform-origin:center 60%;transition:background .5s,height .4s,border-radius .4s}
-@keyframes blink{0%,93%,100%{transform:scaleY(1)}95.5%{transform:scaleY(.08)}}
-.mood-cap{position:absolute;bottom:15%;padding:1.6cqw 4cqw;border-radius:99px;font-size:4cqw;background:rgba(255,255,255,.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);white-space:nowrap}
-.mood-cap::before{content:"";display:inline-block;width:1.8cqw;height:1.8cqw;border-radius:50%;background:#7be3a4;margin-right:1.6cqw;vertical-align:.3cqw}
-/* moods */
-.pocket[data-mood=happy] .eyes i{height:4.5cqw;border-radius:8cqw 8cqw 1cqw 1cqw;animation:none}
-.pocket[data-mood=warm]{--ec:var(--lamp)}.pocket[data-mood=warm] .orb{box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),inset 0 -10px 30px rgba(255,184,107,.35),0 0 60px rgba(255,184,107,.35)}
-.pocket[data-mood=dance] .orb{animation:bob .7s ease-in-out infinite alternate}@keyframes bob{to{transform:translateY(-2.5cqw) rotate(-4deg)}}
-.pocket[data-mood=dance]{--ec:var(--iris)}
-.pocket[data-mood=alert]{--ec:var(--rose)}.pocket[data-mood=alert] .eyes i{height:13cqw;width:9cqw}.pocket[data-mood=alert] .mood-cap::before{background:var(--rose)}
-.pocket[data-mood=chilly]{--ec:var(--cyan)}.pocket[data-mood=chilly] .orb{animation:shiver .14s linear infinite alternate}@keyframes shiver{to{transform:translateX(.7cqw)}}
-.pocket[data-mood=tired] .eyes i{height:3cqw;border-radius:1cqw 1cqw 6cqw 6cqw;animation:none;opacity:.7}.pocket[data-mood=tired] .mood-cap::before{background:var(--lamp)}
-.pocket[data-mood=worried] .eyes i:first-child{transform:rotate(18deg)}.pocket[data-mood=worried] .eyes i:last-child{transform:rotate(-18deg)}.pocket[data-mood=worried] .eyes i{animation:none;height:8cqw}.pocket[data-mood=worried] .mood-cap::before{background:var(--rose)}
+/* companion: positions and sizes are the device's, as fractions of its 466 px screen (ui_home.c) */
+.status{position:absolute;top:5.58cqw;display:flex;gap:1.7cqw;align-items:center;font:500 3.22cqw var(--text);color:#8b91ae}
+.status svg{width:4.7cqw;height:4.7cqw;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+.status svg circle{fill:currentColor;stroke:none}
+.clock{position:absolute;top:10.2cqw;font:600 8.58cqw var(--text);letter-spacing:-.02em;color:#f1f3ff}
+.orbx{position:absolute;left:23.18cqw;top:25.75cqw;width:53.65cqw;height:53.65cqw}
+.orb{--glow:#6aa7ff;position:relative;width:100%;height:100%;border-radius:50%;border:1px solid rgba(255,255,255,.16);
+  background:linear-gradient(180deg,#2a2f55,#0c0e1c);box-shadow:0 0 12.9cqw color-mix(in srgb,var(--glow) 24%,transparent);transition:box-shadow .4s,border-color .4s}
+.orb::before{content:"";position:absolute;left:12%;top:5.6%;width:60%;height:28%;border-radius:50%;background:linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,0))}
+.face{position:absolute;inset:0;width:100%;height:100%;max-width:none;overflow:visible;transition:transform .45s ease-in-out;
+  filter:drop-shadow(0 0 1.6cqw color-mix(in srgb,var(--glow) 47%,transparent))}
+.face text{font-family:var(--text);font-weight:600}
+.cap{position:absolute;bottom:8.58cqw;display:flex;align-items:center;gap:1.7cqw;padding:1.5cqw 3.43cqw;border-radius:99px;
+  background:linear-gradient(180deg,rgba(255,255,255,.157),rgba(255,255,255,.039));box-shadow:inset 0 1px 0 rgba(255,255,255,.22);
+  font:500 3.86cqw var(--text);color:#f1f3ff;white-space:nowrap}
+.cap-dot{width:1.93cqw;height:1.93cqw;border-radius:50%;background:var(--dot,#7be3a4);box-shadow:0 0 2.1cqw var(--dot,#7be3a4)}
+/* the firmware's animation loops (anim_loop: ease-in-out, back and forth, lively speed) */
+.pocket[data-mood=idle] .orb,.pocket[data-mood=listen] .orb,.pocket[data-mood=away] .orb{animation:breathe 2.2s ease-in-out infinite alternate}
+@keyframes breathe{to{transform:translateY(-2%)}}
+.pocket[data-mood=dance] .orb{animation:hop .33s ease-in-out infinite alternate}
+.pocket[data-mood=dance] .orbx{animation:sway .66s ease-in-out infinite alternate}
+@keyframes hop{to{transform:translateY(-4%)}}
+@keyframes sway{from{transform:translateX(-2.4%)}to{transform:translateX(2.4%)}}
+.pocket[data-mood=cold] .orbx{animation:shiver .09s ease-in-out infinite alternate}
+@keyframes shiver{from{transform:translateX(-1.2%)}to{transform:translateX(1.2%)}}
+.mouth-dance{animation:fl .35s ease-in-out infinite alternate;--f0:0px;--f1:-1.28px}
+.note1{animation:fl .9s ease-in-out infinite alternate;--f0:1.92px;--f1:-4.48px}
+.note2{animation:fl .8s ease-in-out infinite alternate;--f0:-3.2px;--f1:2.56px}
+.mouth-hot{animation:fl .5s ease-in-out infinite alternate;--f0:0px;--f1:.96px}
+.drop{animation:fl 1.6s ease-in-out infinite;--f0:0px;--f1:8.32px}
+@keyframes fl{from{transform:translateY(var(--f0))}to{transform:translateY(var(--f1))}}
 
 /* menu */
 .s-menu .ttl{position:absolute;top:15%;font-size:4.4cqw;color:var(--mist)}

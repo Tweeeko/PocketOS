@@ -1,18 +1,113 @@
 // PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
-// The website's live PocketOS: built from markup, eyes that follow you, moods, a dial that turns,
-// and the glass sheen that follows the pointer. No tracking, no external requests.
+// The website's PocketOS. The companion is a direct port of the device's home screen
+// (firmware/main/ui/ui_home.c): same face shapes on the same 100-unit grid, same mood colours and
+// captions, same timings for breathing, blinking and looking around. Nothing is sent anywhere.
 (() => {
   'use strict';
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const $ = (s, el = document) => el.querySelector(s);
   const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-  const ARC = 207.35, FULL = 276.46;   // 270° of a radius-44 circle, and the whole circle
+  const rand = (a, b) => a + Math.random() * (b - a);
 
+  /* ---------- the companion, as drawn by the firmware ---------- */
+  // The device draws on a 250 px orb from a 100-unit face (orb centre 50,55, radius 40):
+  // 1 unit = 3.125 px. Pixel sizes from the firmware are divided by K here.
+  const K = 3.125, px = v => +(v / K).toFixed(3);
+  const EYE = '#6AA7FF', OK = '#7BE3A4', BAD = '#FF7A8A';
+  const MOOD_COLOR = { hot: '#FFA070', dance: '#FF7BD5', cold: '#8FD3FF', tired: '#FFC46B', alert: '#FFD166', charge: '#7BE3A4', worried: '#B6A8FF' };
+  const CAPTION = {
+    happy: 'All done!', dance: 'Vibing to the music', hot: 'Toasty in here', worried: 'Can’t reach home',
+    tired: 'Battery low', charge: 'Charging', sad: 'That didn’t work', alert: 'Front door is unlocked',
+    cold: 'Brr... 4° outside', sleep: 'Zzz', away: 'Out and about'
+  };
+  const greeting = () => { const h = new Date().getHours(); return h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening'; };
+
+  const ell = (cx, cy, w, h, c, cls = '') => `<ellipse class="${cls}" cx="${cx}" cy="${cy}" rx="${w / 2}" ry="${h / 2}" fill="${c}"/>`;
+  // lv_arc: 0° is 3 o'clock and angles run clockwise
+  const arc = (cx, cy, r, a0, a1, w, c) => {
+    const p = a => [cx + r * Math.cos(a * Math.PI / 180), cy + r * Math.sin(a * Math.PI / 180)].map(n => n.toFixed(2));
+    const [x0, y0] = p(a0), [x1, y1] = p(a1);
+    return `<path d="M${x0} ${y0}A${r} ${r} 0 ${a1 - a0 > 180 ? 1 : 0} 1 ${x1} ${y1}" fill="none" stroke="${c}" stroke-width="${px(w)}" stroke-linecap="round"/>`;
+  };
+  const line = (pts, w, c) => `<polyline points="${pts.join(' ')}" fill="none" stroke="${c}" stroke-width="${px(w)}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  // lower half of a circle plus an eyelid, as half_eye() draws it
+  const halfEye = (cx, cy, w, c) => `<path d="M${cx - w / 2} ${cy}A${w / 2} ${w / 2} 0 0 0 ${cx + w / 2} ${cy}Z" fill="${c}"/>` + line([cx - w / 2 - px(6), cy, cx + w / 2 + px(6), cy], 7, c);
+  // labels are placed by their top-left corner on the device
+  const glyph = (t, size, x, y, c, cls = '') => `<text class="${cls}" x="${x}" y="${y}" font-size="${px(size)}" fill="${c}" dominant-baseline="text-before-edge">${t}</text>`;
+  const note = (x, y, size, c, cls) => { const s = px(size) / 24; return `<g class="${cls}"><g transform="translate(${x} ${y}) scale(${s.toFixed(3)})"><path fill="${c}" d="M21 2v13.5a3.5 3.5 0 1 1-2-3.2V7.1L10 9v8.5A3.5 3.5 0 1 1 8 14.3V4.6z"/></g></g>`; };
+  const bolt = (x, y, size, c) => { const s = px(size) / 24; return `<g transform="translate(${x} ${y}) scale(${s.toFixed(3)})"><path fill="${c}" d="M13 2 4 14h6l-1 8 9-12h-6z"/></g>`; };
+
+  function faceSVG(m, eyeCol) {
+    const c = MOOD_COLOR[m] || eyeCol;
+    switch (m) {
+      case 'sleep':
+        return arc(34, 46, 9, 30, 150, 11, c) + arc(66, 46, 9, 30, 150, 11, c) + glyph('z', 26, 72, 22, c) + glyph('z', 18, 80, 14, c);
+      case 'happy': case 'dance': case 'charge': {
+        let s = arc(34, 58, 9, 200, 340, 13, c) + arc(66, 58, 9, 200, 340, 13, c);
+        if (m === 'dance') s += ell(50, 68, 11, 8, c, 'mouth-dance') + note(6, 26, 28, c, 'note1') + note(84, 32, 20, c, 'note2');
+        else { s += arc(50, 60, 10, 30, 150, 9, c); if (m === 'charge') s += bolt(76, 22, 28, c); }
+        return s;
+      }
+      case 'hot': case 'tired': {
+        let s = halfEye(34, 52, 16, c) + halfEye(66, 52, 16, c);
+        if (m === 'hot') s += ell(50, 69, 9, 6, c, 'mouth-hot') + ell(21, 63, 10, 10, 'rgba(255,90,74,.31)') + ell(79, 63, 10, 10, 'rgba(255,90,74,.31)') + ell(80, 32, 6, 9, '#8FD3FF', 'drop');
+        else s += line([43, 71, 57, 71], 9, c);
+        return s;
+      }
+      case 'sad': case 'worried':
+        return line([25, 43, 41, 39], 10, c) + line([75, 43, 59, 39], 10, c) + ell(34, 56, 12, 16, c, 'eye') + ell(66, 56, 12, 16, c, 'eye')
+          + arc(50, 78, 10, 220, 320, 9, c) + (m === 'worried' ? glyph('?', 26, 78, 22, c) : '');
+      case 'alert':
+        return line([26, 38, 40, 42], 10, c) + line([74, 38, 60, 42], 10, c) + ell(34, 54, 15, 21, c, 'eye') + ell(66, 54, 15, 21, c, 'eye')
+          + ell(50, 72, 7, 6, c) + glyph('!', 40, 78, 16, c);
+      case 'cold':
+        return line([26, 47, 39, 53, 26, 59], 12, c) + line([74, 47, 61, 53, 74, 59], 12, c) + line([40, 71, 50, 68, 60, 71], 8, c);
+      default: {   // idle, wake, listen, away
+        const h = m === 'listen' ? 20 : 17;
+        return ell(34, 52, 13, h, c, 'eye') + ell(66, 52, 13, h, c, 'eye') + (m === 'away' ? arc(50, 66, 7, 40, 140, 8, c) : '');
+      }
+    }
+  }
+
+  // Blink (2.5–6 s, eyes squash to 6 px for 120 ms) and look around (3.5–7 s, the face slides up
+  // to 14 px either way over 450 ms, holds 900 ms, slides back), exactly as blink_cb / look_cb.
+  function startLife(el) {
+    const blink = () => {
+      el._blink = setTimeout(blink, rand(2500, 6000));
+      const eyes = $$('.face .eye', el); if (!eyes.length || reduce) return;
+      eyes.forEach(e => { e.dataset.ry = e.dataset.ry || e.getAttribute('ry'); e.setAttribute('ry', px(3)); });
+      setTimeout(() => eyes.forEach(e => e.setAttribute('ry', e.dataset.ry)), 120);
+    };
+    const look = () => {
+      el._look = setTimeout(look, rand(3500, 7000));
+      const f = $('.face', el); if (!f || !$('.face .eye', el) || reduce) return;
+      f.style.transform = `translateX(${(rand(-14, 14) / 250 * 100).toFixed(2)}%)`;
+      setTimeout(() => { f.style.transform = ''; }, 450 + 900);
+    };
+    el._blink = setTimeout(blink, 3000);
+    el._look = setTimeout(look, 4000);
+  }
+
+  function setMood(el, m) {
+    if (el.dataset.mood === m && $('.face', el).innerHTML) return;
+    el.dataset.mood = m;
+    const orb = $('.orb', el), face = $('.face', el), col = MOOD_COLOR[m] || EYE;
+    face.style.transform = '';
+    face.innerHTML = faceSVG(m, EYE);
+    orb.style.setProperty('--glow', col);
+    orb.style.borderColor = m === 'hot' ? 'rgba(255,140,90,.63)' : 'rgba(255,255,255,.16)';
+    $('.cap-text', el).textContent = CAPTION[m] || greeting();
+    $('.cap-dot', el).style.setProperty('--dot', m === 'worried' ? BAD : OK);
+  }
+
+  /* ---------- the other screens ---------- */
+  const ARC = 207.35, FULL = 276.46;   // 270° of a radius-44 circle, and the whole circle
   const icon = {
     bulb: '<svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>',
     flame: '<svg viewBox="0 0 24 24"><path d="M12 22a7 7 0 0 0 7-7c0-4-3-6-4-10-2 2-3 4-3 6-1-1-2-2-2-4-3 3-5 5-5 8a7 7 0 0 0 7 7z"/></svg>',
     note: '<svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/></svg>',
     lock: '<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>',
+    wifi: '<svg viewBox="0 0 24 24"><path d="M2 8.8a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1.2"/></svg>',
   };
   const play = '<svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>';
   const prev = '<svg viewBox="0 0 24 24"><path d="M18 5L8 12l10 7zM6 5h2v14H6z"/></svg>';
@@ -27,8 +122,9 @@
     const k = n++;
     const ring = el.hasAttribute('data-ring') ? `<svg class="ring" viewBox="0 0 200 200" aria-hidden="true"><defs><path id="rim${k}" d="M100 100m-95 0a95 95 0 1 1 190 0a95 95 0 1 1-190 0"/></defs><text><textPath href="#rim${k}" textLength="592" lengthAdjust="spacing">PocketOS ◦ a tiny companion for your whole home ◦ created by Leeko ◦</textPath></text></svg>` : '';
     el.innerHTML = ring + `<span class="key k1"></span><span class="key k2"></span><div class="screen">
-      <div class="scr s-companion"><div class="status"><span class="bat"></span>78%</div><div class="clock">08:24</div>
-        <div class="orb"><div class="eyes"><i></i><i></i></div></div><div class="mood-cap">Good morning</div></div>
+      <div class="scr s-companion"><div class="status">${icon.wifi}<span>78%</span></div><div class="clock">08:24</div>
+        <div class="orbx"><div class="orb"><svg class="face" viewBox="10 15 80 80" aria-hidden="true"></svg></div></div>
+        <div class="cap"><i class="cap-dot"></i><span class="cap-text">Good morning</span></div></div>
       <div class="scr s-menu"><div class="ttl">Home</div><div class="tiles">
         <div class="tile on">${icon.bulb}<b>Lights</b><small>3 on</small></div>
         <div class="tile on">${icon.flame}<b>Heating</b><small>21.5°</small></div>
@@ -40,15 +136,16 @@
         <div class="ctls"><i>${prev}</i><i class="main">${play}</i><i>${next}</i></div><div class="back">‹ Music</div></div>
     </div>`;
     el.setAttribute('role', 'img');
-    if (!el.dataset.screen) el.dataset.screen = 'companion';
-    if (!el.dataset.mood) el.dataset.mood = 'idle';
     el.setAttribute('aria-label', 'PocketOS, a round touchscreen with an animated companion');
+    if (!el.dataset.screen) el.dataset.screen = 'companion';
+    el.dataset.mood = '';
+    setMood(el, 'idle');
     tick(el);
     dialTo(el, 'heat', 0);
     dialTo(el, 'music', 0);
+    startLife(el);
   }
 
-  // The dial screens animate when they come into view
   // Arc and knob move together, easing out like a finger letting go
   function dialTo(el, which, to, ms = 0) {
     const s = $('.s-' + which, el); if (!s) return;
@@ -80,48 +177,27 @@
 
   // Live clock on every device
   function tick(el) { const d = new Date(), c = $('.clock', el); if (c) c.textContent = String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
-  setInterval(() => $$('.pocket').forEach(tick), 15000);
-
-  const MOODS = {
-    idle: 'Good morning', warm: 'Heating’s on', dance: 'Music’s playing', alert: 'Front door unlocked',
-    chilly: 'Cold outside', tired: 'Battery low', worried: 'Can’t reach home', happy: 'Hello!'
-  };
-  function mood(el, m) { el.dataset.mood = m; const c = $('.mood-cap', el); if (c) c.textContent = MOODS[m] || ''; }
+  setInterval(() => $$('.pocket').forEach(el => { tick(el); if (el.dataset.mood === 'idle') $('.cap-text', el).textContent = greeting(); }), 15000);
 
   $$('.pocket[data-build]').forEach(build);
 
-  // Eyes follow the pointer (or the last touch)
-  let raf = 0, px = innerWidth / 2, py = innerHeight / 3;
-  function look() {
-    raf = 0;
-    $$('.pocket').forEach(el => {
-      const orb = $('.orb', el); if (!orb) return;
-      const r = orb.getBoundingClientRect(); if (!r.width) return;
-      const dx = px - (r.left + r.width / 2), dy = py - (r.top + r.height / 2), d = Math.hypot(dx, dy) || 1;
-      const m = Math.min(1, d / 400) * r.width * .09;
-      el.style.setProperty('--ex', (dx / d * m).toFixed(1) + 'px');
-      el.style.setProperty('--ey', (dy / d * m * .8).toFixed(1) + 'px');
-    });
-  }
-  if (!reduce) addEventListener('pointermove', e => { px = e.clientX; py = e.clientY; if (!raf) raf = requestAnimationFrame(look); }, { passive: true });
-
-  // Tap the companion: it's pleased to see you
+  // Tap the orb: happy for 1.3 s, as home_happy(1300) does
   $$('.pocket').forEach(el => el.addEventListener('click', () => {
     if (el.dataset.screen !== 'companion' || el.dataset.mood === 'happy') return;
-    const was = el.dataset.mood; mood(el, 'happy');
-    setTimeout(() => mood(el, was), 1400);
+    const was = el.dataset.mood; setMood(el, 'happy');
+    clearTimeout(el._happy); el._happy = setTimeout(() => setMood(el, was), 1300);
   }));
 
-  // Mood buttons drive the pinned device
+  // Mood buttons drive the story's devices
   $$('.moods button').forEach(b => b.addEventListener('click', () => {
-    [$('#story'), $('.chapter .mini')].forEach(el => { if (el) { show(el, 'companion'); mood(el, b.dataset.mood); } });
+    [$('#story'), $('.chapter .mini')].forEach(el => { if (el) { show(el, 'companion'); setMood(el, b.dataset.mood); } });
     $$('.moods button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
   }));
 
-  // Chapters switch the pinned device's screen as they reach the middle of the view
+  // Chapters switch the screen as they reach the middle of the view. On phones each chapter has
+  // its own device (.mini); on wider screens one stays pinned.
   const story = $('#story');
   if (story && 'IntersectionObserver' in window) {
-    // On phones each chapter has its own device (.mini); on wider screens one stays pinned
     const io = new IntersectionObserver(es => es.forEach(e => {
       if (!e.isIntersecting) return;
       const scr = e.target.dataset.screen, mini = $('.mini', e.target);
