@@ -4,6 +4,12 @@ Each release needs a section here headed with its version, exactly as in `firmwa
 The text under it (keep it short and plain) is shown on the settings website when the update
 is offered.
 
+## 0.1.5
+- Replies to voice requests are now spoken out loud as well as shown. Turn it off, or set the volume, under Smart home → Voice on the settings page
+- Lights that support it can be set warmer or cooler, or to a colour: use the buttons beside the power button on a light’s screen
+- Homes set to Fahrenheit show temperatures on the right scale
+- More time zones to choose from
+
 ## 0.1.4
 - If your Wi-Fi password changes, PocketOS says so and the Boot button takes you straight to Wi-Fi setup
 - Change Wi-Fi network and Reset PocketOS are now on PocketOS itself, under More → This PocketOS, confirmed with the Boot button

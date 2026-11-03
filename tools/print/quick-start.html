@@ -1,0 +1,100 @@
+<!doctype html>
+<!-- PocketOS, created by Leeko. Copyright (c) 2026 Leeko. -->
+<!-- The printed quick start guide that goes in the box. A6, two-sided. Build: python3 tools/print/build.py -->
+<html lang="en-GB"><head><meta charset="utf-8">
+<title>PocketOS Quick Start</title>
+<style>
+@font-face{font-family:Unbounded;src:url(../../site/fonts/unbounded.woff) format("woff");font-weight:200 900}
+@font-face{font-family:Onest;src:url(../../site/fonts/onest.woff) format("woff");font-weight:100 900}
+@page{size:105mm 148mm;margin:0}
+:root{--ink:#0b1020;--mist:#5a6275;--line:#dfe3ea;--accent:#2f6fe0}
+*{box-sizing:border-box}
+html,body{margin:0;background:#fff;color:var(--ink);font:400 8.4pt/1.38 Onest,system-ui,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.sheet{width:105mm;height:148mm;padding:8mm 8mm 7mm;display:flex;flex-direction:column;page-break-after:always;overflow:hidden;position:relative}
+.sheet:last-child{page-break-after:auto}
+h1,h2,h3{font-family:Unbounded,sans-serif;font-weight:600;letter-spacing:-.03em;margin:0}
+h1{font-size:17pt;line-height:1.05;margin:5mm 0 1.5mm}
+h2{font-size:9.6pt;margin:0 0 1.6mm}
+p{margin:0}
+.logo{height:4.2mm;width:auto;display:block;margin-right:auto}
+.lede{color:var(--mist);font-size:8.6pt}
+.need{display:flex;gap:1.6mm;flex-wrap:wrap;margin:3.6mm 0 4.2mm}
+.need span{border:.25mm solid var(--line);border-radius:10mm;padding:.9mm 2.4mm;font-size:7.4pt;font-weight:500}
+ol.steps{list-style:none;margin:0;padding:0;display:grid;gap:3.2mm;counter-reset:s}
+ol.steps li{display:grid;grid-template-columns:6.4mm 1fr;gap:2.4mm;counter-increment:s}
+ol.steps li::before{content:counter(s);width:6.4mm;height:6.4mm;border-radius:50%;background:var(--ink);color:#fff;font:600 8pt/6.4mm Unbounded,sans-serif;text-align:center}
+ol.steps b.t{display:block;font-size:8.8pt;font-weight:600;margin-bottom:.4mm}
+.qr{margin-top:auto;display:grid;grid-template-columns:24mm 1fr;gap:3.6mm;align-items:center;border-top:.25mm solid var(--line);padding-top:4mm}
+.qr img{width:24mm;height:24mm;display:block}
+.qr b{display:block;font-size:8.8pt;margin-bottom:.6mm}
+.url{font-weight:600;color:var(--accent);white-space:nowrap}
+.keys{display:grid;grid-template-columns:1fr 1fr;gap:2.4mm;margin-bottom:3.4mm}
+.key{border:.25mm solid var(--line);border-radius:3mm;padding:2.4mm 2.6mm}
+.key h3{font-size:8.4pt;margin-bottom:1.4mm}
+.key dl{margin:0;display:grid;gap:1.1mm}
+.key dt{font-weight:600;font-size:7.2pt;color:var(--mist);text-transform:uppercase;letter-spacing:.04em}
+.key dd{margin:0;font-size:7.6pt;line-height:1.3}
+ul{margin:0;padding-left:3.4mm}
+li{margin:0 0 .7mm}
+.sec{margin-bottom:3mm}
+.small{font-size:7.2pt;color:var(--mist);line-height:1.35}
+.foot{margin-top:auto;border-top:.25mm solid var(--line);padding-top:2.6mm;display:grid;grid-template-columns:1fr auto;gap:3mm;align-items:end}
+.bin{width:7mm;height:auto}
+</style></head><body>
+
+<section class="sheet">
+  <img class="logo" src="../../brand/pocketos-logo-horizontal-black.svg" alt="PocketOS">
+  <h1>Quick start</h1>
+  <p class="lede">Your home, at a glance. Setting up takes about five minutes.</p>
+  <div class="need"><span>Home Assistant</span><span>2.4 GHz Wi-Fi</span><span>Your phone</span></div>
+  <ol class="steps">
+    <li><div><b class="t">Charge and switch on</b>Plug PocketOS in with the USB-C cable. To switch it on, hold the Power button for 1 second.</div></li>
+    <li><div><b class="t">Join PocketOS from your phone</b>Point your phone’s camera at the code on PocketOS’s screen and tap to join. A setup page opens.</div></li>
+    <li><div><b class="t">Choose your home Wi-Fi</b>Pick your network and enter its password. PocketOS joins it, and your phone goes back to your Wi-Fi.</div></li>
+    <li><div><b class="t">Connect Home Assistant</b>On the settings page, open <b>Smart home</b> and follow the steps. Your devices appear on PocketOS.</div></li>
+  </ol>
+  <div class="qr">
+    <img src="qr-start.svg" alt="">
+    <div><b>Step-by-step guide</b><p>Scan for the full setup guide, with pictures.</p><p class="url">pocketos-orpin.vercel.app/start</p></div>
+  </div>
+</section>
+
+<section class="sheet">
+  <h2>The side buttons</h2>
+  <div class="keys">
+    <div class="key"><h3>Power</h3><dl>
+      <div><dt>Press</dt><dd>Screen off or on</dd></div>
+      <div><dt>Hold 1 second</dt><dd>Switch on</dd></div>
+      <div><dt>Hold 6 seconds</dt><dd>Switch off</dd></div>
+    </dl></div>
+    <div class="key"><h3>Boot</h3><dl>
+      <div><dt>Press</dt><dd>Show the code for the settings page</dd></div>
+      <div><dt>Press twice</dt><dd>Back to the home screen</dd></div>
+      <div><dt>Hold</dt><dd>Talk to your home, then let go</dd></div>
+    </dl></div>
+  </div>
+
+  <div class="sec">
+    <h2>Help and updates</h2>
+    <p>Help and questions: <span class="url">pocketos-orpin.vercel.app/help</span></p>
+    <p>Updates install over Wi-Fi, with security updates until at least <b>31 December 2029</b>. Report a security problem, and read our statement of compliance, at <span class="url">pocketos-orpin.vercel.app/security</span></p>
+  </div>
+
+  <div class="sec">
+    <h2>Safety and care</h2>
+    <ul class="small">
+      <li>PocketOS has a built-in rechargeable lithium battery. Don’t open, crush, puncture or heat it.</li>
+      <li>Charge with the supplied cable from a USB charger or computer. Don’t leave it charging on soft furnishings.</li>
+      <li>Keep it dry and away from heat. Clean with a soft, dry cloth.</li>
+      <li>If it swells, gets hot, smells or is damaged, stop using it and contact us.</li>
+    </ul>
+  </div>
+
+  <div class="foot">
+    <p class="small">Don’t put PocketOS in household rubbish. Take it to an electrical recycling point.<br>
+    <b style="color:var(--ink)">Leeeko LTD</b>, 32 Ferndale Avenue, Newcastle, NE28 7NE, United Kingdom.<br>
+    Home Assistant is a trademark of its owner. PocketOS is not affiliated with or endorsed by it.</p>
+    <svg class="bin" viewBox="0 0 40 52" aria-label="Don’t dispose of in household waste"><g fill="none" stroke="#0b1020" stroke-width="2.4"><path d="M9 12h22l-2.6 28H11.6z"/><path d="M6 12h28M16 12V8h8v4"/><circle cx="13" cy="42.5" r="2.6"/><circle cx="27" cy="42.5" r="2.6"/><path d="M4 4l32 40M36 4L4 44"/></g><rect x="4" y="48" width="32" height="3.4" fill="#0b1020"/></svg>
+  </div>
+</section>
+</body></html>

@@ -61,6 +61,11 @@
       "source": "/install.html",
       "destination": "/recovery",
       "permanent": true
+    },
+    {
+      "source": "/start",
+      "destination": "/setup",
+      "permanent": false
     }
   ]
 }
