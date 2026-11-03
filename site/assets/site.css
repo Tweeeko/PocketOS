@@ -10,7 +10,7 @@
   --deep:#0d1430;       /* raised night */
   --ink:#eef2ff;        /* text */
   --mist:#a3acd0;       /* secondary text */
-  --haze:#6f7899;       /* tertiary */
+  --haze:#7d86a8;       /* tertiary */
   --eye:#6aa7ff;        /* the companion's eyes */
   --cyan:#7fe3ff;       /* aurora */
   --iris:#8c7cff;       /* aurora, music */
@@ -423,7 +423,7 @@ footer.end{max-width:1240px;margin:40px auto 0;padding:46px 28px 50px;border-top
 .foot img{height:15px;width:auto;margin-bottom:12px}
 .foot p{margin:0}
 .foot nav{display:flex;flex-direction:column;gap:9px}
-.foot h4{font:600 14px var(--text);color:var(--ink);margin:0 0 4px}
+.foot h2,.foot h4{font:600 14px var(--text);letter-spacing:0;color:var(--ink);margin:0 0 4px}
 .foot a{color:var(--mist);text-decoration:none}.foot a:hover{color:var(--ink)}
 .legal{margin:40px 0 0;font-size:13px}
 
@@ -472,7 +472,7 @@ footer.end{max-width:1240px;margin:40px auto 0;padding:46px 28px 50px;border-top
 /* ---------- aluminium: sections about the physical device (case, buttons, box, specs) are
    satin silver like its case; everything about the screen and software stays dark ---------- */
 .alu{position:relative;isolation:isolate;overflow:hidden;
-  --ink:#10162b;--mist:#4b5470;--haze:#6b7389;--cyan:#1f56c4;
+  --ink:#10162b;--mist:#454e69;--haze:#555d76;--cyan:#1f56c4;
   color:var(--ink);color-scheme:light;
   background:linear-gradient(165deg,#f3f5f9 0%,#e3e7ee 45%,#d4d9e2 100%);
   border:1px solid rgba(255,255,255,.75);

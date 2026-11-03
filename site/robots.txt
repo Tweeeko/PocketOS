@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /demo-settings
+Disallow: /api/
+
+Sitemap: https://www.pocketos.co.uk/sitemap.xml

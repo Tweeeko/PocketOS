@@ -53,6 +53,17 @@
   ],
   "redirects": [
     {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "pocketos-orpin.vercel.app"
+        }
+      ],
+      "destination": "https://www.pocketos.co.uk/:path*",
+      "permanent": true
+    },
+    {
       "source": "/install",
       "destination": "/recovery",
       "permanent": true
