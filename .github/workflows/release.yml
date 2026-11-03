@@ -76,3 +76,12 @@ jobs:
           VER=${{ steps.v.outputs.version }}
           gh release create "v$VER" out/pocketos.bin out/pocketos-full.bin out/manifest.json \
             --title "PocketOS $VER" --notes-file notes.md --target "$GITHUB_SHA"
+
+      - name: Update the website
+        # Vercel rebuilds the site, which fetches this release for the browser installer.
+        # Set up once: see docs/website.md (VERCEL_DEPLOY_HOOK secret).
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -n "$HOOK" ]; then curl -fsS -X POST "$HOOK" && echo "Website rebuild started"
+          else echo "::notice::VERCEL_DEPLOY_HOOK isn't set, so the website keeps the previous installer until its next deploy"; fi

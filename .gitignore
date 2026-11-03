@@ -8,3 +8,5 @@ firmware/host/build/
 firmware/host/shots/
 __pycache__/
 firmware/sdkconfig.release
+_site/
+.vercel/
