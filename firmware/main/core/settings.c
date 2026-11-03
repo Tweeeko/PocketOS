@@ -1,4 +1,5 @@
 #include "settings.h"
+#include "portable.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -113,7 +114,7 @@ static int tile_index(const char *key)
 
 bool settings_patch(settings_t *out, const cJSON *patch, bool trusted, settings_err_t *err)
 {
-    static settings_t s;   // static: the struct is ~20 KB, too big for a task stack
+    PSRAM_BSS static settings_t s;   // ~20 KB: too big for a task stack or internal RAM
     err->field = NULL;
     err->message = NULL;
     if (!cJSON_IsObject(patch)) FAIL(NULL, "Expected a JSON object");
