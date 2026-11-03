@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 // Unit tests for the portable core: settings, model, Home Assistant protocol.
 // Build and run: make -C firmware/host test
 #include <stdio.h>

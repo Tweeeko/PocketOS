@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 #include "settings.h"
 #include "portable.h"
 #include <string.h>

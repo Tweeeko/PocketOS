@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 // Screen stack, live refresh, toasts and overlays.
 #include "ui_priv.h"
 #include <string.h>

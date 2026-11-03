@@ -1,4 +1,6 @@
 PocketOS
+Created and written by Leeko.
+Copyright (c) 2026 Leeko. All rights reserved.
 
 This project depends on, and is informed by, the following third-party work:
 
@@ -9,6 +11,16 @@ This project depends on, and is informed by, the following third-party work:
 - Waveshare ESP32-S3-Touch-AMOLED-1.75C examples
   https://github.com/waveshareteam/ESP32-S3-Touch-AMOLED-1.75C
   Licensed under the Apache License, Version 2.0. AXP2101 register addresses and
-  status-bit meanings in firmware/main/pmu.c follow the 01_AXP2101 example.
+  status-bit meanings in firmware/main/esp/pmu.c follow the 01_AXP2101 example.
 
-- LVGL (MIT), ESP-IDF (Apache-2.0), espressif/mdns (Apache-2.0), cJSON (MIT, bundled with ESP-IDF).
+- XPowersLib by Lewis He (MIT)
+  https://github.com/lewisxhe/XPowersLib
+  AXP2101 battery voltage and charger-status register use in firmware/main/esp/pmu.c follows it.
+
+- LVGL (MIT), ESP-IDF (Apache-2.0), espressif/mdns and esp_websocket_client (Apache-2.0),
+  cJSON (MIT, bundled with ESP-IDF and in firmware/host/third_party).
+
+- Inter typeface by Rasmus Andersson (SIL Open Font License 1.1), converted into the device
+  fonts in firmware/main/ui/assets by tools/assetgen.py.
+
+- ESP Web Tools by ESPHome (Apache-2.0), loaded by the website's install page.

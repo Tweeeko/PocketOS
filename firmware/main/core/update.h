@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 #pragma once
 // Firmware update helpers: version comparison and checking the release manifest.
 // Portable C (unit-tested on a PC). The download itself is in esp/updater.c.

@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 #pragma once
 // PocketOS settings (schema v3). Portable C: no ESP-IDF calls, so it is unit-tested on a PC.
 // Names, limits and defaults must match docs/config-schema.json.

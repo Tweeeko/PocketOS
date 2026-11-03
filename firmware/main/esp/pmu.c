@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 // Register addresses and bit meanings follow Waveshare's Apache-2.0 example 01_AXP2101.
 // Battery voltage and charger status follow XPowersLib (MIT) AXP2101 register use.
 // PocketOS reads status, turns on battery detection and the battery-voltage ADC channel, and

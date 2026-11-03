@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 // Scrolling glass lists. The row nearest the centre is highlighted and the rest fade towards the
 // round edge. Rows: rooms, devices in a room or category, favourites, More, device info, companion.
 #include "ui_priv.h"
@@ -114,6 +115,7 @@ static void collect(void)
         add(R_INFO, "", "Battery", sub, false);
         add(R_INFO, "", "Address", st.host, false);
         add(R_INFO, "", "Firmware", st.firmware, false);
+        add(R_INFO, "", "Created by", "Leeko", false);
         snprintf(sub, sizeof sub, "%d devices, %d rooms", m->n, m->na);
         add(R_INFO, "", "Home", sub, false);
         break;

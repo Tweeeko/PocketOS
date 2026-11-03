@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 // Home screen: the companion. Its face follows the home's state (see model_mood) and reacts to
 // touches. Shapes follow the browser prototype's SVG face, scaled to a 250 px orb.
 #include "ui_priv.h"

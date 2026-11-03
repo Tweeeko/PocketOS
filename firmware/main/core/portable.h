@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 #pragma once
 // Small helpers so the same code builds on the device and on a PC.
 #if defined(ESP_PLATFORM)

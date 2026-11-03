@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 // PocketOS screen simulator: runs the real device UI (firmware/main/ui) on a PC with LVGL 9.5,
 // fed by a fake Home Assistant (tests/fixture.h) that confirms commands like the real one does.
 // Scripted taps and drags exercise the screens; each step is saved as shots/NN_name.ppm.

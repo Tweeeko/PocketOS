@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 #pragma once
 // Internal to the UI. Screen size is 466 x 466 (round AMOLED).
 #include "lvgl.h"
