@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Install PocketOS</title>
+<meta name="description" content="Install PocketOS on a Waveshare ESP32-S3 1.75-inch round AMOLED from your browser.">
+<meta name="theme-color" content="#05060b">
+<link rel="icon" href="assets/icon.png"><link rel="apple-touch-icon" href="assets/icon.png">
+<link rel="stylesheet" href="assets/site.css">
+<script type="module" src="https://unpkg.com/esp-web-tools@10.4.0/dist/web/install-button.js?module"></script>
+</head><body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./"><img src="assets/icon.png" alt=""><span>PocketOS</span></a>
+  <nav class="links" aria-label="Site"><a href="install.html" aria-current="page">Install</a><a href="help.html">Help</a><a href="changes.html">What’s new</a></nav>
+</div></header>
+
+<main id="main" class="page"><div class="wrap" style="max-width:760px">
+  <p class="eyebrow">Install</p>
+  <h1 style="font-size:clamp(36px,6vw,56px)">Put PocketOS on your board.</h1>
+  <p class="lead">You only do this once per board. After that PocketOS updates itself over Wi-Fi.</p>
+
+  <div class="card installer">
+    <esp-web-install-button manifest="firmware/manifest.json">
+      <button slot="activate" class="btn">Install PocketOS</button>
+      <span slot="unsupported"><b>This browser can’t install PocketOS.</b><br><span class="muted">Open this page in Chrome or Edge on a Windows, Mac, Linux or ChromeOS computer. iPhone, iPad and Safari can’t talk to USB devices.</span></span>
+      <span slot="not-allowed"><b>Open this page over https:// to install.</b></span>
+    </esp-web-install-button>
+    <div class="ver" id="ver">Latest version: checking…</div>
+  </div>
+
+  <h2 style="font-size:28px;margin-top:40px">What you need</h2>
+  <ul class="muted">
+    <li>A <b>Waveshare ESP32-S3-Touch-AMOLED-1.75C</b>. PocketOS is made for this board only.</li>
+    <li>A computer with <b>Chrome or Edge</b>. Nothing to install on it.</li>
+    <li>A <b>USB-C cable that carries data</b>. Some charging-only cables don’t.</li>
+  </ul>
+
+  <h2 style="font-size:28px;margin-top:34px">Steps</h2>
+  <ol class="muted">
+    <li>Plug the board into the computer.</li>
+    <li>Press <b>Install PocketOS</b> above and choose the port that appears (often called “USB JTAG/serial debug unit”).</li>
+    <li>If it asks whether to erase the device, choose <b>Erase</b>. Installing from this page always starts PocketOS fresh, so a board you already use will need setting up again. To keep its settings, use updates instead.</li>
+    <li>Wait about two minutes. Keep the page open and the cable connected.</li>
+    <li>Unplug and plug it back in. PocketOS greets you and shows a code to scan with your phone. Carry on with the <a href="help.html#start">setup guide</a>.</li>
+  </ol>
+
+  <details><summary>The board doesn’t show up in the list</summary>
+    <p class="muted">Try another cable first. If it still doesn’t appear, put the board into download mode: hold <kbd>BOOT</kbd>, press and release <kbd>PWR</kbd> (or unplug and replug the cable), then release <kbd>BOOT</kbd> and press Install again. When it finishes, press <kbd>PWR</kbd> or replug to start PocketOS.</p>
+  </details>
+  <details><summary>Installation stopped part way</summary>
+    <p class="muted">Nothing is broken. The board keeps its download mode, so just press Install again. If it keeps stopping, use a different USB port (not a hub).</p>
+  </details>
+  <details><summary>I’d rather download the file</summary>
+    <p class="muted">The latest <code>pocketos-full.bin</code> is on the <a href="https://github.com/Tweeeko/PocketOS/releases/latest">releases page</a>. Flash it at address <code>0x0</code> with any ESP32 flashing tool.</p>
+  </details>
+
+  <div class="note">Already have PocketOS running? You don’t need this page for updates. PocketOS checks for new versions by itself. Open its settings website, then <b>More → Updates</b>.</div>
+</div></main>
+
+<footer><div class="wrap">
+  <span>PocketOS is a personal, non-commercial project, still being tested on hardware.</span>
+  <span><a href="https://github.com/Tweeeko/PocketOS">Source on GitHub</a> · <a href="help.html#privacy">Privacy</a></span>
+</div></footer>
+<script>
+fetch('firmware/manifest.json',{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()).then(m=>{
+  document.getElementById('ver').textContent='Installs PocketOS '+m.version+'.';
+}).catch(()=>{document.getElementById('ver').textContent='The installer isn’t available right now. Use the releases page below.'});
+</script>
+</body></html>

@@ -5,6 +5,9 @@
 iPad Safari cannot talk to USB serial devices, so the very first install uses a PC
 with Chrome or Edge. Nothing needs installing on the PC.
 
+**Easiest:** open https://tweeeko.github.io/PocketOS/install.html in Chrome or Edge on the PC,
+plug the board in and press **Install PocketOS**. The steps below do the same by hand.
+
 1. Get `pocketos-full.bin`. Easiest: on the PC, open the repository's **Releases** page and
    download it from the latest release. (For an unreleased build: **Actions** → latest
    **Build firmware** run → **pocketos-firmware** artifact, then unzip it.)
