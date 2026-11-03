@@ -88,7 +88,9 @@ jobs:
           ver, size, sha, repo, full_sha, rollout = sys.argv[1:]
           rollout = int(rollout)
           assert 1 <= rollout <= 100, "rollout must be 1 to 100"
-          notes = open("notes.md").read().strip()[:390]
+          notes = open("notes.md").read().strip()
+          if len(notes) > 390:   # keep whole lines, so nothing is cut mid-word
+              notes = notes[:390].rsplit("\n", 1)[0]
           json.dump({"version": ver, "size": int(size), "sha256": sha, "notes": notes, "full_sha256": full_sha, "rollout": rollout,
                      "url": f"https://github.com/{repo}/releases/download/v{ver}/pocketos.bin"},
                     open("out/manifest.json", "w"), indent=2)

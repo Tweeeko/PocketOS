@@ -29,6 +29,9 @@ jobs:
           assert 0 <= r <= 100, "rollout must be 0 to 100"
           m = json.load(open("manifest.json"))
           m["rollout"] = r
+          n = m.get("notes", "")
+          if n and not n.endswith((".", ")")) and "\n" in n and len(n) >= 380:   # tidy notes cut mid-line
+              m["notes"] = n.rsplit("\n", 1)[0]
           json.dump(m, open("manifest.json", "w"), indent=2)
           print(json.dumps(m, indent=2))
           PY
