@@ -28,8 +28,8 @@ window.POCKETOS_PRODUCT = {
     image: 'contents',
     items: [
       { name: 'PocketOS Device', detail: 'With PocketOS installed and ready to set up.', confirmed: true },
-      { name: 'USB-C charging cable', detail: 'Length and finish to be confirmed.', confirmed: false },
-      { name: 'Quick start guide', detail: 'Printed setup card. Contents to be confirmed.', confirmed: false }
+      { name: 'USB-C charging cable', detail: 'For charging PocketOS from a USB-C charger or computer.', confirmed: true },
+      { name: 'Quick start guide', detail: 'A printed guide to switching on and setting up.', confirmed: true }
     ]
   },
 

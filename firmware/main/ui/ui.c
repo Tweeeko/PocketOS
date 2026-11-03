@@ -204,7 +204,7 @@ void ui_init(void)
     lv_obj_align(toast_lbl, LV_ALIGN_BOTTOM_MID, 0, -96);
     lv_obj_add_flag(toast_lbl, LV_OBJ_FLAG_HIDDEN);
 
-    reset_lbl = mk_label(lv_layer_top(), &inter_26, 0xFFFFFF, "Press BOOT to erase\neverything on PocketOS");
+    reset_lbl = mk_label(lv_layer_top(), &inter_26, 0xFFFFFF, "Press the Boot button\nto erase everything");
     lv_obj_set_style_bg_color(reset_lbl, lv_color_hex(0x3A0F18), 0);
     lv_obj_set_style_bg_opa(reset_lbl, 245, 0);
     lv_obj_set_style_radius(reset_lbl, 30, 0);

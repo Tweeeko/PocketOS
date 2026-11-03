@@ -2,7 +2,8 @@
 // Register addresses and bit meanings follow Waveshare's Apache-2.0 example 01_AXP2101.
 // Battery voltage and charger status follow XPowersLib (MIT) AXP2101 register use.
 // PocketOS reads status, turns on battery detection and the battery-voltage ADC channel, and
-// enables the power-key interrupt flags. It does not change any power rails or charge settings.
+// enables the power-key interrupt flags, and sets the power button's timings (below). It does not
+// change any power rails or charge settings.
 #include "pmu.h"
 #include "driver/i2c_master.h"
 #include "esp_log.h"
@@ -18,6 +19,12 @@
 #define REG_INTEN2        0x41
 #define REG_INTSTS2       0x49  // bit2: PKEY long, bit3: PKEY short (IRQ bits 10, 11)
 #define REG_BAT_PERCENT   0xA4
+#define REG_PKEY_LEVEL    0x27  // bits1..0 on-press, bits3..2 off-hold, bits5..4 long-press notice (XPowersLib)
+// Power button timings, so the website can describe them exactly:
+//   switch on:  hold 1 s (on-press 10), so a brush in a pocket doesn't switch it on
+//   notice:     after 1.5 s (01) PocketOS shows "Keep holding to switch off"
+//   switch off: hold 6 s (01)
+#define PKEY_TIMINGS      ((1 << 4) | (1 << 2) | 2)
 #define PKEY_LONG_BIT     (1 << 2)
 #define PKEY_SHORT_BIT    (1 << 3)
 
@@ -54,6 +61,7 @@ esp_err_t pmu_init(void)
     }
     wr(REG_INTSTS2, PKEY_LONG_BIT | PKEY_SHORT_BIT);  // clear stale presses (write 1 to clear)
     uint8_t v = 0;
+    if (rd(REG_PKEY_LEVEL, &v) == ESP_OK && (v & 0x3F) != PKEY_TIMINGS) wr(REG_PKEY_LEVEL, (v & 0xC0) | PKEY_TIMINGS);
     if (rd(REG_BAT_DET, &v) == ESP_OK && !(v & 1)) wr(REG_BAT_DET, v | 1);
     if (rd(REG_ADC_CTRL, &v) == ESP_OK && !(v & 1)) wr(REG_ADC_CTRL, v | 1);
     ESP_LOGI(TAG, "battery %d%%, charging %d", pmu_battery_percent(), pmu_is_charging());

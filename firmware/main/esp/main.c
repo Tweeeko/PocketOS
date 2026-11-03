@@ -46,7 +46,7 @@ static void on_button(button_event_t ev)
         if (asleep) ui_wake(); else ui_set_asleep(true);
         break;
     case BTN_PWR_LONG:
-        ui_toast("Keep holding PWR to switch off", 2000);
+        ui_toast("Keep holding to switch off", 3000);
         break;
     }
     UI_UNLOCK();

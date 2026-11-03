@@ -169,7 +169,7 @@ async function join(){
 }
 
 /* ---------- pairing ---------- */
-function pairV(){return '<div class="center"><div class="card"><svg viewBox="710 225 251 153" width="84" height="51" aria-hidden="true" style="display:block;margin:4px auto 10px"><defs><linearGradient id="pm" x1="0" x2="1"><stop offset="0" stop-color="#F5F7FC"/><stop offset=".62" stop-color="#56B9FF"/><stop offset="1" stop-color="#9860F5"/></linearGradient></defs><path fill="url(#pm)" d="M710 264.5A39.5 39.5 0 0 1 789 264.5L789 338.5A39.5 39.5 0 0 1 710 338.5ZM882 264.5A39.5 39.5 0 0 1 961 264.5L961 338.5A39.5 39.5 0 0 1 882 338.5Z"/></svg><h1>Connect to '+esc(info.name)+'</h1><p>Enter the 6-digit code on the PocketOS screen.</p><p style="font-size:13px">Can’t see a code? Press the <b>BOOT</b> button on its side.</p><input class="pin" id="pin" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="······" aria-label="6-digit code"><div id="perr" class="err"></div><div class="btns" style="justify-content:center"><button class="btn" data-a="pair">Connect</button></div><p style="margin-top:14px;font-size:13px">You do this once on each phone or tablet.</p></div></div>'}
+function pairV(){return '<div class="center"><div class="card"><svg viewBox="710 225 251 153" width="84" height="51" aria-hidden="true" style="display:block;margin:4px auto 10px"><defs><linearGradient id="pm" x1="0" x2="1"><stop offset="0" stop-color="#F5F7FC"/><stop offset=".62" stop-color="#56B9FF"/><stop offset="1" stop-color="#9860F5"/></linearGradient></defs><path fill="url(#pm)" d="M710 264.5A39.5 39.5 0 0 1 789 264.5L789 338.5A39.5 39.5 0 0 1 710 338.5ZM882 264.5A39.5 39.5 0 0 1 961 264.5L961 338.5A39.5 39.5 0 0 1 882 338.5Z"/></svg><h1>Connect to '+esc(info.name)+'</h1><p>Enter the 6-digit code on the PocketOS screen.</p><p style="font-size:13px">Can’t see a code? Press the <b>Boot button</b> on the side of PocketOS.</p><input class="pin" id="pin" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="······" aria-label="6-digit code"><div id="perr" class="err"></div><div class="btns" style="justify-content:center"><button class="btn" data-a="pair">Connect</button></div><p style="margin-top:14px;font-size:13px">You do this once on each phone or tablet.</p></div></div>'}
 async function pair(){
   const v=($('#pin').value||'').replace(/\D/g,''),er=$('#perr');
   if(v.length!==6){er.textContent='The code has 6 digits.';return}
@@ -293,7 +293,7 @@ function homeV(){
   if(h.new>0&&cfg&&!cfg.auto_add)o+='<div class="card banner"><div class="t"><h2>'+h.new+' new device'+(h.new>1?'s':'')+' found</h2><p style="margin:0">Added in Home Assistant since you last looked.</p></div><button class="btn" data-a="tab" data-v="dev">Review</button></div>';
   if(!store.get('pocketos-tip-a2hs'))o+='<div class="card"><h2>Keep this page handy</h2><p>On iPhone or iPad tap <b>Share</b>, then <b>Add to Home Screen</b>. On Android tap <b>⋮</b>, then <b>Add to Home screen</b>. It works whenever you’re on your home Wi-Fi. You can also tap the <b>Settings</b> tile on PocketOS and scan its code.</p><div class="btns"><button class="btn g" data-a="tip">Got it</button></div></div>';
   o+=battCard();
-  o+='<div class="card"><h2>What to do here</h2><div class="row"><div class="t"><b>Choose devices and favourites</b><small>What PocketOS shows and controls</small></div><button class="btn g s" data-a="tab" data-v="dev">Devices</button></div><div class="row"><div class="t"><b>Change how it looks</b><small>Menu tiles, clock, brightness, companion</small></div><button class="btn g s" data-a="tab" data-v="look">Look</button></div><div class="row"><div class="t"><b>Side buttons</b><small>What BOOT and PWR do</small></div><button class="btn g s" data-a="buttons">Show</button></div></div>';
+  o+='<div class="card"><h2>What to do here</h2><div class="row"><div class="t"><b>Choose devices and favourites</b><small>What PocketOS shows and controls</small></div><button class="btn g s" data-a="tab" data-v="dev">Devices</button></div><div class="row"><div class="t"><b>Change how it looks</b><small>Menu tiles, clock, brightness, companion</small></div><button class="btn g s" data-a="tab" data-v="look">Look</button></div><div class="row"><div class="t"><b>Side buttons</b><small>What the Power and Boot buttons do</small></div><button class="btn g s" data-a="buttons">Show</button></div></div>';
   return o;
 }
 function devRow(e){
@@ -350,7 +350,7 @@ function haV(){
   '<div class="card"><h2>Need help connecting?</h2><p>New to Home Assistant? We’ll walk you through it step by step.</p><div class="btns"><button class="btn g" data-a="wz" data-v="connect">Guide me</button><button class="btn g" data-a="wz" data-v="none">I don’t have Home Assistant</button></div></div>'+
   '<div class="card"><div class="row"><div class="t"><b style="white-space:normal">Add new devices automatically</b><small style="white-space:normal">When you add something in Home Assistant, PocketOS shows it straight away. Turn off to review each one first.</small></div>'+sw('data-k="auto_add"',c.auto_add,'Add new devices automatically')+'</div></div>'+
   '<div class="card"><h2>Add more smart devices</h2><p>New lights, plugs and speakers are added inside Home Assistant, on your home Wi-Fi. PocketOS picks them up by itself.</p><div class="btns"><a class="btn g" href="'+esc(safeHref(haUrl()))+'/config/integrations" target="_blank" rel="noopener noreferrer">Open Home Assistant ↗</a><button class="btn" data-a="find">Check for new devices</button></div></div>'+
-  '<div class="card"><h2>Voice</h2><p>Hold <b>BOOT</b> and speak, then let go. This uses the voice assistant set up in Home Assistant (Settings → Voice assistants), so what you say goes to your Home Assistant, not to PocketOS’s makers.</p></div>';
+  '<div class="card"><h2>Voice</h2><p>Hold the <b>Boot button</b>, say what you’d like, then let go. PocketOS uses the voice assistant in your Home Assistant (Settings → Voice assistants), so what you say goes only to your own home.</p></div>';
 }
 function moreV(){
   return '<div class="card"><h2>This PocketOS</h2><div class="grid">'+st('Name',cfg.name)+st('Device ID',info.id)+st('Firmware','v'+info.firmware)+st('Address',info.host||'—')+st('IP address',info.wifi.ip||'—')+st('Wi-Fi',info.wifi.ssid||'—')+'</div><p style="margin-top:12px">Each PocketOS has its own address and keeps its own settings. If you have two, add each one to your Home Screen.</p></div>'+
@@ -361,7 +361,7 @@ function moreV(){
   '<div class="card"><h2>Maintenance</h2><div class="btns"><button class="btn g" data-a="wz" data-v="ha">Run the setup guide</button><button class="btn g" data-a="rest">Restart</button><button class="btn g" data-a="newwifi">Change Wi-Fi network</button><button class="btn d" data-a="reset">Reset everything</button></div></div>'+
   '<p class="edit">PocketOS keeps everything on the device and your home network. There’s no account, cloud, advertising or tracking.</p><p class="edit">PocketOS is created by Leeko.</p>';
 }
-function buttonsHtml(){return '<div class="row"><div class="t"><b>BOOT, press</b><small>Show the Settings code (or wake the screen)</small></div></div><div class="row"><div class="t"><b>BOOT, press twice</b><small>Back to the companion</small></div></div><div class="row"><div class="t"><b>BOOT, hold</b><small>Talk to Home Assistant, let go when done</small></div></div><div class="row"><div class="t"><b>PWR, press</b><small>Screen off or on</small></div></div><div class="row"><div class="t"><b>PWR, hold</b><small>Keep holding to switch off</small></div></div>'}
+function buttonsHtml(){const r=(b,t)=>'<div class="row"><div class="t"><b>'+b+'</b><small>'+t+'</small></div></div>';return '<h3>Power button</h3>'+r('Press','Turn the screen off or on')+r('Hold for 6 seconds','Switch PocketOS off. After a moment the screen says “Keep holding to switch off”')+r('Hold for 1 second when off','Switch PocketOS on')+'<h3>Boot button</h3>'+r('Press','Show the code for this page. If the screen is off, it wakes up')+r('Press twice','Go back to the home screen')+r('Hold','Speak to your home. Let go when you’ve finished')}
 
 const TABS=[['home','Home'],['dev','Devices'],['look','Look'],['ha','Smart home'],['more','More']];
 function render(){
@@ -415,12 +415,12 @@ async function importCfg(f){
 async function resetFlow(){
   const r=await api('/reset',{body:{}});if(!r.ok)return note(r.msg,'bad');
   let left=15;
-  const draw=()=>sheet('<h2>Confirm on PocketOS</h2><p>To erase it, press the <b>BOOT</b> button on the side of PocketOS now.</p><p style="font-size:28px;font-weight:700;margin:6px 0">'+left+' s</p><p>If you don’t, nothing is erased.</p>');
+  const draw=()=>sheet('<h2>Confirm on PocketOS</h2><p>To erase it, press the <b>Boot button</b> on the side of PocketOS now.</p><p style="font-size:28px;font-weight:700;margin:6px 0">'+left+' s</p><p>If you don’t, nothing is erased.</p>');
   draw();
   const iv=setInterval(async()=>{left--;
     const alive=await loadInfo();
     if(!alive){clearInterval(iv);forgetToken();sheet('<h2>PocketOS was reset</h2><p>It’s restarting into first-time setup. Join the <b>PocketOS</b> Wi-Fi network shown on its screen to set it up again.</p><div class="btns"><button class="btn" data-a="x">OK</button></div>');return}
-    if(left<=0){clearInterval(iv);sheet('<h2>Reset cancelled</h2><p>BOOT wasn’t pressed, so nothing was erased.</p><div class="btns"><button class="btn" data-a="x">OK</button></div>');return}
+    if(left<=0){clearInterval(iv);sheet('<h2>Reset cancelled</h2><p>The Boot button wasn’t pressed, so nothing was erased.</p><div class="btns"><button class="btn" data-a="x">OK</button></div>');return}
     draw()},1000);
 }
 
@@ -462,7 +462,7 @@ document.addEventListener('click',async e=>{
   else if(a==='unpairall')ask('Forget all phones?','Every phone and tablet, including this one, will need the code on PocketOS to connect again. Use this if a phone was lost or sold.','Forget all',async()=>{const r=await api('/unpair_all',{body:{}});if(r.ok){forgetToken();render();note('All phones forgotten','good')}else note(r.msg,'bad')},true);
   else if(a==='rest')ask('Restart '+esc(cfg.name)+'?','It will be back in about 20 seconds. Your settings stay as they are.','Restart',async()=>{const r=await api('/restart',{body:{}});if(r.ok){note('Restarting… back in about 20 seconds');setTimeout(()=>refreshInfo(),20000)}else note(r.msg,'bad')});
   else if(a==='newwifi')ask('Change Wi-Fi network?','PocketOS forgets its Wi-Fi and restarts into setup. Then join the <b>PocketOS</b> network shown on its screen and choose your new Wi-Fi. Your settings and devices are kept.','Change Wi-Fi',async()=>{const r=await api('/wifi/forget',{body:{}});if(r.ok)sheet('<h2>Restarting into setup</h2><p>On this phone, open Wi-Fi settings and join the <b>PocketOS</b> network shown on its screen (it also shows a code to scan). This page then opens by itself.</p><div class="btns"><button class="btn" data-a="x">OK</button></div>');else note(r.msg,'bad')},true);
-  else if(a==='reset')ask('Reset everything?','This erases Wi-Fi, Home Assistant and every setting on '+esc(cfg.name)+', and returns it to first-time setup. You’ll confirm with the BOOT button on the device.','Erase it',resetFlow,true);
+  else if(a==='reset')ask('Reset everything?','This erases Wi-Fi, Home Assistant and every setting on '+esc(cfg.name)+', and returns it to first-time setup. You’ll confirm by pressing the Boot button on PocketOS.','Erase it',resetFlow,true);
   else if(a==='x')closeModal();
   else if(a==='go'){const f=ask.f;closeModal();f&&f()}
 });

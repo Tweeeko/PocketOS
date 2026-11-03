@@ -334,7 +334,7 @@ class H(BaseHTTPRequestHandler):
             return self.send(200, {"ok": True})
         if p == "/reset":
             D.reset_deadline = time.time() + 15
-            return self.send(202, {"ok": True, "confirm": "Press BOOT on the device within 15 seconds"})
+            return self.send(202, {"ok": True, "confirm": "Press the Boot button on PocketOS within 15 seconds"})
         if p == "/ota":
             data = self.body()
             if len(data) < 112 or data[0] != 0xE9: return self.err(400, "Update failed. PocketOS is still on the old version.")

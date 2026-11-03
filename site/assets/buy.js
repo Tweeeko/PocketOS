@@ -20,6 +20,9 @@
   if (box) box.innerHTML = P.inTheBox.items.map(it =>
     `<li class="${it.confirmed ? 'yes' : 'tbc'}"><b>${esc(it.name)}</b>${it.confirmed ? '' : '<span class="tag">To be confirmed</span>'}<span>${esc(it.detail)}</span></li>`).join('');
 
+  const note = document.querySelector('[data-tbc-note]');
+  if (note) note.hidden = P.inTheBox.items.every(it => it.confirmed);
+
   const a = P.availability;
   document.querySelectorAll('[data-availability]').forEach(el => {
     el.innerHTML = `<div class="avail-rows"><div><dt>Price</dt><dd>${esc(a.price)}</dd></div><div><dt>Availability</dt><dd>${esc(a.status)}</dd></div></div>`

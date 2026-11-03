@@ -418,7 +418,7 @@ static esp_err_t h_reset(httpd_req_t *req)
     esp_timer_start_once(s_reset_timer, 15 * 1000 * 1000);
     UI_LOCK(); ui_reset_prompt(true); UI_UNLOCK();
     cJSON *o = ok_obj();
-    cJSON_AddStringToObject(o, "confirm", "Press BOOT on the device within 15 seconds");
+    cJSON_AddStringToObject(o, "confirm", "Press the Boot button on PocketOS within 15 seconds");
     return send_json(req, "202 Accepted", o);
 }
 

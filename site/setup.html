@@ -57,7 +57,11 @@
       <span class="n" aria-hidden="true">2</span>
       <div>
         <h2>Switch on</h2>
-        <p>Press the <kbd>PWR</kbd> button on the side. The PocketOS logo appears, followed by the setup screen with a code to scan.</p>
+        <p>Hold the <b>Power button</b> (the upper button on the side) for one second. The PocketOS logo appears, then the setup screen with a code to scan.</p>
+        <figure class="btn-map" aria-label="The two side buttons on PocketOS">
+        <div class="pocket" data-build></div>
+        <figcaption><span class="callout c1"><b>Power button</b>Upper side button</span><span class="callout c2"><b>Boot button</b>Lower side button</span></figcaption>
+        </figure>
         <p class="note">If PocketOS doesn’t switch on, connect it to a USB-C charger for a few minutes and try again.</p>
       </div>
     </section>
@@ -93,10 +97,10 @@
         <p>PocketOS controls your home through <a href="https://www.home-assistant.io/">Home Assistant</a>. It connects with a separate, non-administrator user, so your own account stays private.</p>
         <ol class="numbered">
           <li><b>Create a PocketOS user</b><span>In Home Assistant, go to <b>Settings → People → Add person</b>. Name it PocketOS, allow it to log in, and leave Administrator turned off.</span></li>
-          <li><b>Create an access token</b><span>Sign in as that user, open its profile, then choose <b>Security → Long-lived access tokens → Create token</b>. Copy the token.</span></li>
-          <li><b>Connect</b><span>On the PocketOS settings page, open <b>Smart home</b>, paste the token, check the address and select <b>Test and connect</b>.</span></li>
+          <li><b>Create an access token</b><span>An access token works like a password just for PocketOS. Sign in to Home Assistant as the new user, select its name at the bottom left, then choose <b>Security → Long-lived access tokens → Create token</b>. Copy the token it shows.</span></li>
+          <li><b>Connect</b><span>On the PocketOS settings page, open <b>Smart home</b>, paste the token and select <b>Test and connect</b>. The address is already filled in with Home Assistant’s usual one. Change it only if you open Home Assistant at a different address.</span></li>
         </ol>
-        <p class="note">The token is stored only on PocketOS and is never shown again. Alexa, Google Home and Apple Home aren’t supported directly.</p>
+        <p class="note">The token is kept only on PocketOS and is never shown again. Alexa, Google Home and Apple Home aren’t supported directly.</p>
       </div>
     </section>
 
@@ -120,10 +124,10 @@
         <div class="tiles-list">
           <div><b>Open the menu</b><span>Swipe up or left from the home screen.</span></div>
           <div><b>Control a device</b><span>Tap a tile, then drag the dial or press the centre button.</span></div>
-          <div><b>Go back</b><span>Swipe right.</span></div>
-          <div><b>Talk to your home</b><span>Hold <kbd>BOOT</kbd>, speak, then release.</span></div>
+          <div><b>Go back</b><span>Swipe right, or press the Boot button twice to go home.</span></div>
+          <div><b>Talk to your home</b><span>Hold the Boot button, speak, then let go.</span></div>
         </div>
-        <p class="note">The full list of gestures and buttons is in <a href="help.html#controls">Support</a>.</p>
+        <p class="note">Everything the buttons do is listed in <a href="help.html#buttons">Controls and buttons</a>.</p>
       </div>
     </section>
   </div>
