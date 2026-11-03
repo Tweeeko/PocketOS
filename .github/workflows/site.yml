@@ -1,0 +1,65 @@
+name: Website
+
+# Publishes site/ to GitHub Pages, with the latest release's pocketos-full.bin for the browser
+# installer and CHANGELOG.md for "What's new". Runs after every Release, and when the site or
+# changelog changes on main.
+
+on:
+  push:
+    branches: [main]
+    paths: ["site/**", "CHANGELOG.md", ".github/workflows/site.yml"]
+  workflow_run:
+    workflows: ["Release"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Assemble the site
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p _site/firmware
+          cp -r site/. _site/
+          cp CHANGELOG.md _site/
+          # The browser installer needs the firmware on the same site (release downloads
+          # can't be fetched by a web page), so copy the latest release's full image here.
+          if TAG=$(gh release view --json tagName -q .tagName 2>/dev/null); then
+            gh release download "$TAG" -p pocketos-full.bin -D _site/firmware
+            python3 - "${TAG#v}" <<'PY'
+          import json, sys
+          json.dump({"name": "PocketOS", "version": sys.argv[1],
+                     "new_install_prompt_erase": True, "new_install_improv_wait_time": 0,
+                     "builds": [{"chipFamily": "ESP32-S3",
+                                 "parts": [{"path": "pocketos-full.bin", "offset": 0}]}]},
+                    open("_site/firmware/manifest.json", "w"), indent=2)
+          PY
+            echo "Installer: PocketOS $TAG"
+          else
+            echo "::warning::No release yet, so the install page has nothing to install"
+          fi
+          ls -la _site _site/firmware
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deploy
+        uses: actions/deploy-pages@v4
