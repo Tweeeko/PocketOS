@@ -15,7 +15,7 @@
   // Gallery: thumbnails swap the main picture
   const main = document.querySelector('[data-main]'), thumbs = document.querySelector('[data-thumbs]');
   if (main && thumbs) {
-    const keys = ['hero', 'angle', 'contents', 'boxClosed'].filter(k => P.images[k]);
+    const keys = ['hero', 'angle', 'size', 'contents'].filter(k => P.images[k]);
     thumbs.innerHTML = keys.map((k, i) => `<button type="button" class="thumb${i ? '' : ' on'}" data-k="${k}" aria-label="${esc(P.images[k].alt)}" aria-pressed="${!i}"><img src="${esc(P.images[k].src)}" alt="" loading="lazy" decoding="async"></button>`).join('');
     thumbs.addEventListener('click', e => {
       const b = e.target.closest('.thumb'); if (!b) return;
