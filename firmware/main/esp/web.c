@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 // Local settings website + API v2 (docs/api.md). Served by the device itself, so the browser
 // talks to the same address it loaded the page from (no CORS, no internet needed).
 #include "web.h"

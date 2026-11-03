@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 #pragma once
 // What the UI needs from the rest of PocketOS. Implemented by esp/app.c on the device and by
 // host/sim/sim.c in the PC simulator, so the same UI code runs in both.

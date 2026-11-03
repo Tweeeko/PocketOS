@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 #pragma once
 // Home Assistant WebSocket protocol, as plain functions: build outgoing JSON, interpret
 // incoming JSON and update the model. No networking here, so it is unit-tested on a PC.

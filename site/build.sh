@@ -1,4 +1,5 @@
 #!/bin/sh
+# PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 # Builds the website into _site/ (used by Vercel: see vercel.json).
 # Copies site/ and CHANGELOG.md, then fetches the latest release's pocketos-full.bin for the
 # browser installer. Browsers can't load firmware straight from GitHub's release downloads, so the
