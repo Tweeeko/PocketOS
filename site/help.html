@@ -1,30 +1,33 @@
 <!doctype html>
+<!-- PocketOS, created by Leeko. Copyright (c) 2026 Leeko. -->
 <html lang="en"><head><meta charset="utf-8">
 <meta name="author" content="Leeko">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>PocketOS Help</title>
-<meta name="description" content="Setting up and using PocketOS: Wi-Fi, the settings website, Home Assistant, buttons, voice, battery and updates.">
-<meta name="theme-color" content="#05060b">
+<title>PocketOS help</title>
+<meta name="description" content="Setting up and using PocketOS: Wi-Fi, the settings page, Home Assistant, buttons, voice, battery and updates.">
+<meta name="theme-color" content="#070b1c">
 <link rel="icon" href="assets/icon.png"><link rel="apple-touch-icon" href="assets/icon.png">
+<link rel="preload" href="fonts/unbounded.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="assets/site.css">
 </head><body>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
 <a class="skip" href="#main">Skip to content</a>
-<header class="top"><div class="wrap">
-  <a class="brand" href="./"><img src="assets/icon.png" alt=""><span>PocketOS</span></a>
-  <nav class="links" aria-label="Site"><a href="install.html">Install</a><a href="help.html" aria-current="page">Help</a><a href="changes.html">What’s new</a></nav>
-</div></header>
-
-<main id="main" class="page"><div class="wrap">
-  <p class="eyebrow">Help</p>
-  <h1 style="font-size:clamp(36px,6vw,56px)">Using PocketOS</h1>
-  <p class="lead">Everything from first switch-on to fixing problems.</p>
+<nav class="nav glass" aria-label="Site">
+  <a class="mark" href="./"><b aria-hidden="true"></b><span>PocketOS</span></a>
+  <a href="install.html">Install</a><a href="help.html" aria-current="page">Help</a><a href="changes.html">What’s new</a>
+</nav>
+<main id="main" class="page">
+  <header>
+    <h1>Getting to know PocketOS.</h1>
+    <p class="lede">From the first switch-on to fixing the odd problem.</p>
+  </header>
   <div class="doc">
-  <nav class="toc" aria-label="On this page">
+    <nav class="toc glass" aria-label="On this page">
     <a href="#start">First setup</a><a href="#settings">The settings website</a><a href="#home-assistant">Connect Home Assistant</a>
     <a href="#using">Using PocketOS</a><a href="#buttons">Side buttons</a><a href="#voice">Voice</a><a href="#battery">Battery</a>
     <a href="#updates">Updates</a><a href="#two">Two PocketOS</a><a href="#problems">Problems</a><a href="#privacy">Privacy</a>
   </nav>
-  <article>
+    <article class="prose panel glass">
     <h2 id="start">First setup</h2>
     <ol>
       <li>Switch PocketOS on. It shows a welcome screen with a QR code and the name of its own Wi-Fi, <b>PocketOS-XXXX</b>.</li>
@@ -34,7 +37,7 @@
       <li>Enter the 6-digit code from the PocketOS screen. That pairs your phone, once.</li>
       <li>Follow the guide to connect Home Assistant and pick your favourites.</li>
     </ol>
-    <div class="note">PocketOS’s own Wi-Fi network is only used for this first step. Afterwards everything happens on your home Wi-Fi.</div>
+    <div class="aside glass">PocketOS’s own Wi-Fi network is only used for this first step. Afterwards everything happens on your home Wi-Fi.</div>
 
     <h2 id="settings">The settings website</h2>
     <p>Each PocketOS runs its own small website on your home Wi-Fi. That’s where you change everything: which devices appear, favourites, menu tiles, clock, brightness, eye colour and updates.</p>
@@ -51,7 +54,7 @@
       <li>Log in as that user (a private browser window is easiest). Tap its name at the bottom left → <b>Security</b> → <b>Long-lived access tokens</b> → <b>Create token</b>. Copy it.</li>
       <li>On PocketOS’s settings website, open <b>Smart home</b>, paste the token, check the address and press <b>Test and connect</b>.</li>
     </ol>
-    <div class="note">Why a separate user? Home Assistant tokens can do anything their user can. A non-admin PocketOS user keeps your own login out of it. The token is kept only on PocketOS and is never shown again.</div>
+    <div class="aside glass">Why a separate user? Home Assistant tokens can do anything their user can. A non-admin PocketOS user keeps your own login out of it. The token is kept only on PocketOS and is never shown again.</div>
     <p>New devices you add to Home Assistant appear on PocketOS by themselves. You can review each one first or have them appear automatically (Smart home → <b>Add new devices automatically</b>).</p>
 
     <h2 id="using">Using PocketOS</h2>
@@ -105,21 +108,21 @@
     <p>Each PocketOS has its own name, address (<code>pocketos-xxxx.local</code>), settings and paired phones. The website always shows which one you’re changing at the top. Add each to your Home Screen separately.</p>
 
     <h2 id="problems">Problems</h2>
-    <details><summary>The settings page won’t open</summary><p>Make sure your phone is on the same home Wi-Fi as PocketOS. Some Android phones don’t support <code>.local</code> addresses: use the IP address from <b>This PocketOS</b> on the device instead.</p></details>
-    <details><summary>It asks for the code again</summary><p>Each phone is paired once. If someone used “Forget all phones”, or PocketOS was reset, enter the new code from its screen (press <kbd>BOOT</kbd> to see it).</p></details>
-    <details><summary>Home Assistant won’t connect</summary><p>Check the address (for example <code>http://homeassistant.local:8123</code>) and that Home Assistant is running. If it says the token was rejected, create a new one and paste it on the Smart home page. After a rejected token PocketOS stops trying, so Home Assistant doesn’t block it.</p></details>
-    <details><summary>A device says “No response”</summary><p>Home Assistant didn’t confirm the change. The device may be off at the wall or offline in Home Assistant.</p></details>
-    <details><summary>New router or moving house</summary><p>On the settings website, <b>More → Change Wi-Fi network</b>. PocketOS restarts into setup and keeps everything else. If you can’t reach the website any more, a reset is the only way.</p></details>
-    <details><summary>Start again from scratch</summary><p><b>More → Reset everything</b> on the website, then press <kbd>BOOT</kbd> on PocketOS within 15 seconds to confirm. Nothing is erased without that press.</p></details>
+    <details class="glass"><summary>The settings page won’t open</summary><p>Make sure your phone is on the same home Wi-Fi as PocketOS. Some Android phones don’t support <code>.local</code> addresses: use the IP address from <b>This PocketOS</b> on the device instead.</p></details>
+    <details class="glass"><summary>It asks for the code again</summary><p>Each phone is paired once. If someone used “Forget all phones”, or PocketOS was reset, enter the new code from its screen (press <kbd>BOOT</kbd> to see it).</p></details>
+    <details class="glass"><summary>Home Assistant won’t connect</summary><p>Check the address (for example <code>http://homeassistant.local:8123</code>) and that Home Assistant is running. If it says the token was rejected, create a new one and paste it on the Smart home page. After a rejected token PocketOS stops trying, so Home Assistant doesn’t block it.</p></details>
+    <details class="glass"><summary>A device says “No response”</summary><p>Home Assistant didn’t confirm the change. The device may be off at the wall or offline in Home Assistant.</p></details>
+    <details class="glass"><summary>New router or moving house</summary><p>On the settings website, <b>More → Change Wi-Fi network</b>. PocketOS restarts into setup and keeps everything else. If you can’t reach the website any more, a reset is the only way.</p></details>
+    <details class="glass"><summary>Start again from scratch</summary><p><b>More → Reset everything</b> on the website, then press <kbd>BOOT</kbd> on PocketOS within 15 seconds to confirm. Nothing is erased without that press.</p></details>
 
     <h2 id="privacy">Privacy</h2>
     <p>PocketOS has no account, cloud service, advertising, analytics or tracking. Your Wi-Fi password, Home Assistant token, devices and settings are stored only on PocketOS. It talks only to your Home Assistant, and once a day to GitHub to check for updates (a plain download that sends nothing about you or your home; you can turn it off). Voice goes to your own Home Assistant. This website doesn’t use cookies or analytics; Vercel, which hosts it, sees visitors’ internet addresses like any web host.</p>
   </article>
   </div>
-</div></main>
-
-<footer><div class="wrap">
-  <span>PocketOS is created by Leeko. A personal, non-commercial project, still being tested on hardware.</span>
-  <span><a href="https://github.com/Tweeeko/PocketOS">Source on GitHub</a></span>
-</div></footer>
+</main>
+<footer class="end">
+  <span><strong>PocketOS</strong> is created by Leeko. A personal project, still being tested on hardware.</span>
+  <nav aria-label="Footer"><a href="https://github.com/Tweeeko/PocketOS">Source</a><a href="install.html">Install</a><a href="./">Home</a></nav>
+</footer>
+<script src="assets/site.js"></script>
 </body></html>
