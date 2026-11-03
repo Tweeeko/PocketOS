@@ -1,0 +1,51 @@
+name: Build firmware
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  host-tests:
+    # Core logic and the settings website, tested without any hardware.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Core unit tests
+        run: make -C firmware/host test
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install browser for website tests
+        run: |
+          pip install playwright==1.48.0
+          python -m playwright install --with-deps chromium
+      - name: Settings website tests
+        run: python firmware/host/test_site.py
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build with ESP-IDF 5.5
+        uses: espressif/esp-idf-ci-action@v1
+        with:
+          esp_idf_version: release-v5.5
+          target: esp32s3
+          path: firmware
+          command: idf.py build && idf.py merge-bin -o pocketos-full.bin
+
+      - name: Collect binaries
+        run: |
+          mkdir out
+          sudo cp firmware/build/pocketos.bin out/pocketos.bin
+          FULL=$(sudo find firmware -name pocketos-full.bin | head -1)
+          sudo cp "$FULL" out/pocketos-full.bin
+          sudo chown -R $USER out
+          ls -l out
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pocketos-firmware
+          path: out/
