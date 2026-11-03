@@ -13,6 +13,13 @@ cp -R site/. "$OUT/"
 rm -f "$OUT/build.sh"
 cp CHANGELOG.md "$OUT/"
 
+# The demo page shows the device's real settings page, talking to a pretend PocketOS
+# (assets/demo.js) through assets/demo-shim.js instead of to a device.
+sed -e 's#<script>#<script src="assets/demo-shim.js"></script><script>#' \
+    -e 's#<head>#<head><meta name="robots" content="noindex">#' \
+    firmware/main/www/index.html > "$OUT/demo-settings.html"
+grep -q 'demo-shim.js' "$OUT/demo-settings.html"
+
 BASE="https://github.com/$REPO/releases/latest/download"
 if curl -fsSL "$BASE/manifest.json" -o "$OUT/firmware/release.json"; then
   curl -fsSL "$BASE/pocketos-full.bin" -o "$OUT/firmware/pocketos-full.bin"

@@ -1,0 +1,94 @@
+<!doctype html>
+<!-- PocketOS, created by Leeko. Copyright (c) 2026 Leeko. -->
+<html lang="en-GB"><head><meta charset="utf-8">
+<meta name="author" content="Leeko">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Try PocketOS</title>
+<meta name="description" content="Use PocketOS and its settings page in your browser, with a sample home.">
+<meta name="theme-color" content="#070b1c">
+<meta property="og:title" content="Try PocketOS"><meta property="og:description" content="Use PocketOS and its settings page in your browser, with a sample home."><meta property="og:image" content="media/poster.jpg">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><meta name="apple-mobile-web-app-title" content="PocketOS">
+<link rel="preload" href="fonts/unbounded.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="assets/site.css">
+<link rel="preload" href="fonts/inter-semibold.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="assets/demo.css">
+</head><body>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar" id="top">
+  <div class="bar">
+    <a class="brand" href="./"><img src="assets/logo.svg" alt="PocketOS" width="190" height="18"></a>
+    <nav class="links" aria-label="Main"><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="demo.html" aria-current="page">Try it</a><a href="setup.html">Setup</a><a href="help.html">Support</a><a href="changes.html">What’s new</a></nav>
+    <a class="btn small cta" href="buy.html">Where to buy</a>
+    <button class="menu" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menu"><i></i><i></i></button>
+  </div>
+  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="demo.html" aria-current="page">Try it</a><a href="setup.html">Setup</a><a href="help.html">Support</a><a href="changes.html">What’s new</a><a href="buy.html">Where to buy</a></nav>
+</header>
+
+<main id="main" class="page demo-page">
+  <header class="intro">
+    <h1>Try PocketOS</h1>
+    <p class="lede">Use PocketOS and its settings page side by side, with a sample home. It all runs in your browser, so nothing you do here goes anywhere.</p>
+  </header>
+
+  <div class="demo-tabs glass" role="tablist" aria-label="Show">
+    <button role="tab" aria-selected="true" data-pane="device">PocketOS</button>
+    <button role="tab" aria-selected="false" data-pane="phone">Settings page</button>
+  </div>
+
+  <div class="demo" data-show="device">
+    <section class="demo-dev" aria-label="PocketOS">
+      <div class="demo-pocket" id="demo-pocket">
+        <span class="key k1"></span><span class="key k2"></span>
+        <button class="hit h1" data-key="power" aria-label="Power button: press to turn the screen off or on, hold to switch off"></button>
+        <button class="hit h2" data-key="boot" aria-label="Boot button: press to show the settings code, press twice to go home, hold to talk"></button>
+        <div class="case"></div>
+        <div class="screen"><div class="os" tabindex="0" aria-label="PocketOS screen. Swipe, or use the arrow keys.">
+          <div class="os-scr"></div><div class="os-over"></div><div class="os-toast" role="status"></div>
+        </div></div>
+      </div>
+      <div class="hw" aria-label="Side buttons">
+        <button class="hwb" data-key="power"><b>Power</b><span>Press · hold</span></button>
+        <button class="hwb" data-key="boot"><b>Boot</b><span>Press · twice · hold</span></button>
+      </div>
+      <p class="demo-hint" id="demo-hint" aria-live="polite"></p>
+    </section>
+
+    <section class="demo-phone" aria-label="Settings page">
+      <div class="phone"><iframe id="demo-settings" data-src="demo-settings.html" title="PocketOS settings page (demo)" loading="lazy"></iframe></div>
+      <p class="demo-cap">The settings page, as it appears on your phone</p>
+    </section>
+
+    <aside class="demo-try glass" aria-label="Things to try">
+      <h2>Things to try</h2>
+      <ol class="try">
+        <li><b>Open the menu</b><span>Swipe up on the screen, then tap <em>Lights</em>.</span></li>
+        <li><b>Dim a light</b><span>Open <em>Floor lamp</em> and drag around the ring.</span></li>
+        <li><b>Talk to your home</b><span>Hold the <em>Boot</em> button, then let go.</span></li>
+        <li><b>Find the settings code</b><span>Press the <em>Boot</em> button once.</span></li>
+        <li><b>Turn the screen off</b><span>Press the <em>Power</em> button. Hold it for 6 seconds to switch off.</span></li>
+        <li><b>Change the companion</b><span>On the settings page, open <em>Look</em> and choose another eye colour.</span></li>
+        <li><b>Pin a favourite</b><span>On the settings page, open <em>Devices</em> and tap a star.</span></li>
+        <li><b>Leave the door unlocked</b><span>Open <em>Locks</em>, then <em>Front door</em>, and watch the companion.</span></li>
+      </ol>
+      <button class="btn small ghost" id="demo-restart" type="button">Start again</button>
+    </aside>
+  </div>
+
+  <p class="fine center">The sample home is pretend. On a real PocketOS, devices and settings come from your own Home Assistant, and voice uses your own assistant.</p>
+</main>
+
+<footer class="end">
+  <div class="foot">
+    <div><img src="assets/logo.svg" alt="PocketOS" width="150" height="14"><p>The pocket-sized smart-home companion.<br>Designed by Leeko.</p></div>
+    <nav aria-label="Product"><h4>Product</h4><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="demo.html">Try PocketOS</a><a href="buy.html">Where to buy</a><a href="changes.html">What’s new</a></nav>
+    <nav aria-label="Support"><h4>Support</h4><a href="setup.html">Getting started</a><a href="help.html">Support</a><a href="recovery.html">Software recovery</a><a href="help.html#privacy">Privacy</a></nav>
+    <nav aria-label="Project"><h4>Project</h4><a href="https://github.com/Tweeeko/PocketOS">Source code</a><a href="https://github.com/Tweeeko/PocketOS/releases">Releases</a></nav>
+  </div>
+  <p class="legal">© 2026 Leeko. Home Assistant is a trademark of its respective owner. PocketOS is not affiliated with or endorsed by Home Assistant.</p>
+</footer>
+<script src="assets/site.js"></script>
+<script src="assets/demo.js"></script>
+</body></html>

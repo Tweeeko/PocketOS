@@ -100,6 +100,9 @@
     $('.cap-dot', el).style.setProperty('--dot', m === 'worried' ? BAD : OK);
   }
 
+  // The demo page (demo.js) draws its companion with the same faces and life.
+  window.PocketFace = { faceSVG, startLife, MOOD_COLOR };
+
   /* ---------- the other screens ---------- */
   const ARC = 207.35, FULL = 276.46;   // 270° of a radius-44 circle, and the whole circle
   const icon = {
