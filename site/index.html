@@ -18,22 +18,31 @@
 <header class="topbar" id="top">
   <div class="bar">
     <a class="brand" href="./" aria-current="page"><img src="assets/logo.svg" alt="PocketOS" width="190" height="18"></a>
-    <nav class="links" aria-label="Main"><a href="#features">Features</a><a href="#specs">Tech specs</a><a href="demo.html">Try it</a><a href="setup.html">Setup</a><a href="help.html">Support</a><a href="changes.html">What’s new</a></nav>
-    <a class="btn small cta" href="buy.html">Where to buy</a>
+    <nav class="links" aria-label="Main"><a href="./" aria-current="page">Overview</a><a href="specs.html">Tech Specs</a><a href="demo.html">Try It</a><a href="support.html">Support</a></nav>
+    <a class="btn small cta" href="buy.html">Buy</a>
     <button class="menu" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menu"><i></i><i></i></button>
   </div>
-  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="#features">Features</a><a href="#specs">Tech specs</a><a href="demo.html">Try it</a><a href="setup.html">Setup</a><a href="help.html">Support</a><a href="changes.html">What’s new</a><a href="buy.html">Where to buy</a></nav>
+  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="./" aria-current="page">Overview</a><a href="specs.html">Tech Specs</a><a href="demo.html">Try It</a><a href="support.html">Support</a><a href="buy.html">Buy</a></nav>
 </header>
 
 <main id="main">
   <section class="hero">
     <div class="copy">
+      <p class="eyebrow">PocketOS</p>
       <h1>Your home, at a glance.</h1>
       <p class="lede">PocketOS is a pocket-sized smart-home companion with a round touchscreen. It arrives ready to use, connects to Home Assistant, and puts every light, thermostat and speaker within reach.</p>
-      <div class="row"><a class="btn" href="buy.html">Where to buy</a><a class="btn ghost" href="demo.html">Try it in your browser</a></div>
-      <p class="req"><b>Requires Home Assistant</b> running on your home network. <a href="#requirements">What you’ll need</a></p>
+      <p class="price-line">£99.99 <span>Coming soon to the UK</span></p>
+      <div class="row"><a class="btn" href="buy.html">Buy</a><a class="btn ghost" href="demo.html">Try it in your browser</a></div>
+      <p class="req"><b>Works with Home Assistant</b> on your home network. <a href="#requirements">What you’ll need</a></p>
     </div>
     <div class="stage"><div class="pocket" data-build></div></div>
+  </section>
+
+  <section class="film" id="watch" aria-label="PocketOS brand film">
+    <div class="frame glass"><div>
+      <video id="film" muted loop playsinline preload="metadata" poster="media/poster.jpg"><source src="media/promo.mp4" type="video/mp4"></video>
+      <button class="sound glass" id="film-sound" type="button" aria-pressed="false" aria-label="Turn sound on"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="spk" d="M4 9h4l5-4v14l-5-4H4z"/><path class="on" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/><path class="off" d="M17 9l5 6M22 9l-5 6"/></svg></button>
+    </div></div>
   </section>
 
   <div class="chapters" id="features">
@@ -79,12 +88,6 @@
     </div>
   </div>
 
-  <section class="film" aria-label="PocketOS brand film">
-    <div class="frame glass"><div>
-      <video id="film" muted loop playsinline preload="metadata" poster="media/poster.jpg"><source src="media/promo.mp4" type="video/mp4"></video>
-      <button class="sound glass" id="film-sound" type="button" aria-pressed="false" aria-label="Turn sound on"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="spk" d="M4 9h4l5-4v14l-5-4H4z"/><path class="on" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/><path class="off" d="M17 9l5 6M22 9l-5 6"/></svg></button>
-    </div></div>
-  </section>
 
   <section class="promise" id="privacy">
     <h2>Private by design.</h2>
@@ -99,26 +102,6 @@
     </div>
   </section>
 
-  <section class="specs" id="specs">
-    <div class="panel alu">
-      <h2>Tech specs</h2>
-      <p class="spec-sub">PocketOS Device</p>
-      <dl class="spec-grid">
-        <div><dt>Display</dt><dd>1.75-inch round AMOLED<br>466 × 466 resolution</dd></div>
-        <div><dt>Touch</dt><dd>Capacitive touchscreen</dd></div>
-        <div><dt>Processor</dt><dd>ESP32-S3 dual-core</dd></div>
-        <div><dt>Memory</dt><dd>8 MB PSRAM<br>32 MB flash storage</dd></div>
-        <div><dt>Wireless</dt><dd>2.4 GHz Wi-Fi</dd></div>
-        <div><dt>Audio</dt><dd>Dual microphones<br>Integrated speaker</dd></div>
-        <div><dt>Controls</dt><dd>Touchscreen<br>Two physical side buttons</dd></div>
-        <div><dt>Power</dt><dd>Rechargeable internal battery<br>USB-C charging</dd></div>
-        <div><dt>Enclosure</dt><dd>Aluminium</dd></div>
-        <div><dt>Software</dt><dd>PocketOS, pre-installed<br>Updates over Wi-Fi</dd></div>
-        <div><dt>Requires</dt><dd>Home Assistant on your home network</dd></div>
-        <div><dt>Setup</dt><dd>From any phone or computer browser. No app or account.</dd></div>
-      </dl>
-    </div>
-  </section>
 
   <section class="begin" id="requirements">
     <div class="panel glass need">
@@ -132,14 +115,13 @@
     </div>
   </section>
 
-  <section class="begin">
-    <div class="panel glass">
-      <h2>Ready in minutes.</h2>
-      <ol class="steps">
-        <li><h3>Switch on</h3><p>PocketOS arrives with its software installed. Take it out of the box and switch it on.</p><a href="setup.html#power-on">Getting started</a></li>
-        <li><h3>Connect to Wi-Fi</h3><p>Scan the code on screen with your phone and choose your home network.</p><a href="setup.html#wifi">Wi-Fi setup</a></li>
-        <li><h3>Link Home Assistant</h3><p>Connect your home, then choose the devices you want on PocketOS.</p><a href="setup.html#home-assistant">Connecting your home</a></li>
-      </ol>
+  <section class="explore" aria-labelledby="explore-h">
+    <h2 id="explore-h">Take a closer look.</h2>
+    <div class="explore-grid">
+      <a class="xtile glass" href="demo.html"><span class="k">Try it</span><b>Use PocketOS in your browser.</b><span>A pretend home to explore: tap, turn the dial, open settings.</span><i>Try PocketOS</i></a>
+      <a class="xtile alu" href="specs.html"><span class="k">Tech Specs</span><b>What’s inside.</b><span>Display, audio, battery, requirements and what’s in the box.</span><i>See the specs</i></a>
+      <a class="xtile glass" href="setup.html"><span class="k">Get started</span><b>Set up in minutes.</b><span>Switch on, scan the code with your phone and connect your home.</span><i>See how</i></a>
+      <a class="xtile glass" href="buy.html"><span class="k">Buy</span><b>£99.99</b><span>Coming soon, delivered in the UK. Arrives ready to use.</span><i>Where to buy</i></a>
     </div>
   </section>
 </main>
@@ -147,12 +129,14 @@
 <footer class="end">
   <div class="foot">
     <div><img src="assets/logo.svg" alt="PocketOS" width="150" height="14"><p>The pocket-sized smart-home companion.<br>Designed by Leeko.</p></div>
-    <nav aria-label="Product"><h4>Product</h4><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="demo.html">Try PocketOS</a><a href="buy.html">Where to buy</a><a href="changes.html">What’s new</a></nav>
-    <nav aria-label="Support"><h4>Support</h4><a href="setup.html">Getting started</a><a href="help.html">Support</a><a href="faq.html">Questions</a><a href="recovery.html">Software recovery</a><a href="contact.html">Contact us</a></nav>
-    <nav aria-label="Legal"><h4>Legal</h4><a href="terms.html">Terms of sale</a><a href="returns.html">Returns and warranty</a><a href="privacy.html">Privacy</a><a href="security.html">Security</a><a href="compliance.html">Statement of compliance</a></nav>
-    <nav aria-label="Developers"><h4>Developers</h4><a href="https://github.com/Tweeeko/PocketOS">Open source</a><a href="https://github.com/Tweeeko/PocketOS/releases">Software releases</a></nav>
+    <nav aria-label="Explore PocketOS"><h4>Explore PocketOS</h4><a href="./">Overview</a><a href="specs.html">Tech Specs</a><a href="demo.html">Try PocketOS</a><a href="buy.html">Buy</a></nav>
+    <nav aria-label="Support"><h4>Support</h4><a href="setup.html">Get started</a><a href="help.html">User guide</a><a href="faq.html">Questions</a><a href="recovery.html">Software recovery</a><a href="changes.html">What’s new</a><a href="contact.html">Contact us</a></nav>
+    <nav aria-label="Policies"><h4>Policies</h4><a href="terms.html">Terms of sale</a><a href="returns.html">Returns and warranty</a><a href="privacy.html">Privacy</a><a href="security.html">Security</a><a href="compliance.html">Statement of compliance</a></nav>
   </div>
-  <p class="legal">© 2026 Leeeko LTD. PocketOS is sold by Leeeko LTD, 32 Ferndale Avenue, Newcastle, NE28 7NE, United Kingdom. Home Assistant is a trademark of its respective owner. PocketOS is not affiliated with or endorsed by Home Assistant.</p>
+  <div class="legal-row">
+    <p class="legal">© 2026 Leeeko LTD. 32 Ferndale Avenue, Newcastle, NE28 7NE, United Kingdom. Home Assistant is a trademark of its respective owner. PocketOS is not affiliated with or endorsed by Home Assistant.</p>
+    <a class="legal" href="https://github.com/Tweeeko/PocketOS">Open source</a>
+  </div>
 </footer>
 <script src="assets/site.js"></script>
 </body></html>

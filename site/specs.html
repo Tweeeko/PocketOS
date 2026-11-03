@@ -1,0 +1,112 @@
+<!doctype html>
+<!-- PocketOS, created by Leeko. Copyright (c) 2026 Leeko. -->
+<html lang="en-GB"><head><meta charset="utf-8">
+<meta name="author" content="Leeko">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PocketOS Tech Specs</title>
+<meta name="description" content="Tech specs for the PocketOS Device: display, audio, battery, wireless, requirements and what’s in the box.">
+<meta name="theme-color" content="#070b1c">
+<meta property="og:title" content="PocketOS Tech Specs"><meta property="og:description" content="Tech specs for the PocketOS Device: display, audio, battery, wireless, requirements and what’s in the box."><meta property="og:image" content="media/poster.jpg">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><meta name="apple-mobile-web-app-title" content="PocketOS">
+<link rel="preload" href="fonts/unbounded.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="assets/site.css">
+</head><body>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar" id="top">
+  <div class="bar">
+    <a class="brand" href="./"><img src="assets/logo.svg" alt="PocketOS" width="190" height="18"></a>
+    <nav class="links" aria-label="Main"><a href="./">Overview</a><a href="specs.html" aria-current="page">Tech Specs</a><a href="demo.html">Try It</a><a href="support.html">Support</a></nav>
+    <a class="btn small cta" href="buy.html">Buy</a>
+    <button class="menu" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menu"><i></i><i></i></button>
+  </div>
+  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="./">Overview</a><a href="specs.html" aria-current="page">Tech Specs</a><a href="demo.html">Try It</a><a href="support.html">Support</a><a href="buy.html">Buy</a></nav>
+</header>
+
+<main id="main" class="page specs-page">
+  <header class="intro">
+    <p class="eyebrow">PocketOS</p>
+    <h1>Tech Specs</h1>
+    <p class="lede">A 1.75-inch round AMOLED touchscreen in an aluminium case, with two physical side buttons.</p>
+  </header>
+
+  <section class="spec-hero">
+    <figure class="shot" data-image="angle"></figure>
+    <div class="panel alu">
+      <h2>Made to be held.</h2>
+      <ul class="plain">
+        <li>466 × 466 AMOLED display with capacitive touch</li>
+        <li>Rechargeable battery with USB-C charging</li>
+        <li>Dual microphones and a speaker for voice</li>
+        <li>2.4 GHz Wi-Fi. No app, account or subscription</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block alu">
+    <h2>PocketOS Device</h2>
+    <dl class="spec-grid">
+        <div><dt>Display</dt><dd>1.75-inch round AMOLED<br>466 × 466 resolution</dd></div>
+        <div><dt>Touch</dt><dd>Capacitive touchscreen</dd></div>
+        <div><dt>Processor</dt><dd>ESP32-S3 dual-core</dd></div>
+        <div><dt>Memory</dt><dd>8 MB PSRAM<br>32 MB flash storage</dd></div>
+        <div><dt>Wireless</dt><dd>2.4 GHz Wi-Fi</dd></div>
+        <div><dt>Audio</dt><dd>Dual microphones<br>Integrated speaker</dd></div>
+        <div><dt>Controls</dt><dd>Touchscreen<br>Two physical side buttons</dd></div>
+        <div><dt>Power</dt><dd>Rechargeable internal battery<br>USB-C charging</dd></div>
+        <div><dt>Enclosure</dt><dd>Aluminium</dd></div>
+        <div><dt>Software</dt><dd>PocketOS, pre-installed<br>Updates over Wi-Fi</dd></div>
+        <div><dt>Requires</dt><dd>Home Assistant on your home network</dd></div>
+        <div><dt>Setup</dt><dd>From any phone or computer browser. No app or account.</dd></div>
+      </dl>
+  </section>
+
+  <section class="block alu" id="in-the-box">
+    <h2>In the box</h2>
+    <ul class="box-list" data-in-the-box></ul>
+  </section>
+
+  <section class="block glass" id="requirements">
+    <h2>What you’ll need</h2>
+    <div class="tiles-list">
+        <div><b>Home Assistant</b><span>PocketOS controls your home through Home Assistant, running on your home network. It doesn’t work with Alexa, Google Home or Apple Home on their own.</span></div>
+        <div><b>2.4 GHz Wi-Fi</b><span>Provided by almost every home router, usually alongside 5 GHz.</span></div>
+        <div><b>A phone or computer</b><span>For setup and the settings page. No app to install.</span></div>
+        <div><b>A USB-C charger</b><span>Any USB-C phone charger or computer port.</span></div>
+      </div>
+  </section>
+
+  <section class="block glass">
+    <h2>Software and privacy</h2>
+    <ul class="plain">
+      <li>PocketOS comes installed and updates itself over Wi-Fi. Every update is signed.</li>
+      <li>Security updates until at least 31 December 2029. <a href="security.html">Security</a></li>
+      <li>No PocketOS account, subscription, advertising or tracking. <a href="privacy.html">Privacy</a></li>
+    </ul>
+  </section>
+
+  <section class="cta-band">
+    <h2>£99.99. Coming soon to the UK.</h2>
+    <div class="row"><a class="btn" href="buy.html">Buy</a><a class="btn ghost" href="demo.html">Try it in your browser</a></div>
+  </section>
+  <p class="fine center">Images are concept renders. The final product may differ.</p>
+</main>
+
+<footer class="end">
+  <div class="foot">
+    <div><img src="assets/logo.svg" alt="PocketOS" width="150" height="14"><p>The pocket-sized smart-home companion.<br>Designed by Leeko.</p></div>
+    <nav aria-label="Explore PocketOS"><h4>Explore PocketOS</h4><a href="./">Overview</a><a href="specs.html">Tech Specs</a><a href="demo.html">Try PocketOS</a><a href="buy.html">Buy</a></nav>
+    <nav aria-label="Support"><h4>Support</h4><a href="setup.html">Get started</a><a href="help.html">User guide</a><a href="faq.html">Questions</a><a href="recovery.html">Software recovery</a><a href="changes.html">What’s new</a><a href="contact.html">Contact us</a></nav>
+    <nav aria-label="Policies"><h4>Policies</h4><a href="terms.html">Terms of sale</a><a href="returns.html">Returns and warranty</a><a href="privacy.html">Privacy</a><a href="security.html">Security</a><a href="compliance.html">Statement of compliance</a></nav>
+  </div>
+  <div class="legal-row">
+    <p class="legal">© 2026 Leeeko LTD. 32 Ferndale Avenue, Newcastle, NE28 7NE, United Kingdom. Home Assistant is a trademark of its respective owner. PocketOS is not affiliated with or endorsed by Home Assistant.</p>
+    <a class="legal" href="https://github.com/Tweeeko/PocketOS">Open source</a>
+  </div>
+</footer>
+<script src="assets/product-media.js"></script>
+<script src="assets/buy.js"></script>
+<script src="assets/site.js"></script>
+</body></html>
