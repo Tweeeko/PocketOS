@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>What’s new in PocketOS</title>
+<meta name="theme-color" content="#05060b">
+<link rel="icon" href="assets/icon.png"><link rel="apple-touch-icon" href="assets/icon.png">
+<link rel="stylesheet" href="assets/site.css">
+</head><body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./"><img src="assets/icon.png" alt=""><span>PocketOS</span></a>
+  <nav class="links" aria-label="Site"><a href="install.html">Install</a><a href="help.html">Help</a><a href="changes.html" aria-current="page">What’s new</a></nav>
+</div></header>
+
+<main id="main" class="page"><div class="wrap" style="max-width:760px">
+  <p class="eyebrow">What’s new</p>
+  <h1 style="font-size:clamp(36px,6vw,56px)">Every version.</h1>
+  <p class="lead">PocketOS updates itself. Here’s what each version changed.</p>
+  <div id="list"><p class="muted">Loading…</p></div>
+  <p class="small muted" style="margin-top:28px">Files for every version are on the <a href="https://github.com/Tweeeko/PocketOS/releases">releases page</a>.</p>
+</div></main>
+
+<footer><div class="wrap">
+  <span>PocketOS is a personal, non-commercial project, still being tested on hardware.</span>
+  <span><a href="https://github.com/Tweeeko/PocketOS">Source on GitHub</a> · <a href="help.html#privacy">Privacy</a></span>
+</div></footer>
+<script>
+// CHANGELOG.md is copied next to this page when the site is published.
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+fetch('CHANGELOG.md',{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject()).then(t=>{
+  const parts=t.split(/^## /m).slice(1);
+  if(!parts.length)throw 0;
+  document.getElementById('list').innerHTML=parts.map((p,i)=>{
+    const [head,...body]=p.split('\n'),text=body.join('\n').trim();
+    const html=text.split(/\n\s*\n/).map(par=>/^[-*] /m.test(par)?'<ul>'+par.split(/\n(?=[-*] )/).map(l=>'<li>'+esc(l.replace(/^[-*] /,''))+'</li>').join('')+'</ul>':'<p>'+esc(par.replace(/\n/g,' '))+'</p>').join('');
+    return '<div class="card release"><h2>'+esc(head.trim())+'</h2>'+(i===0?'<p class="tag">Latest</p>':'')+'<div class="muted">'+html+'</div></div>';
+  }).join('');
+}).catch(()=>{document.getElementById('list').innerHTML='<p class="muted">Couldn’t load the list. See the releases page.</p>'});
+</script>
+</body></html>

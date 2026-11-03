@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PocketOS</title>
+<meta name="description" content="A tiny companion for your whole home: a round, pocket-sized screen that controls your Home Assistant smart home. Private, local and free.">
+<meta name="theme-color" content="#05060b">
+<meta property="og:title" content="PocketOS">
+<meta property="og:description" content="A tiny companion for your whole home.">
+<meta property="og:image" content="media/poster.jpg">
+<link rel="icon" href="assets/icon.png"><link rel="apple-touch-icon" href="assets/icon.png">
+<link rel="stylesheet" href="assets/site.css">
+</head><body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./"><img src="assets/icon.png" alt=""><span>PocketOS</span></a>
+  <nav class="links" aria-label="Site"><a href="install.html">Install</a><a href="help.html">Help</a><a href="changes.html">What’s new</a></nav>
+</div></header>
+
+<main id="main">
+<div class="hero wrap">
+  <p class="eyebrow">Introducing</p>
+  <h1><span class="grad">PocketOS</span></h1>
+  <p class="lead">A tiny companion for your whole home. A round glass screen that fits in your hand, with a little character that reacts to your house, and every light, radiator and speaker one swipe away.</p>
+  <div class="btns"><a class="btn" href="help.html#start">Get started</a><a class="btn g" href="#features">See what it does</a></div>
+  <div class="film">
+    <video id="promo" autoplay muted loop playsinline preload="metadata" poster="media/poster.jpg" aria-label="PocketOS promo film">
+      <source src="media/promo.mp4" type="video/mp4">
+    </video>
+    <div class="ctl"><button id="play" aria-label="Pause">❚❚</button><button id="sound" aria-label="Turn sound on">🔇</button></div>
+  </div>
+  <p class="caption">Rendered preview of PocketOS on the Waveshare 1.75″ round AMOLED.</p>
+</div>
+
+<section id="features"><div class="wrap feature">
+  <div class="shot"><img src="media/companion.jpg" width="560" height="560" alt="PocketOS showing its companion with two blue eyes, the time and a Good morning message"></div>
+  <div>
+    <p class="eyebrow">Meet your companion</p>
+    <h2>Say hello.</h2>
+    <p>It blinks, looks around and reacts the moment you touch it. Its mood follows your home, so you can tell what’s going on at a glance.</p>
+    <ul><li>Warm when the heating’s on, dancing when music plays</li><li>Alert if a door is left unlocked</li><li>Chilly when it’s cold outside, tired when its battery’s low</li><li>Worried if it can’t reach your home</li></ul>
+  </div>
+</div></section>
+
+<section><div class="wrap feature flip">
+  <div class="shot"><img src="media/menu.jpg" width="560" height="560" alt="The PocketOS menu with glass tiles for Locks, Rooms, Scenes and More"></div>
+  <div>
+    <p class="eyebrow">Your whole home</p>
+    <h2>One swipe away.</h2>
+    <p>Lights, heating, music, locks, blinds, plugs and scenes, straight from Home Assistant. Browse by room or by type, star your favourites, and choose which tiles go on the menu.</p>
+  </div>
+</div></section>
+
+<section><div class="wrap feature">
+  <div class="shot"><img src="media/heating.jpg" width="560" height="560" alt="A glowing orange heating dial set to 21.5 degrees"></div>
+  <div>
+    <p class="eyebrow">Live control</p>
+    <h2>Turn up the heat.</h2>
+    <p>Drag the glass dial round the edge of the screen. PocketOS shows a change as done only once your home confirms it, and changes made anywhere else show up live.</p>
+  </div>
+</div></section>
+
+<section><div class="wrap feature flip">
+  <div class="shot"><img src="media/media.jpg" width="560" height="560" alt="A purple volume dial at 35 with play, pause and skip buttons"></div>
+  <div>
+    <p class="eyebrow">Music and TV</p>
+    <h2>Volume in your palm.</h2>
+    <p>Play, pause, skip and set the volume on speakers and TVs. Every control matches what that device can actually do.</p>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="center"><p class="eyebrow">Built to be yours</p><h2>Private by design.</h2><p class="lead">PocketOS talks only to your own home. There’s no account, no subscription and nothing to sign up for.</p></div>
+  <div class="grid">
+    <div class="card"><div class="ic" aria-hidden="true">🔒</div><h3>Nothing leaves your home</h3><p>No cloud, advertising, analytics or tracking. Your devices and settings stay on PocketOS and your Wi-Fi.</p></div>
+    <div class="card"><div class="ic" aria-hidden="true">📱</div><h3>Set up from your phone</h3><p>PocketOS serves its own settings page. Scan the code on its Settings tile, pair with a 6-digit code, done.</p></div>
+    <div class="card"><div class="ic" aria-hidden="true">✨</div><h3>Updates itself</h3><p>New versions arrive by themselves. Install with a tap, or let it update overnight while it charges.</p></div>
+    <div class="card"><div class="ic" aria-hidden="true">🔋</div><h3>Knows its battery</h3><p>Tracks its battery over two days and tells you how many hours it has left, based on how you use it.</p></div>
+    <div class="card"><div class="ic" aria-hidden="true">🎙️</div><h3>Push to talk</h3><p>Hold the side button and ask. It uses the voice assistant in your own Home Assistant.</p></div>
+    <div class="card"><div class="ic" aria-hidden="true">🏡</div><h3>Knows when you’re home</h3><p>Sleeps when you leave to save battery, and wakes up to say welcome home when you’re back.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="center"><p class="eyebrow">Getting started</p><h2>Three steps.</h2></div>
+  <div class="steps">
+    <div class="card"><h3>Install PocketOS</h3><p>Plug the board into a computer and press Install. Takes about five minutes, once. <a href="install.html">Install page</a></p></div>
+    <div class="card"><h3>Join your Wi-Fi</h3><p>Scan the code on its screen with your phone and pick your home Wi-Fi. <a href="help.html#start">Setup guide</a></p></div>
+    <div class="card"><h3>Connect your home</h3><p>Link Home Assistant and choose your favourites. We walk you through it. <a href="help.html#home-assistant">How it works</a></p></div>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <span>PocketOS is a personal, non-commercial project, still being tested on hardware.</span>
+  <span><a href="https://github.com/Tweeeko/PocketOS">Source on GitHub</a> · <a href="help.html#privacy">Privacy</a></span>
+</div></footer>
+<script>
+(()=>{const v=document.getElementById('promo'),p=document.getElementById('play'),s=document.getElementById('sound');
+  const rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(rm){v.removeAttribute('autoplay');v.pause()}
+  const sync=()=>{p.textContent=v.paused?'▶':'❚❚';p.setAttribute('aria-label',v.paused?'Play':'Pause');s.textContent=v.muted?'🔇':'🔊';s.setAttribute('aria-label',v.muted?'Turn sound on':'Turn sound off')};
+  p.onclick=()=>{v.paused?v.play():v.pause()};
+  s.onclick=()=>{v.muted=!v.muted;if(!v.muted&&v.paused)v.play();sync()};
+  v.addEventListener('play',sync);v.addEventListener('pause',sync);sync();})();
+</script>
+</body></html>
