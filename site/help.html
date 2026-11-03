@@ -3,8 +3,8 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="author" content="Leeko">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>PocketOS help</title>
-<meta name="description" content="Setting up and using PocketOS: Wi-Fi, the settings page, Home Assistant, buttons, voice, battery and updates.">
+<title>PocketOS Support</title>
+<meta name="description" content="Set up PocketOS, connect Home Assistant, and learn the controls, voice, battery and update features.">
 <meta name="theme-color" content="#070b1c">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/icon.png" type="image/png"><link rel="apple-touch-icon" href="assets/icon.png">
 <link rel="preload" href="fonts/unbounded.woff" as="font" type="font/woff" crossorigin>
@@ -15,119 +15,164 @@
 <header class="topbar" id="top">
   <div class="bar">
     <a class="brand" href="./"><img src="assets/logo.svg" alt="PocketOS" width="190" height="18"></a>
-    <nav class="links" aria-label="Main"><a href="./#features">Features</a><a href="./#film">Film</a><a href="./#privacy">Privacy</a><a href="help.html" aria-current="page">Help</a><a href="changes.html">What’s new</a></nav>
-    <a class="btn small cta" href="install.html">Install</a>
+    <nav class="links" aria-label="Main"><a href="./#features">Features</a><a href="./#privacy">Privacy</a><a href="./#specs">Tech specs</a><a href="help.html" aria-current="page">Support</a><a href="changes.html">What’s new</a></nav>
+    <a class="btn small cta" href="install.html">Get started</a>
     <button class="menu" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menu"><i></i><i></i></button>
   </div>
-  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="./#features">Features</a><a href="./#film">Film</a><a href="./#privacy">Privacy</a><a href="help.html" aria-current="page">Help</a><a href="changes.html">What’s new</a><a href="install.html">Install</a></nav>
+  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="./#features">Features</a><a href="./#privacy">Privacy</a><a href="./#specs">Tech specs</a><a href="help.html" aria-current="page">Support</a><a href="changes.html">What’s new</a><a href="install.html">Get started</a></nav>
 </header>
+
 <main id="main" class="page">
-  <header>
-    <h1>Getting to know PocketOS.</h1>
-    <p class="lede">From the first switch-on to fixing the odd problem.</p>
+  <header class="intro">
+    <h1>Support</h1>
+    <p class="lede">Everything you need to set up PocketOS, connect your home and get the most from it.</p>
   </header>
+
   <div class="doc">
     <nav class="toc glass" aria-label="On this page">
-    <a href="#start">First setup</a><a href="#settings">The settings website</a><a href="#home-assistant">Connect Home Assistant</a>
-    <a href="#using">Using PocketOS</a><a href="#buttons">Side buttons</a><a href="#voice">Voice</a><a href="#battery">Battery</a>
-    <a href="#updates">Updates</a><a href="#two">Two PocketOS</a><a href="#problems">Problems</a><a href="#privacy">Privacy</a>
-  </nav>
-    <article class="prose panel glass">
-    <h2 id="start">First setup</h2>
-    <ol>
-      <li>Switch PocketOS on. It shows a welcome screen with a QR code and the name of its own Wi-Fi, <b>PocketOS-XXXX</b>.</li>
-      <li>On your phone, scan the code with the camera and join that network. The setup page opens by itself. If it doesn’t, open <code>http://192.168.4.1</code>.</li>
-      <li>Choose your home Wi-Fi and type its password. PocketOS uses 2.4 GHz Wi-Fi, which most routers provide.</li>
-      <li>PocketOS restarts on your home Wi-Fi, and your phone goes back to it too. Open the link the page shows, or scan the code on PocketOS’s <b>Settings</b> tile.</li>
-      <li>Enter the 6-digit code from the PocketOS screen. That pairs your phone, once.</li>
-      <li>Follow the guide to connect Home Assistant and pick your favourites.</li>
-    </ol>
-    <div class="aside glass">PocketOS’s own Wi-Fi network is only used for this first step. Afterwards everything happens on your home Wi-Fi.</div>
+      <p>Getting started</p>
+      <a href="#setup">Set up PocketOS</a><a href="#home-assistant">Connect Home Assistant</a><a href="#settings">The settings page</a>
+      <p>Using PocketOS</p>
+      <a href="#controls">Controls</a><a href="#voice">Voice</a><a href="#battery">Battery and power</a><a href="#updates">Updates</a><a href="#multiple">More than one PocketOS</a>
+      <p>Help</p>
+      <a href="#troubleshooting">Troubleshooting</a><a href="#privacy">Privacy</a>
+    </nav>
 
-    <h2 id="settings">The settings website</h2>
-    <p>Each PocketOS runs its own small website on your home Wi-Fi. That’s where you change everything: which devices appear, favourites, menu tiles, clock, brightness, eye colour and updates.</p>
-    <ul>
-      <li><b>To open it:</b> tap the <b>Settings</b> tile (always first on the menu) and scan the code, or open <code>http://pocketos-xxxx.local</code>.</li>
-      <li><b>Keep it handy:</b> on iPhone or iPad, tap Share → <b>Add to Home Screen</b>.</li>
-      <li><b>Honest saving:</b> a change only shows as saved once PocketOS confirms it. If it can’t be reached, the page says nothing was changed.</li>
-    </ul>
+    <div class="sections">
+      <section class="block glass" id="setup">
+        <h2>Set up PocketOS</h2>
+        <p class="intro-p">Setup takes a few minutes and only needs your phone.</p>
+        <ol class="numbered">
+          <li><b>Join PocketOS’s network</b><span>Switch PocketOS on. Scan the code on its screen with your phone’s camera to join the network named <code>PocketOS-XXXX</code>.</span></li>
+          <li><b>Choose your Wi-Fi</b><span>The setup page opens automatically. If it doesn’t, go to <code>192.168.4.1</code>. Select your home network and enter its password.</span></li>
+          <li><b>Open the settings page</b><span>PocketOS restarts on your home network and your phone reconnects. Open the link shown, or scan the code on PocketOS’s Settings tile.</span></li>
+          <li><b>Pair your phone</b><span>Enter the six-digit code shown on PocketOS. Each phone only needs to pair once.</span></li>
+        </ol>
+        <p class="note">PocketOS works with 2.4 GHz Wi-Fi, which most home routers provide alongside 5 GHz. Its own network is only used during setup.</p>
+      </section>
 
-    <h2 id="home-assistant">Connect Home Assistant</h2>
-    <p>PocketOS controls your home through <a href="https://www.home-assistant.io/">Home Assistant</a>, the free app that links smart-home brands together. Alexa, Google Home or Apple Home on their own aren’t enough.</p>
-    <ol>
-      <li>In Home Assistant, go to <b>Settings → People → Add person</b>. Call it <i>PocketOS</i>, allow it to log in, and leave <b>Administrator</b> off.</li>
-      <li>Log in as that user (a private browser window is easiest). Tap its name at the bottom left → <b>Security</b> → <b>Long-lived access tokens</b> → <b>Create token</b>. Copy it.</li>
-      <li>On PocketOS’s settings website, open <b>Smart home</b>, paste the token, check the address and press <b>Test and connect</b>.</li>
-    </ol>
-    <div class="aside glass">Why a separate user? Home Assistant tokens can do anything their user can. A non-admin PocketOS user keeps your own login out of it. The token is kept only on PocketOS and is never shown again.</div>
-    <p>New devices you add to Home Assistant appear on PocketOS by themselves. You can review each one first or have them appear automatically (Smart home → <b>Add new devices automatically</b>).</p>
+      <section class="block glass" id="home-assistant">
+        <h2>Connect Home Assistant</h2>
+        <p class="intro-p">PocketOS controls your devices through <a href="https://www.home-assistant.io/">Home Assistant</a>. Alexa, Google Home and Apple Home aren’t supported directly.</p>
+        <ol class="numbered">
+          <li><b>Create a PocketOS user</b><span>In Home Assistant, go to <b>Settings → People → Add person</b>. Name it PocketOS, allow it to log in, and leave Administrator turned off.</span></li>
+          <li><b>Create an access token</b><span>Sign in as that user, open its profile, then <b>Security → Long-lived access tokens → Create token</b>. Copy the token.</span></li>
+          <li><b>Connect</b><span>On the PocketOS settings page, open <b>Smart home</b>, paste the token, confirm the address and select <b>Test and connect</b>.</span></li>
+        </ol>
+        <p class="note">A dedicated user keeps your own account separate. The token is stored only on PocketOS and is never displayed again.</p>
+        <h3>Adding devices</h3>
+        <p>Add new devices in Home Assistant as usual. PocketOS finds them automatically. Choose whether they appear straight away or wait for your review in <b>Smart home → Add new devices automatically</b>.</p>
+      </section>
 
-    <h2 id="using">Using PocketOS</h2>
-    <table>
-      <thead><tr><th>Do this</th><th>To</th></tr></thead>
-      <tbody>
-        <tr><td>Tap the companion</td><td>Say hello. It reacts.</td></tr>
-        <tr><td>Swipe up or left</td><td>Open the menu</td></tr>
-        <tr><td>Swipe right</td><td>Go back</td></tr>
-        <tr><td>Tap a tile or a row</td><td>Open it</td></tr>
-        <tr><td>Drag the dial</td><td>Set brightness, temperature, volume, speed or position</td></tr>
-        <tr><td>− and + buttons</td><td>One step at a time</td></tr>
-        <tr><td>Centre button</td><td>On/off, play/pause, heat on/off, lock/unlock</td></tr>
-      </tbody>
-    </table>
-    <p>“Sending…” means PocketOS is waiting for your home to confirm. If nothing answers within six seconds it says “No response”.</p>
+      <section class="block glass" id="settings">
+        <h2>The settings page</h2>
+        <p class="intro-p">Each PocketOS hosts its own settings page on your home network.</p>
+        <h3>Opening it</h3>
+        <ul class="plain">
+          <li>Tap the <b>Settings</b> tile on PocketOS and scan the code.</li>
+          <li>Or go to <code>http://pocketos-xxxx.local</code> on any device on your Wi-Fi.</li>
+          <li>On iPhone or iPad, choose <b>Share → Add to Home Screen</b> for quick access.</li>
+        </ul>
+        <h3>What you can change</h3>
+        <div class="tiles-list">
+          <div><b>Devices</b><span>Show, hide and favourite devices.</span></div>
+          <div><b>Look</b><span>Menu tiles, clock, brightness and the companion.</span></div>
+          <div><b>Smart home</b><span>Home Assistant connection and new devices.</span></div>
+          <div><b>More</b><span>Updates, backups, restart and reset.</span></div>
+        </div>
+      </section>
 
-    <h2 id="buttons">Side buttons</h2>
-    <table>
-      <thead><tr><th>Button</th><th>Does</th></tr></thead>
-      <tbody>
-        <tr><td><kbd>BOOT</kbd> press</td><td>Shows the Settings code (or wakes the screen)</td></tr>
-        <tr><td><kbd>BOOT</kbd> twice</td><td>Back to the companion</td></tr>
-        <tr><td><kbd>BOOT</kbd> hold</td><td>Talk to Home Assistant; let go when you’re done</td></tr>
-        <tr><td><kbd>PWR</kbd> press</td><td>Screen off or on</td></tr>
-        <tr><td><kbd>PWR</kbd> hold</td><td>Switch off completely (keep holding)</td></tr>
-      </tbody>
-    </table>
+      <section class="block glass" id="controls">
+        <h2>Controls</h2>
+        <h3>Touch</h3>
+        <table>
+          <thead><tr><th>Gesture</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td>Swipe up or left</td><td>Open the menu</td></tr>
+            <tr><td>Swipe right</td><td>Go back</td></tr>
+            <tr><td>Tap</td><td>Open a tile, room or device</td></tr>
+            <tr><td>Drag the dial</td><td>Set brightness, temperature, volume, speed or position</td></tr>
+            <tr><td>Centre button</td><td>On/off, play/pause, lock/unlock</td></tr>
+          </tbody>
+        </table>
+        <h3>Side buttons</h3>
+        <table>
+          <thead><tr><th>Button</th><th>Press</th><th>Double press</th><th>Hold</th></tr></thead>
+          <tbody>
+            <tr><td><kbd>BOOT</kbd></td><td>Show the settings code</td><td>Return home</td><td>Talk to Home Assistant</td></tr>
+            <tr><td><kbd>PWR</kbd></td><td>Screen on or off</td><td>–</td><td>Power off</td></tr>
+          </tbody>
+        </table>
+        <p class="note">“Sending…” means PocketOS is waiting for your home to confirm a change. If there’s no confirmation within six seconds, it shows “No response”.</p>
+      </section>
 
-    <h2 id="voice">Voice</h2>
-    <p>Hold <kbd>BOOT</kbd>, say something like “turn on the floor lamp”, and let go. PocketOS shows what it heard and Home Assistant’s reply. It uses the voice assistant set up in Home Assistant (<b>Settings → Voice assistants</b>), which needs speech-to-text to be set up there.</p>
+      <section class="block glass" id="voice">
+        <h2>Voice</h2>
+        <p>Hold <kbd>BOOT</kbd>, speak your request, then release. PocketOS shows what it heard and Home Assistant’s reply.</p>
+        <p class="note">Voice uses the assistant set up in Home Assistant under <b>Settings → Voice assistants</b>, which needs speech-to-text configured.</p>
+      </section>
 
-    <h2 id="battery">Battery</h2>
-    <p>PocketOS reads its battery every few seconds and keeps a 48-hour history. Once it’s spent an hour or two off the charger, it estimates how long it has left based on how you actually use it. See it on <b>This PocketOS</b> on the device, or on the website’s Home page with a chart.</p>
-    <ul>
-      <li>The screen turns off after 30 seconds by default. “Never” uses much more battery.</li>
-      <li>Away from home, PocketOS sleeps and checks every five minutes whether you’re back.</li>
-      <li>If the battery runs out, PocketOS says so and sleeps safely. It starts again once you plug it in.</li>
-    </ul>
+      <section class="block glass" id="battery">
+        <h2>Battery and power</h2>
+        <ul class="plain">
+          <li><b>Battery status</b> appears on PocketOS under <b>This PocketOS</b>, and on the settings page with a 48-hour chart.</li>
+          <li><b>Time remaining</b> is estimated after a few hours off the charger, based on your actual use.</li>
+          <li><b>Screen timeout</b> is 30 seconds by default. Choose Never only when PocketOS stays on the charger.</li>
+          <li><b>Away mode</b>: when you leave home, PocketOS sleeps and checks every five minutes for your return.</li>
+          <li><b>Low battery</b>: when the battery is empty, PocketOS shuts down safely and restarts once charging.</li>
+        </ul>
+      </section>
 
-    <h2 id="updates">Updates</h2>
-    <p>PocketOS looks for a new version once a day. On the settings website, go to <b>More → Updates</b> and choose one:</p>
-    <ul>
-      <li><b>Tell me</b> (default): a notice on the screen and the website, then you tap Install.</li>
-      <li><b>Install overnight</b>: installs between 2 and 5 am while charging and not in use.</li>
-      <li><b>Don’t check</b>: never looks.</li>
-    </ul>
-    <p>Every update is checked before it’s used. If a new version doesn’t start properly, PocketOS goes back to the previous one by itself. Updates need 30% battery or a charger. See <a href="changes.html">what’s new</a>.</p>
+      <section class="block glass" id="updates">
+        <h2>Updates</h2>
+        <p>PocketOS checks for a new version once a day. Choose how updates install under <b>More → Updates</b>.</p>
+        <table>
+          <thead><tr><th>Setting</th><th>Behaviour</th></tr></thead>
+          <tbody>
+            <tr><td>Notify</td><td>Shows an alert on PocketOS and the settings page. Install with a tap. Default.</td></tr>
+            <tr><td>Install overnight</td><td>Installs between 2 and 5 am while charging and not in use.</td></tr>
+            <tr><td>Off</td><td>Never checks for updates.</td></tr>
+          </tbody>
+        </table>
+        <p class="note">Updates need 30% battery or a charger. Each update is verified before it runs. If a new version fails to start, PocketOS returns to the previous one automatically. See <a href="changes.html">What’s new</a>.</p>
+      </section>
 
-    <h2 id="two">Two PocketOS</h2>
-    <p>Each PocketOS has its own name, address (<code>pocketos-xxxx.local</code>), settings and paired phones. The website always shows which one you’re changing at the top. Add each to your Home Screen separately.</p>
+      <section class="block glass" id="multiple">
+        <h2>More than one PocketOS</h2>
+        <p>Each PocketOS has its own name, address, settings and paired phones. The settings page always shows which one you’re changing. Add each one to your Home Screen separately.</p>
+      </section>
 
-    <h2 id="problems">Problems</h2>
-    <details class="glass"><summary>The settings page won’t open</summary><p>Make sure your phone is on the same home Wi-Fi as PocketOS. Some Android phones don’t support <code>.local</code> addresses: use the IP address from <b>This PocketOS</b> on the device instead.</p></details>
-    <details class="glass"><summary>It asks for the code again</summary><p>Each phone is paired once. If someone used “Forget all phones”, or PocketOS was reset, enter the new code from its screen (press <kbd>BOOT</kbd> to see it).</p></details>
-    <details class="glass"><summary>Home Assistant won’t connect</summary><p>Check the address (for example <code>http://homeassistant.local:8123</code>) and that Home Assistant is running. If it says the token was rejected, create a new one and paste it on the Smart home page. After a rejected token PocketOS stops trying, so Home Assistant doesn’t block it.</p></details>
-    <details class="glass"><summary>A device says “No response”</summary><p>Home Assistant didn’t confirm the change. The device may be off at the wall or offline in Home Assistant.</p></details>
-    <details class="glass"><summary>New router or moving house</summary><p>On the settings website, <b>More → Change Wi-Fi network</b>. PocketOS restarts into setup and keeps everything else. If you can’t reach the website any more, a reset is the only way.</p></details>
-    <details class="glass"><summary>Start again from scratch</summary><p><b>More → Reset everything</b> on the website, then press <kbd>BOOT</kbd> on PocketOS within 15 seconds to confirm. Nothing is erased without that press.</p></details>
+      <section class="block glass" id="troubleshooting">
+        <h2>Troubleshooting</h2>
+        <details><summary>The settings page won’t open</summary><p>Make sure your phone is on the same Wi-Fi as PocketOS. Some Android phones don’t support <code>.local</code> addresses; use the IP address shown under <b>This PocketOS</b> instead.</p></details>
+        <details><summary>I’m asked for a pairing code again</summary><p>This happens after <b>Forget all phones</b> or a reset. Press <kbd>BOOT</kbd> to show the current code on PocketOS.</p></details>
+        <details><summary>Home Assistant won’t connect</summary><p>Check the address, for example <code>http://homeassistant.local:8123</code>, and that Home Assistant is running. If the token is rejected, create a new one and paste it under <b>Smart home</b>. PocketOS stops retrying a rejected token so Home Assistant doesn’t block it.</p></details>
+        <details><summary>A device shows “No response”</summary><p>Home Assistant didn’t confirm the change. Check that the device is powered and available in Home Assistant.</p></details>
+        <details><summary>I’ve changed my router or Wi-Fi password</summary><p>On the settings page, choose <b>More → Change Wi-Fi network</b>. PocketOS restarts in setup mode and keeps your other settings. If you can no longer reach the settings page, reset PocketOS.</p></details>
+        <details><summary>Resetting PocketOS</summary><p>On the settings page, choose <b>More → Reset everything</b>, then press <kbd>BOOT</kbd> on PocketOS within 15 seconds to confirm. Nothing is erased without that press.</p></details>
+      </section>
 
-    <h2 id="privacy">Privacy</h2>
-    <p>PocketOS has no account, cloud service, advertising, analytics or tracking. Your Wi-Fi password, Home Assistant token, devices and settings are stored only on PocketOS. It talks only to your Home Assistant, and once a day to GitHub to check for updates (a plain download that sends nothing about you or your home; you can turn it off). Voice goes to your own Home Assistant. This website doesn’t use cookies or analytics; Vercel, which hosts it, sees visitors’ internet addresses like any web host.</p>
-  </article>
+      <section class="block glass" id="privacy">
+        <h2>Privacy</h2>
+        <p>PocketOS has no account, cloud service, advertising or analytics. Your Wi-Fi password, Home Assistant token, devices and settings are stored only on the device.</p>
+        <ul class="plain">
+          <li><b>Home Assistant</b>: PocketOS connects only to your own Home Assistant. Voice requests go there too.</li>
+          <li><b>Updates</b>: once a day PocketOS downloads a small file from GitHub to check for a new version. Nothing about you or your home is sent. You can turn this off.</li>
+          <li><b>This website</b> uses no cookies or analytics. Like any host, Vercel can see visitors’ IP addresses.</li>
+        </ul>
+      </section>
+    </div>
   </div>
 </main>
+
 <footer class="end">
-  <span><strong>PocketOS</strong> is created by Leeko. A personal project, still being tested on hardware.</span>
-  <nav aria-label="Footer"><a href="https://github.com/Tweeeko/PocketOS">Source</a><a href="install.html">Install</a><a href="./">Home</a></nav>
+  <div class="foot">
+    <div><img src="assets/logo.svg" alt="PocketOS" width="150" height="14"><p>Created by Leeko.</p></div>
+    <nav aria-label="Footer"><h4>Product</h4><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="changes.html">What’s new</a></nav>
+    <nav aria-label="Support"><h4>Support</h4><a href="install.html">Install</a><a href="help.html">Support</a><a href="help.html#privacy">Privacy</a></nav>
+    <nav aria-label="Project"><h4>Project</h4><a href="https://github.com/Tweeeko/PocketOS">Source code</a><a href="https://github.com/Tweeeko/PocketOS/releases">Releases</a></nav>
+  </div>
+  <p class="legal">© 2026 Leeko. PocketOS is an independent project and is not affiliated with Home Assistant or Waveshare.</p>
 </footer>
 <script src="assets/site.js"></script>
 </body></html>

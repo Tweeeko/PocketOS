@@ -6,7 +6,9 @@
 
 typedef enum { VOICE_IDLE, VOICE_LISTENING, VOICE_THINKING, VOICE_HEARD, VOICE_REPLY, VOICE_ERROR } voice_state_t;
 
-void ui_init(void);                 // builds the theme and the first screen
+void ui_init(void);                 // builds the theme and the first screen, behind the start-up splash
+void ui_boot_splash(void);          // the eye mark at start-up (called by ui_init)
+bool ui_boot_showing(void);
 void ui_home(void);                 // go to the companion
 void ui_back(void);
 void ui_open_menu(void);

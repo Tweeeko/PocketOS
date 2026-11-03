@@ -224,7 +224,19 @@
     addEventListener('keydown', e => { if (e.key === 'Escape' && !drawer.hidden) { set(false); menu.focus(); } });
   }
 
-  // The film plays only when asked, with sound
-  const v = $('#film'), p = $('#film-play');
-  if (v && p) p.addEventListener('click', () => { v.controls = true; v.muted = false; v.play(); p.hidden = true; });
+  // The brand film plays (muted) while it's on screen and pauses when it isn't
+  const v = $('#film'), snd = $('#film-sound');
+  if (v) {
+    if ('IntersectionObserver' in window && !reduce) {
+      new IntersectionObserver(es => es.forEach(e => {
+        if (e.isIntersecting) { const p = v.play(); if (p && p.catch) p.catch(() => {}); } else v.pause();
+      }), { threshold: .5 }).observe(v);
+    } else v.controls = true;
+    if (snd) snd.addEventListener('click', () => {
+      v.muted = !v.muted;
+      if (!v.muted && v.paused) v.play();
+      snd.setAttribute('aria-pressed', String(!v.muted));
+      snd.setAttribute('aria-label', v.muted ? 'Turn sound on' : 'Turn sound off');
+    });
+  }
 })();

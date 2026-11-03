@@ -5,5 +5,7 @@ The text under it (keep it short and plain) is shown on the settings website whe
 is offered.
 
 ## 0.1.0
-First version: companion and moods, Home Assistant control, settings website, voice,
-battery history and online updates.
+Initial release.
+- Companion that reflects the state of your home
+- Control of lights, heating, media, locks, blinds, plugs and scenes through Home Assistant
+- Settings page, push-to-talk voice, battery insight and automatic updates

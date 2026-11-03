@@ -3,10 +3,10 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="author" content="Leeko">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>PocketOS</title>
-<meta name="description" content="A round glass companion for your whole home. Lights, heating, music and locks in the palm of your hand, through Home Assistant. Private and local. Created by Leeko.">
+<title>PocketOS: your home, at a glance</title>
+<meta name="description" content="PocketOS is a round, pocket-sized display for Home Assistant. See what’s happening at home and control lights, heating, media and locks with a touch. Local, private and subscription-free.">
 <meta name="theme-color" content="#070b1c">
-<meta property="og:title" content="PocketOS"><meta property="og:description" content="A round glass companion for your whole home."><meta property="og:image" content="media/poster.jpg">
+<meta property="og:title" content="PocketOS"><meta property="og:description" content="Your home, at a glance."><meta property="og:image" content="media/poster.jpg">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/icon.png" type="image/png"><link rel="apple-touch-icon" href="assets/icon.png">
 <link rel="preload" href="fonts/unbounded.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="assets/site.css">
@@ -16,24 +16,21 @@
 <header class="topbar" id="top">
   <div class="bar">
     <a class="brand" href="./" aria-current="page"><img src="assets/logo.svg" alt="PocketOS" width="190" height="18"></a>
-    <nav class="links" aria-label="Main"><a href="./#features">Features</a><a href="./#film">Film</a><a href="./#privacy">Privacy</a><a href="help.html">Help</a><a href="changes.html">What’s new</a></nav>
-    <a class="btn small cta" href="install.html">Install</a>
+    <nav class="links" aria-label="Main"><a href="#features">Features</a><a href="#privacy">Privacy</a><a href="#specs">Tech specs</a><a href="help.html">Support</a><a href="changes.html">What’s new</a></nav>
+    <a class="btn small cta" href="install.html">Get started</a>
     <button class="menu" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menu"><i></i><i></i></button>
   </div>
-  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="./#features">Features</a><a href="./#film">Film</a><a href="./#privacy">Privacy</a><a href="help.html">Help</a><a href="changes.html">What’s new</a><a href="install.html">Install</a></nav>
+  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="#features">Features</a><a href="#privacy">Privacy</a><a href="#specs">Tech specs</a><a href="help.html">Support</a><a href="changes.html">What’s new</a><a href="install.html">Get started</a></nav>
 </header>
 
 <main id="main">
   <section class="hero">
     <div class="copy">
-      <h1>Your whole home, in the palm of your hand.</h1>
-      <p class="lead lede">PocketOS is a round glass screen with a little companion who lives inside it. It watches over your lights, heating and music, and lets you change them with one finger.</p>
-      <div class="row"><a class="btn" href="#features">See how it works</a><a class="btn ghost" href="install.html">Install</a></div>
+      <h1>Your home, at a glance.</h1>
+      <p class="lede">PocketOS is a round, pocket-sized display for Home Assistant. It shows what’s happening at home and puts every light, thermostat and speaker within reach.</p>
+      <div class="row"><a class="btn" href="install.html">Get started</a><a class="btn ghost" href="#features">Explore features</a></div>
     </div>
-    <div class="stage">
-      <div class="pocket" data-build></div>
-      <p class="hint">Go on, tap it.</p>
-    </div>
+    <div class="stage"><div class="pocket" data-build></div></div>
   </section>
 
   <div class="chapters" id="features">
@@ -42,77 +39,100 @@
       <article class="chapter" data-screen="companion">
         <div class="pocket mini" data-build data-for="companion"></div>
         <div class="panel glass">
-          <h2>Someone’s home.</h2>
-          <p>The companion breathes, blinks and glances around, and smiles when you touch it. Its face follows your house, so a glance tells you what’s going on.</p>
-          <div class="moods" role="group" aria-label="Try a mood">
+          <h2>A companion that reads the room.</h2>
+          <p>The display’s companion reflects what’s happening at home. Heating on, music playing, a door left unlocked: you’ll know without opening an app.</p>
+          <p class="label">Preview a state</p>
+          <div class="moods" role="group" aria-label="Preview a state">
             <button data-mood="hot" style="--c:#FFA070" aria-pressed="false">Heating on</button>
             <button data-mood="dance" style="--c:#FF7BD5" aria-pressed="false">Music playing</button>
             <button data-mood="alert" style="--c:#FFD166" aria-pressed="false">Door unlocked</button>
             <button data-mood="cold" style="--c:#8FD3FF" aria-pressed="false">Cold outside</button>
             <button data-mood="tired" style="--c:#FFC46B" aria-pressed="false">Battery low</button>
-            <button data-mood="worried" style="--c:#B6A8FF" aria-pressed="false">Can’t reach home</button>
+            <button data-mood="worried" style="--c:#B6A8FF" aria-pressed="false">Offline</button>
           </div>
         </div>
       </article>
       <article class="chapter" data-screen="menu">
         <div class="pocket mini" data-build data-for="menu"></div>
         <div class="panel glass">
-          <h2>Everything, one swipe away.</h2>
-          <p>Lights, heating, music, locks, blinds, plugs and scenes come straight from Home Assistant. Browse by room or by kind, star your favourites, and choose which tiles sit on the first page.</p>
+          <h2>Every room. Every device.</h2>
+          <p>Lights, heating, media, locks, blinds, plugs and scenes come straight from Home Assistant, organised by room or by type. Pin your favourites and arrange the menu the way you use it.</p>
         </div>
       </article>
       <article class="chapter" data-screen="heat">
         <div class="pocket mini" data-build data-for="heat"></div>
         <div class="panel glass">
-          <h2>Turn up the heat.</h2>
-          <p>Run a finger round the glass dial. PocketOS only calls a change done once your home confirms it, and anything changed elsewhere appears here as it happens.</p>
+          <h2>Precise control, confirmed.</h2>
+          <p>Turn the dial to set temperature, brightness or volume. A change shows as complete only once your home confirms it, and adjustments made anywhere else appear instantly.</p>
         </div>
       </article>
       <article class="chapter" data-screen="music">
         <div class="pocket mini" data-build data-for="music"></div>
         <div class="panel glass">
-          <h2>The volume, under your thumb.</h2>
-          <p>Play, pause, skip and turn it up on speakers and TVs. Each control matches what that device can really do, so nothing on screen is there just for show.</p>
+          <h2>Media in your hand.</h2>
+          <p>Play, pause, skip and adjust the volume on any speaker or TV. Controls adapt to what each device supports.</p>
         </div>
       </article>
     </div>
   </div>
 
-  <section class="film" id="film">
-    <div class="head"><h2>Watch the film.</h2><p class="dim" style="margin:0">Thirty seconds, with sound.</p></div>
+  <section class="film" aria-label="PocketOS brand film">
     <div class="frame glass"><div>
-      <video id="film" playsinline preload="none" poster="media/poster.jpg"><source src="media/promo.mp4" type="video/mp4"></video>
-      <button class="play glass" id="film-play" aria-label="Play the PocketOS film"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z"/></svg></button>
+      <video id="film" muted loop playsinline preload="metadata" poster="media/poster.jpg"><source src="media/promo.mp4" type="video/mp4"></video>
+      <button class="sound glass" id="film-sound" type="button" aria-pressed="false" aria-label="Turn sound on"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="spk" d="M4 9h4l5-4v14l-5-4H4z"/><path class="on" d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/><path class="off" d="M17 9l5 6M22 9l-5 6"/></svg></button>
     </div></div>
   </section>
 
   <section class="promise" id="privacy">
-    <h2>It talks to your home. <span>Nobody else.</span></h2>
+    <h2>Private by design.</h2>
+    <p class="lede">PocketOS runs entirely on your home network. No account, no subscription and no cloud service.</p>
     <div class="facts">
-      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg></div><div><h3>No account, no cloud</h3><p>No sign-up, no subscription, no advertising or analytics. Your devices and settings stay on PocketOS and your Wi-Fi.</p></div></div>
-      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="3"/><path d="M11 18h2"/></svg></div><div><h3>Set up from your phone</h3><p>PocketOS runs its own settings page. Scan the code on its Settings tile and type the six digits it shows.</p></div></div>
-      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></svg></div><div><h3>Keeps itself up to date</h3><p>New versions arrive on their own. Install with a tap, or let it update overnight while it charges.</p></div></div>
-      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="18" height="10" rx="2.5"/><path d="M22 11v2M6 10v4M9.5 10v4"/></svg></div><div><h3>Knows its own battery</h3><p>It keeps two days of battery history and tells you how many hours are left, based on how you actually use it.</p></div></div>
-      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg></div><div><h3>Hold to talk</h3><p>Hold the side button and ask. Your words go to the voice assistant in your own Home Assistant.</p></div></div>
-      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7M5 10v10h14V10"/></svg></div><div><h3>Notices when you’re home</h3><p>It rests while you’re out to save battery, then wakes to welcome you back.</p></div></div>
+      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg></div><div><h3>Local by default</h3><p>Your devices, settings and credentials stay on PocketOS and your Wi-Fi. No analytics, no advertising.</p></div></div>
+      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="3"/><path d="M11 18h2"/></svg></div><div><h3>Set up from your phone</h3><p>Every PocketOS hosts its own settings page. Scan the code on screen and enter the pairing code.</p></div></div>
+      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></svg></div><div><h3>Automatic updates</h3><p>New versions install with a tap, or overnight while charging. Each update is verified before it runs.</p></div></div>
+      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="18" height="10" rx="2.5"/><path d="M22 11v2M6 10v4M9.5 10v4"/></svg></div><div><h3>Battery insight</h3><p>Tracks 48 hours of battery history and estimates the time remaining based on how you use it.</p></div></div>
+      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg></div><div><h3>Push to talk</h3><p>Hold the side button to speak to the voice assistant in your own Home Assistant.</p></div></div>
+      <div class="fact"><div class="ic glass"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7M5 10v10h14V10"/></svg></div><div><h3>Presence aware</h3><p>Rests while you’re away to save power, and wakes when you return home.</p></div></div>
+    </div>
+  </section>
+
+  <section class="specs" id="specs">
+    <div class="panel glass">
+      <h2>Tech specs</h2>
+      <dl class="spec-grid">
+        <div><dt>Display</dt><dd>1.75-inch round AMOLED<br>466 × 466 pixels, capacitive touch</dd></div>
+        <div><dt>Processor</dt><dd>ESP32-S3, dual-core<br>8 MB PSRAM, 32 MB flash</dd></div>
+        <div><dt>Wireless</dt><dd>Wi-Fi 2.4 GHz</dd></div>
+        <div><dt>Audio</dt><dd>Dual microphones, speaker</dd></div>
+        <div><dt>Controls</dt><dd>Touchscreen, two side buttons</dd></div>
+        <div><dt>Power</dt><dd>Built-in rechargeable battery<br>USB-C charging</dd></div>
+        <div><dt>Enclosure</dt><dd>Aluminium</dd></div>
+        <div><dt>Works with</dt><dd>Home Assistant<br>Set up from any phone or computer browser</dd></div>
+      </dl>
+      <p class="fine">PocketOS runs on the Waveshare ESP32-S3-Touch-AMOLED-1.75C.</p>
     </div>
   </section>
 
   <section class="begin">
     <div class="panel glass">
-      <h2>Up and running in three steps.</h2>
+      <h2>Get started in three steps.</h2>
       <ol class="steps">
-        <li><h3>Install</h3><p>Plug the board into a computer and press Install. About five minutes, once. <a href="install.html">Install PocketOS</a></p></li>
-        <li><h3>Join your Wi-Fi</h3><p>Scan the code on its screen with your phone and choose your home network. <a href="help.html#start">Setup guide</a></p></li>
-        <li><h3>Connect your home</h3><p>Link Home Assistant and pick your favourites. The settings page walks you through it. <a href="help.html#home-assistant">How to connect</a></p></li>
+        <li><h3>Install</h3><p>Connect the board to a computer and install PocketOS from your browser.</p><a href="install.html">Install PocketOS</a></li>
+        <li><h3>Connect to Wi-Fi</h3><p>Scan the code on screen with your phone and choose your home network.</p><a href="help.html#setup">Setup guide</a></li>
+        <li><h3>Link Home Assistant</h3><p>Connect your home and choose your favourites from the settings page.</p><a href="help.html#home-assistant">Connection guide</a></li>
       </ol>
     </div>
   </section>
 </main>
 
 <footer class="end">
-  <span><strong>PocketOS</strong> is created by Leeko. A personal project, still being tested on hardware.</span>
-  <nav aria-label="Footer"><a href="https://github.com/Tweeeko/PocketOS">Source</a><a href="help.html#privacy">Privacy</a><a href="install.html">Install</a></nav>
+  <div class="foot">
+    <div><img src="assets/logo.svg" alt="PocketOS" width="150" height="14"><p>Created by Leeko.</p></div>
+    <nav aria-label="Footer"><h4>Product</h4><a href="#features">Features</a><a href="#specs">Tech specs</a><a href="changes.html">What’s new</a></nav>
+    <nav aria-label="Support"><h4>Support</h4><a href="install.html">Install</a><a href="help.html">Support</a><a href="help.html#privacy">Privacy</a></nav>
+    <nav aria-label="Project"><h4>Project</h4><a href="https://github.com/Tweeeko/PocketOS">Source code</a><a href="https://github.com/Tweeeko/PocketOS/releases">Releases</a></nav>
+  </div>
+  <p class="legal">© 2026 Leeko. PocketOS is an independent project and is not affiliated with Home Assistant or Waveshare.</p>
 </footer>
 <script src="assets/site.js"></script>
 </body></html>

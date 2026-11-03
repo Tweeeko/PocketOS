@@ -15,23 +15,29 @@
 <header class="topbar" id="top">
   <div class="bar">
     <a class="brand" href="./"><img src="assets/logo.svg" alt="PocketOS" width="190" height="18"></a>
-    <nav class="links" aria-label="Main"><a href="./#features">Features</a><a href="./#film">Film</a><a href="./#privacy">Privacy</a><a href="help.html">Help</a><a href="changes.html" aria-current="page">What’s new</a></nav>
-    <a class="btn small cta" href="install.html">Install</a>
+    <nav class="links" aria-label="Main"><a href="./#features">Features</a><a href="./#privacy">Privacy</a><a href="./#specs">Tech specs</a><a href="help.html">Support</a><a href="changes.html" aria-current="page">What’s new</a></nav>
+    <a class="btn small cta" href="install.html">Get started</a>
     <button class="menu" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menu"><i></i><i></i></button>
   </div>
-  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="./#features">Features</a><a href="./#film">Film</a><a href="./#privacy">Privacy</a><a href="help.html">Help</a><a href="changes.html" aria-current="page">What’s new</a><a href="install.html">Install</a></nav>
+  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="./#features">Features</a><a href="./#privacy">Privacy</a><a href="./#specs">Tech specs</a><a href="help.html">Support</a><a href="changes.html" aria-current="page">What’s new</a><a href="install.html">Get started</a></nav>
 </header>
 <main id="main" class="page">
-  <header>
-    <h1>What’s new.</h1>
-    <p class="lede">PocketOS updates itself. This is what each version brought.</p>
+  <header class="intro">
+    <h1>What’s new</h1>
+    <p class="lede">Release notes for each version of PocketOS. Updates install over Wi-Fi from the settings page.</p>
   </header>
-  <div id="list"><p class="dim">Loading…</p></div>
-  <p class="dim" style="margin-top:30px;font-size:16px">Files for every version are on the <a href="https://github.com/Tweeeko/PocketOS/releases">releases page</a>.</p>
+  <div id="list"><p class="dim">Loading release notes…</p></div>
+  <p class="fine">Downloads for every version are on the <a href="https://github.com/Tweeeko/PocketOS/releases">releases page</a>.</p>
 </main>
+
 <footer class="end">
-  <span><strong>PocketOS</strong> is created by Leeko. A personal project, still being tested on hardware.</span>
-  <nav aria-label="Footer"><a href="https://github.com/Tweeeko/PocketOS">Source</a><a href="install.html">Install</a><a href="./">Home</a></nav>
+  <div class="foot">
+    <div><img src="assets/logo.svg" alt="PocketOS" width="150" height="14"><p>Created by Leeko.</p></div>
+    <nav aria-label="Footer"><h4>Product</h4><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="changes.html">What’s new</a></nav>
+    <nav aria-label="Support"><h4>Support</h4><a href="install.html">Install</a><a href="help.html">Support</a><a href="help.html#privacy">Privacy</a></nav>
+    <nav aria-label="Project"><h4>Project</h4><a href="https://github.com/Tweeeko/PocketOS">Source code</a><a href="https://github.com/Tweeeko/PocketOS/releases">Releases</a></nav>
+  </div>
+  <p class="legal">© 2026 Leeko. PocketOS is an independent project and is not affiliated with Home Assistant or Waveshare.</p>
 </footer>
 <script src="assets/site.js"></script>
 <script>
@@ -45,6 +51,6 @@ fetch('CHANGELOG.md',{cache:'no-store'}).then(r=>r.ok?r.text():Promise.reject())
     const html=text.split(/\n\s*\n/).map(par=>/^[-*] /m.test(par)?'<ul>'+par.split(/\n(?=[-*] )/).map(l=>'<li>'+esc(l.replace(/^[-*] /,''))+'</li>').join('')+'</ul>':'<p>'+esc(par.replace(/\n/g,' '))+'</p>').join('');
     return '<div class="release glass">'+(i===0?'<span class="latest">Latest</span>':'')+'<h2>'+esc(head.trim())+'</h2>'+html+'</div>';
   }).join('');
-}).catch(()=>{document.getElementById('list').innerHTML='<p class="dim">Couldn’t load the list. The releases page has every version.</p>'});
+}).catch(()=>{document.getElementById('list').innerHTML='<p class="dim">Release notes are unavailable right now. See the releases page.</p>'});
 </script>
 </body></html>

@@ -220,4 +220,5 @@ void ui_init(void)
     stack[0].kind = last_st.setup_mode ? SCR_SETUP : SCR_HOME;
     build(false, false);
     lv_timer_create(refresh_cb, 150, NULL);
+    ui_boot_splash();
 }

@@ -212,7 +212,9 @@ int main(void)
     // 1. First power-on: setup mode
     ST.setup_mode = true;
     ui_init();
-    run(300);
+    run(950);
+    shot("boot_splash");
+    run(1800);
     shot("setup");
 
     // 2. Joined home Wi-Fi, Home Assistant not set up yet

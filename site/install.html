@@ -4,7 +4,7 @@
 <meta name="author" content="Leeko">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Install PocketOS</title>
-<meta name="description" content="Install PocketOS on a Waveshare ESP32-S3 1.75-inch round AMOLED from your browser.">
+<meta name="description" content="Install PocketOS on a Waveshare ESP32-S3-Touch-AMOLED-1.75C from your browser.">
 <meta name="theme-color" content="#070b1c">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/icon.png" type="image/png"><link rel="apple-touch-icon" href="assets/icon.png">
 <link rel="preload" href="fonts/unbounded.woff" as="font" type="font/woff" crossorigin>
@@ -16,70 +16,76 @@
 <header class="topbar" id="top">
   <div class="bar">
     <a class="brand" href="./"><img src="assets/logo.svg" alt="PocketOS" width="190" height="18"></a>
-    <nav class="links" aria-label="Main"><a href="./#features">Features</a><a href="./#film">Film</a><a href="./#privacy">Privacy</a><a href="help.html">Help</a><a href="changes.html">What’s new</a></nav>
-    <a class="btn small cta" href="install.html">Install</a>
+    <nav class="links" aria-label="Main"><a href="./#features">Features</a><a href="./#privacy">Privacy</a><a href="./#specs">Tech specs</a><a href="help.html">Support</a><a href="changes.html">What’s new</a></nav>
+    <a class="btn small cta" href="install.html" aria-current="page">Get started</a>
     <button class="menu" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menu"><i></i><i></i></button>
   </div>
-  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="./#features">Features</a><a href="./#film">Film</a><a href="./#privacy">Privacy</a><a href="help.html">Help</a><a href="changes.html">What’s new</a><a href="install.html" aria-current="page">Install</a></nav>
+  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="./#features">Features</a><a href="./#privacy">Privacy</a><a href="./#specs">Tech specs</a><a href="help.html">Support</a><a href="changes.html">What’s new</a><a href="install.html" aria-current="page">Get started</a></nav>
 </header>
 
 <main id="main" class="page">
-  <header>
-    <h1>Bring your PocketOS to life.</h1>
-    <p class="lede">You do this once per board, from a computer. After that it keeps itself up to date over Wi-Fi.</p>
+  <header class="intro">
+    <h1>Install PocketOS</h1>
+    <p class="lede">Install PocketOS from your browser in about five minutes. You only do this once. After that, updates arrive over Wi-Fi.</p>
   </header>
 
-  <div class="installer glass">
+  <section class="installer glass">
     <div class="pocket" data-build></div>
     <div>
-      <h2>Plug it in, then press Install.</h2>
-      <p class="dim">Use Chrome or Edge on a Windows, Mac, Linux or ChromeOS computer.</p>
+      <h2>Ready when you are.</h2>
+      <p class="dim">Connect your board to a computer with a USB-C cable, then select Install.</p>
       <esp-web-install-button manifest="firmware/manifest.json">
         <button slot="activate" class="btn">Install PocketOS</button>
-        <span slot="unsupported"><b>This browser can’t install PocketOS.</b><br><span class="dim">Open this page in Chrome or Edge on a computer. iPhone, iPad and Safari can’t talk to USB devices.</span></span>
-        <span slot="not-allowed"><b>Open this page over https:// to install.</b></span>
+        <span slot="unsupported" class="notice"><b>This browser isn’t supported.</b> Use Chrome or Edge on a Windows, Mac, Linux or ChromeOS computer.</span>
+        <span slot="not-allowed" class="notice"><b>A secure connection is required.</b> Open this page using https://.</span>
       </esp-web-install-button>
-      <p class="ver" id="ver">Checking the latest version…</p>
+      <p class="ver" id="ver">Checking for the latest version…</p>
     </div>
-  </div>
+  </section>
 
-  <div class="cols">
-    <div class="panel glass prose">
-      <h2>You’ll need</h2>
-      <ul>
-        <li>A <b>Waveshare ESP32-S3-Touch-AMOLED-1.75C</b>. PocketOS is made for this board.</li>
-        <li>A computer with <b>Chrome</b> or <b>Edge</b>. Nothing to install on it.</li>
-        <li>A <b>USB-C cable that carries data</b>. Some charge-only cables won’t work.</li>
+  <div class="two">
+    <section class="block glass">
+      <h2>Requirements</h2>
+      <ul class="checks">
+        <li><b>Waveshare ESP32-S3-Touch-AMOLED-1.75C</b><span>The board PocketOS is designed for.</span></li>
+        <li><b>Chrome or Edge on a computer</b><span>Windows, macOS, Linux or ChromeOS. Phones and tablets can’t install over USB.</span></li>
+        <li><b>A USB-C data cable</b><span>Some cables only carry power. If the board isn’t detected, try another.</span></li>
       </ul>
-    </div>
-    <div class="panel glass prose">
-      <h2>What happens</h2>
-      <ol>
-        <li>Choose the port that appears (often “USB JTAG/serial debug unit”).</li>
-        <li>If asked whether to erase, choose <b>Erase</b>. Installing here always starts fresh.</li>
-        <li>Wait about two minutes with the cable connected.</li>
-        <li>Unplug and reconnect. PocketOS shows a code to scan: carry on with the <a href="help.html#start">setup guide</a>.</li>
+    </section>
+    <section class="block glass">
+      <h2>Installation</h2>
+      <ol class="numbered">
+        <li><b>Connect the board</b><span>Plug it into your computer with the USB-C cable.</span></li>
+        <li><b>Select Install PocketOS</b><span>Choose the port that appears, usually “USB JTAG/serial debug unit”.</span></li>
+        <li><b>Erase and install</b><span>When prompted, choose Erase. Installation takes about two minutes. Keep the cable connected.</span></li>
+        <li><b>Restart</b><span>Disconnect and reconnect the board. The setup screen appears. Continue with <a href="help.html#setup">setup</a>.</span></li>
       </ol>
-    </div>
+    </section>
   </div>
 
-  <div class="prose" style="margin-top:44px">
-    <h2>If something goes wrong</h2>
-    <details class="glass"><summary>The board doesn’t appear in the list</summary><p>Try another cable first. If it still doesn’t appear, hold <kbd>BOOT</kbd>, press and release <kbd>PWR</kbd> (or unplug and reconnect), let go of <kbd>BOOT</kbd>, then press Install again. Afterwards, press <kbd>PWR</kbd> or reconnect to start PocketOS.</p></details>
-    <details class="glass"><summary>Installing stopped part way</summary><p>Nothing is broken: press Install again. If it keeps stopping, plug straight into the computer rather than a hub.</p></details>
-    <details class="glass"><summary>I’d rather use the file</summary><p>The latest <code>pocketos-full.bin</code> is on the <a href="https://github.com/Tweeeko/PocketOS/releases/latest">releases page</a>. Write it at address <code>0x0</code> with any ESP32 flashing tool.</p></details>
-    <div class="aside glass">Already running PocketOS? You don’t need this page. It checks for new versions by itself: open its settings page, then <b>More → Updates</b>.</div>
-  </div>
+  <section class="block glass">
+    <h2>Troubleshooting</h2>
+    <details><summary>The board doesn’t appear in the list</summary><p>Try a different USB-C cable first. If it still doesn’t appear, enter download mode: hold <kbd>BOOT</kbd>, press and release <kbd>PWR</kbd>, then release <kbd>BOOT</kbd> and select Install again.</p></details>
+    <details><summary>Installation stopped before finishing</summary><p>Select Install again. If it stops repeatedly, connect the board directly to the computer rather than through a hub.</p></details>
+    <details><summary>Installing manually</summary><p>Download <code>pocketos-full.bin</code> from the <a href="https://github.com/Tweeeko/PocketOS/releases/latest">latest release</a> and write it at address <code>0x0</code> with any ESP32 flashing tool.</p></details>
+  </section>
+
+  <p class="aside glass"><b>Already using PocketOS?</b> You don’t need to reinstall to update. Open the settings page and go to <b>More → Updates</b>. Installing here erases the device’s settings.</p>
 </main>
 
 <footer class="end">
-  <span><strong>PocketOS</strong> is created by Leeko. A personal project, still being tested on hardware.</span>
-  <nav aria-label="Footer"><a href="https://github.com/Tweeeko/PocketOS">Source</a><a href="help.html#privacy">Privacy</a><a href="./">Home</a></nav>
+  <div class="foot">
+    <div><img src="assets/logo.svg" alt="PocketOS" width="150" height="14"><p>Created by Leeko.</p></div>
+    <nav aria-label="Footer"><h4>Product</h4><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="changes.html">What’s new</a></nav>
+    <nav aria-label="Support"><h4>Support</h4><a href="install.html">Install</a><a href="help.html">Support</a><a href="help.html#privacy">Privacy</a></nav>
+    <nav aria-label="Project"><h4>Project</h4><a href="https://github.com/Tweeeko/PocketOS">Source code</a><a href="https://github.com/Tweeeko/PocketOS/releases">Releases</a></nav>
+  </div>
+  <p class="legal">© 2026 Leeko. PocketOS is an independent project and is not affiliated with Home Assistant or Waveshare.</p>
 </footer>
 <script src="assets/site.js"></script>
 <script>
 fetch('firmware/manifest.json',{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject()).then(m=>{
-  document.getElementById('ver').textContent='Installs PocketOS '+m.version+', the latest version.';
-}).catch(()=>{document.getElementById('ver').textContent='The installer isn’t available right now. Use the file on the releases page.'});
+  document.getElementById('ver').textContent='Version '+m.version+' (latest)';
+}).catch(()=>{document.getElementById('ver').textContent='The installer is unavailable. Use the manual option below.'});
 </script>
 </body></html>
