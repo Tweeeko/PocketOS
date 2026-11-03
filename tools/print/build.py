@@ -6,7 +6,7 @@
 
 Needs Python Playwright with Chromium. The page is white to the edge, so it needs no bleed;
 if the printer asks for it anyway, it can be added in their artwork check.
-qr-start.svg points at https://pocketos-orpin.vercel.app/start, which the website redirects to
+qr-start.svg points at https://www.pocketos.co.uk/start, which the website redirects to
 the setup guide (vercel.json), so the printed code keeps working if the guide moves.
 """
 import os

@@ -15,5 +15,5 @@ release is supported; devices update over Wi-Fi.
 
 ## Design
 
-See [the Security page](https://pocketos-orpin.vercel.app/security) for how PocketOS protects a home,
+See [the Security page](https://www.pocketos.co.uk/security) for how PocketOS protects a home,
 and `docs/security.md` for the technical details.

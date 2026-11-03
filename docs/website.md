@@ -57,3 +57,10 @@ environment variables, set in Vercel under **Project → Settings → Environmen
 Redeploy after setting them. Until they're set, the form says messages can't be sent right now.
 Visitors' replies go straight to them (the email's Reply-To is the visitor). Nothing is stored.
 Tests: `python3 firmware/host/test_contact.py`.
+
+## Domain
+
+The website's address is **https://www.pocketos.co.uk**. In Vercel → Project → Settings → Domains,
+add both `www.pocketos.co.uk` and `pocketos.co.uk`, with `pocketos.co.uk` redirecting to `www`.
+The printed quick start guide's QR code opens `https://www.pocketos.co.uk/start`, which
+`vercel.json` forwards to the setup guide, so keep that redirect in place.

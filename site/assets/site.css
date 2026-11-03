@@ -542,3 +542,6 @@ a.legal{color:var(--haze);text-decoration:none;white-space:nowrap}a.legal:hover{
 @media (max-width:1000px){.explore-grid{grid-template-columns:1fr 1fr}.hub{grid-template-columns:1fr 1fr}}
 @media (max-width:760px){.spec-hero{grid-template-columns:1fr}}
 @media (max-width:560px){.explore-grid,.hub{grid-template-columns:1fr}.xtile{min-height:0}.legal-row{flex-direction:column;gap:10px}.foot{grid-template-columns:1fr 1fr}}
+.tiles-list.three{grid-template-columns:repeat(3,1fr)}
+.inbox-note{margin:16px 2px 0;color:var(--mist);font-size:15.5px}
+@media (max-width:900px){.tiles-list.three{grid-template-columns:1fr}}

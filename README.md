@@ -6,7 +6,7 @@ light, thermostat, lock and speaker in your hand, with a friendly companion on t
 
 Designed and written by **Leeko**. Sold by Leeeko LTD in the UK (coming soon, £99.99).
 
-- **Website:** [pocketos-orpin.vercel.app](https://pocketos-orpin.vercel.app) — features, [try it in your browser](https://pocketos-orpin.vercel.app/demo.html), setup and support
+- **Website:** [www.pocketos.co.uk](https://www.pocketos.co.uk) — features, [try it in your browser](https://www.pocketos.co.uk/demo), setup and support
 - **What's new:** [CHANGELOG.md](CHANGELOG.md) and [Releases](https://github.com/Tweeeko/PocketOS/releases)
 - **Report a security problem:** [SECURITY.md](SECURITY.md)
 
