@@ -1,13 +1,15 @@
 <!doctype html>
 <!-- PocketOS, created by Leeko. Copyright (c) 2026 Leeko. -->
-<html lang="en"><head><meta charset="utf-8">
+<html lang="en-GB"><head><meta charset="utf-8">
 <meta name="author" content="Leeko">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>PocketOS: your home, at a glance</title>
-<meta name="description" content="PocketOS is a round, pocket-sized display for Home Assistant. See what’s happening at home and control lights, heating, media and locks with a touch. Local, private and subscription-free.">
+<meta name="description" content="PocketOS is a pocket-sized smart-home companion with a round touchscreen. It arrives ready to use and works with Home Assistant to show what’s happening at home and control lights, heating, media and locks. Private and subscription-free.">
 <meta name="theme-color" content="#070b1c">
-<meta property="og:title" content="PocketOS"><meta property="og:description" content="Your home, at a glance."><meta property="og:image" content="media/poster.jpg">
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/icon.png" type="image/png"><link rel="apple-touch-icon" href="assets/icon.png">
+<meta property="og:title" content="PocketOS: your home, at a glance"><meta property="og:description" content="PocketOS is a pocket-sized smart-home companion with a round touchscreen. It arrives ready to use and works with Home Assistant to show what’s happening at home and control lights, heating, media and locks. Private and subscription-free."><meta property="og:image" content="media/poster.jpg">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><meta name="apple-mobile-web-app-title" content="PocketOS">
 <link rel="preload" href="fonts/unbounded.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="assets/site.css">
 </head><body>
@@ -16,19 +18,19 @@
 <header class="topbar" id="top">
   <div class="bar">
     <a class="brand" href="./" aria-current="page"><img src="assets/logo.svg" alt="PocketOS" width="190" height="18"></a>
-    <nav class="links" aria-label="Main"><a href="#features">Features</a><a href="#privacy">Privacy</a><a href="#specs">Tech specs</a><a href="help.html">Support</a><a href="changes.html">What’s new</a></nav>
-    <a class="btn small cta" href="install.html">Get started</a>
+    <nav class="links" aria-label="Main"><a href="#features">Features</a><a href="#specs">Tech specs</a><a href="setup.html">Setup</a><a href="help.html">Support</a><a href="changes.html">What’s new</a></nav>
+    <a class="btn small cta" href="buy.html">Where to buy</a>
     <button class="menu" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menu"><i></i><i></i></button>
   </div>
-  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="#features">Features</a><a href="#privacy">Privacy</a><a href="#specs">Tech specs</a><a href="help.html">Support</a><a href="changes.html">What’s new</a><a href="install.html">Get started</a></nav>
+  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="#features">Features</a><a href="#specs">Tech specs</a><a href="setup.html">Setup</a><a href="help.html">Support</a><a href="changes.html">What’s new</a><a href="buy.html">Where to buy</a></nav>
 </header>
 
 <main id="main">
   <section class="hero">
     <div class="copy">
       <h1>Your home, at a glance.</h1>
-      <p class="lede">PocketOS is a round, pocket-sized display for Home Assistant. It shows what’s happening at home and puts every light, thermostat and speaker within reach.</p>
-      <div class="row"><a class="btn" href="install.html">Get started</a><a class="btn ghost" href="#features">Explore features</a></div>
+      <p class="lede">PocketOS is a pocket-sized smart-home companion with a round touchscreen. It arrives ready to use, connects to Home Assistant, and puts every light, thermostat and speaker within reach.</p>
+      <div class="row"><a class="btn" href="buy.html">Where to buy</a><a class="btn ghost" href="#features">Explore features</a></div>
     </div>
     <div class="stage"><div class="pocket" data-build></div></div>
   </section>
@@ -99,27 +101,31 @@
   <section class="specs" id="specs">
     <div class="panel glass">
       <h2>Tech specs</h2>
+      <p class="spec-sub">PocketOS Device</p>
       <dl class="spec-grid">
-        <div><dt>Display</dt><dd>1.75-inch round AMOLED<br>466 × 466 pixels, capacitive touch</dd></div>
-        <div><dt>Processor</dt><dd>ESP32-S3, dual-core<br>8 MB PSRAM, 32 MB flash</dd></div>
-        <div><dt>Wireless</dt><dd>Wi-Fi 2.4 GHz</dd></div>
-        <div><dt>Audio</dt><dd>Dual microphones, speaker</dd></div>
-        <div><dt>Controls</dt><dd>Touchscreen, two side buttons</dd></div>
-        <div><dt>Power</dt><dd>Built-in rechargeable battery<br>USB-C charging</dd></div>
+        <div><dt>Display</dt><dd>1.75-inch round AMOLED<br>466 × 466 resolution</dd></div>
+        <div><dt>Touch</dt><dd>Capacitive touchscreen</dd></div>
+        <div><dt>Processor</dt><dd>ESP32-S3 dual-core</dd></div>
+        <div><dt>Memory</dt><dd>8 MB PSRAM<br>32 MB flash storage</dd></div>
+        <div><dt>Wireless</dt><dd>2.4 GHz Wi-Fi</dd></div>
+        <div><dt>Audio</dt><dd>Dual microphones<br>Integrated speaker</dd></div>
+        <div><dt>Controls</dt><dd>Touchscreen<br>Two physical side buttons</dd></div>
+        <div><dt>Power</dt><dd>Rechargeable internal battery<br>USB-C charging</dd></div>
         <div><dt>Enclosure</dt><dd>Aluminium</dd></div>
-        <div><dt>Works with</dt><dd>Home Assistant<br>Set up from any phone or computer browser</dd></div>
+        <div><dt>Software</dt><dd>PocketOS, pre-installed<br>Updates over Wi-Fi</dd></div>
+        <div><dt>Works with</dt><dd>Home Assistant</dd></div>
+        <div><dt>Setup</dt><dd>From any phone or computer browser. No app or account.</dd></div>
       </dl>
-      <p class="fine">PocketOS runs on the Waveshare ESP32-S3-Touch-AMOLED-1.75C.</p>
     </div>
   </section>
 
   <section class="begin">
     <div class="panel glass">
-      <h2>Get started in three steps.</h2>
+      <h2>Ready in minutes.</h2>
       <ol class="steps">
-        <li><h3>Install</h3><p>Connect the board to a computer and install PocketOS from your browser.</p><a href="install.html">Install PocketOS</a></li>
-        <li><h3>Connect to Wi-Fi</h3><p>Scan the code on screen with your phone and choose your home network.</p><a href="help.html#setup">Setup guide</a></li>
-        <li><h3>Link Home Assistant</h3><p>Connect your home and choose your favourites from the settings page.</p><a href="help.html#home-assistant">Connection guide</a></li>
+        <li><h3>Switch on</h3><p>PocketOS arrives with its software installed. Take it out of the box and switch it on.</p><a href="setup.html#power-on">Getting started</a></li>
+        <li><h3>Connect to Wi-Fi</h3><p>Scan the code on screen with your phone and choose your home network.</p><a href="setup.html#wifi">Wi-Fi setup</a></li>
+        <li><h3>Link Home Assistant</h3><p>Connect your home, then choose the devices you want on PocketOS.</p><a href="setup.html#home-assistant">Connecting your home</a></li>
       </ol>
     </div>
   </section>
@@ -127,12 +133,12 @@
 
 <footer class="end">
   <div class="foot">
-    <div><img src="assets/logo.svg" alt="PocketOS" width="150" height="14"><p>Created by Leeko.</p></div>
-    <nav aria-label="Footer"><h4>Product</h4><a href="#features">Features</a><a href="#specs">Tech specs</a><a href="changes.html">What’s new</a></nav>
-    <nav aria-label="Support"><h4>Support</h4><a href="install.html">Install</a><a href="help.html">Support</a><a href="help.html#privacy">Privacy</a></nav>
+    <div><img src="assets/logo.svg" alt="PocketOS" width="150" height="14"><p>The pocket-sized smart-home companion.<br>Designed by Leeko.</p></div>
+    <nav aria-label="Product"><h4>Product</h4><a href="#features">Features</a><a href="#specs">Tech specs</a><a href="buy.html">Where to buy</a><a href="changes.html">What’s new</a></nav>
+    <nav aria-label="Support"><h4>Support</h4><a href="setup.html">Getting started</a><a href="help.html">Support</a><a href="recovery.html">Software recovery</a><a href="help.html#privacy">Privacy</a></nav>
     <nav aria-label="Project"><h4>Project</h4><a href="https://github.com/Tweeeko/PocketOS">Source code</a><a href="https://github.com/Tweeeko/PocketOS/releases">Releases</a></nav>
   </div>
-  <p class="legal">© 2026 Leeko. PocketOS is an independent project and is not affiliated with Home Assistant or Waveshare.</p>
+  <p class="legal">© 2026 Leeko. Home Assistant is a trademark of its respective owner. PocketOS is not affiliated with or endorsed by Home Assistant.</p>
 </footer>
 <script src="assets/site.js"></script>
 </body></html>

@@ -1,12 +1,15 @@
 <!doctype html>
 <!-- PocketOS, created by Leeko. Copyright (c) 2026 Leeko. -->
-<html lang="en"><head><meta charset="utf-8">
+<html lang="en-GB"><head><meta charset="utf-8">
 <meta name="author" content="Leeko">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>PocketOS Support</title>
-<meta name="description" content="Set up PocketOS, connect Home Assistant, and learn the controls, voice, battery and update features.">
+<meta name="description" content="Help for the PocketOS Device: setup, Home Assistant, controls, voice, battery, updates, troubleshooting and privacy.">
 <meta name="theme-color" content="#070b1c">
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/icon.png" type="image/png"><link rel="apple-touch-icon" href="assets/icon.png">
+<meta property="og:title" content="PocketOS Support"><meta property="og:description" content="Help for the PocketOS Device: setup, Home Assistant, controls, voice, battery, updates, troubleshooting and privacy."><meta property="og:image" content="media/poster.jpg">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><meta name="apple-mobile-web-app-title" content="PocketOS">
 <link rel="preload" href="fonts/unbounded.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="assets/site.css">
 </head><body>
@@ -15,11 +18,11 @@
 <header class="topbar" id="top">
   <div class="bar">
     <a class="brand" href="./"><img src="assets/logo.svg" alt="PocketOS" width="190" height="18"></a>
-    <nav class="links" aria-label="Main"><a href="./#features">Features</a><a href="./#privacy">Privacy</a><a href="./#specs">Tech specs</a><a href="help.html" aria-current="page">Support</a><a href="changes.html">What’s new</a></nav>
-    <a class="btn small cta" href="install.html">Get started</a>
+    <nav class="links" aria-label="Main"><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="setup.html">Setup</a><a href="help.html" aria-current="page">Support</a><a href="changes.html">What’s new</a></nav>
+    <a class="btn small cta" href="buy.html">Where to buy</a>
     <button class="menu" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menu"><i></i><i></i></button>
   </div>
-  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="./#features">Features</a><a href="./#privacy">Privacy</a><a href="./#specs">Tech specs</a><a href="help.html" aria-current="page">Support</a><a href="changes.html">What’s new</a><a href="install.html">Get started</a></nav>
+  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="setup.html">Setup</a><a href="help.html" aria-current="page">Support</a><a href="changes.html">What’s new</a><a href="buy.html">Where to buy</a></nav>
 </header>
 
 <main id="main" class="page">
@@ -31,7 +34,7 @@
   <div class="doc">
     <nav class="toc glass" aria-label="On this page">
       <p>Getting started</p>
-      <a href="#setup">Set up PocketOS</a><a href="#home-assistant">Connect Home Assistant</a><a href="#settings">The settings page</a>
+      <a href="setup.html">Getting started</a><a href="#setup">Setting up</a><a href="#settings">The settings page</a>
       <p>Using PocketOS</p>
       <a href="#controls">Controls</a><a href="#voice">Voice</a><a href="#battery">Battery and power</a><a href="#updates">Updates</a><a href="#multiple">More than one PocketOS</a>
       <p>Help</p>
@@ -40,28 +43,15 @@
 
     <div class="sections">
       <section class="block glass" id="setup">
-        <h2>Set up PocketOS</h2>
-        <p class="intro-p">Setup takes a few minutes and only needs your phone.</p>
-        <ol class="numbered">
-          <li><b>Join PocketOS’s network</b><span>Switch PocketOS on. Scan the code on its screen with your phone’s camera to join the network named <code>PocketOS-XXXX</code>.</span></li>
-          <li><b>Choose your Wi-Fi</b><span>The setup page opens automatically. If it doesn’t, go to <code>192.168.4.1</code>. Select your home network and enter its password.</span></li>
-          <li><b>Open the settings page</b><span>PocketOS restarts on your home network and your phone reconnects. Open the link shown, or scan the code on PocketOS’s Settings tile.</span></li>
-          <li><b>Pair your phone</b><span>Enter the six-digit code shown on PocketOS. Each phone only needs to pair once.</span></li>
-        </ol>
-        <p class="note">PocketOS works with 2.4 GHz Wi-Fi, which most home routers provide alongside 5 GHz. Its own network is only used during setup.</p>
-      </section>
-
-      <section class="block glass" id="home-assistant">
-        <h2>Connect Home Assistant</h2>
-        <p class="intro-p">PocketOS controls your devices through <a href="https://www.home-assistant.io/">Home Assistant</a>. Alexa, Google Home and Apple Home aren’t supported directly.</p>
-        <ol class="numbered">
-          <li><b>Create a PocketOS user</b><span>In Home Assistant, go to <b>Settings → People → Add person</b>. Name it PocketOS, allow it to log in, and leave Administrator turned off.</span></li>
-          <li><b>Create an access token</b><span>Sign in as that user, open its profile, then <b>Security → Long-lived access tokens → Create token</b>. Copy the token.</span></li>
-          <li><b>Connect</b><span>On the PocketOS settings page, open <b>Smart home</b>, paste the token, confirm the address and select <b>Test and connect</b>.</span></li>
-        </ol>
-        <p class="note">A dedicated user keeps your own account separate. The token is stored only on PocketOS and is never displayed again.</p>
-        <h3>Adding devices</h3>
-        <p>Add new devices in Home Assistant as usual. PocketOS finds them automatically. Choose whether they appear straight away or wait for your review in <b>Smart home → Add new devices automatically</b>.</p>
+        <h2>Setting up</h2>
+        <p class="intro-p">PocketOS arrives with its software installed. Setup takes a few minutes and needs only your phone.</p>
+        <div class="tiles-list">
+          <div><b><a href="setup.html#power-on">Switch on and connect to Wi-Fi</a></b><span>Scan the code on screen and choose your home network.</span></div>
+          <div><b><a href="setup.html#settings-page">Pair your phone</a></b><span>Open the settings page and enter the six-digit code.</span></div>
+          <div id="home-assistant"><b><a href="setup.html#home-assistant">Connect Home Assistant</a></b><span>Create a PocketOS user and paste its access token.</span></div>
+          <div><b><a href="setup.html#devices">Choose your devices</a></b><span>Show, hide and favourite what appears on PocketOS.</span></div>
+        </div>
+        <p class="note">The complete walkthrough is in <a href="setup.html">Getting started</a>.</p>
       </section>
 
       <section class="block glass" id="settings">
@@ -149,6 +139,7 @@
         <details><summary>Home Assistant won’t connect</summary><p>Check the address, for example <code>http://homeassistant.local:8123</code>, and that Home Assistant is running. If the token is rejected, create a new one and paste it under <b>Smart home</b>. PocketOS stops retrying a rejected token so Home Assistant doesn’t block it.</p></details>
         <details><summary>A device shows “No response”</summary><p>Home Assistant didn’t confirm the change. Check that the device is powered and available in Home Assistant.</p></details>
         <details><summary>I’ve changed my router or Wi-Fi password</summary><p>On the settings page, choose <b>More → Change Wi-Fi network</b>. PocketOS restarts in setup mode and keeps your other settings. If you can no longer reach the settings page, reset PocketOS.</p></details>
+        <details><summary>PocketOS won’t start</summary><p>Connect it to a USB-C charger for a few minutes, then press <kbd>PWR</kbd>. If it still doesn’t start, its software can be reinstalled from <a href="recovery.html">Software recovery</a>. This erases its settings.</p></details>
         <details><summary>Resetting PocketOS</summary><p>On the settings page, choose <b>More → Reset everything</b>, then press <kbd>BOOT</kbd> on PocketOS within 15 seconds to confirm. Nothing is erased without that press.</p></details>
       </section>
 
@@ -167,12 +158,12 @@
 
 <footer class="end">
   <div class="foot">
-    <div><img src="assets/logo.svg" alt="PocketOS" width="150" height="14"><p>Created by Leeko.</p></div>
-    <nav aria-label="Footer"><h4>Product</h4><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="changes.html">What’s new</a></nav>
-    <nav aria-label="Support"><h4>Support</h4><a href="install.html">Install</a><a href="help.html">Support</a><a href="help.html#privacy">Privacy</a></nav>
+    <div><img src="assets/logo.svg" alt="PocketOS" width="150" height="14"><p>The pocket-sized smart-home companion.<br>Designed by Leeko.</p></div>
+    <nav aria-label="Product"><h4>Product</h4><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="buy.html">Where to buy</a><a href="changes.html">What’s new</a></nav>
+    <nav aria-label="Support"><h4>Support</h4><a href="setup.html">Getting started</a><a href="help.html">Support</a><a href="recovery.html">Software recovery</a><a href="help.html#privacy">Privacy</a></nav>
     <nav aria-label="Project"><h4>Project</h4><a href="https://github.com/Tweeeko/PocketOS">Source code</a><a href="https://github.com/Tweeeko/PocketOS/releases">Releases</a></nav>
   </div>
-  <p class="legal">© 2026 Leeko. PocketOS is an independent project and is not affiliated with Home Assistant or Waveshare.</p>
+  <p class="legal">© 2026 Leeko. Home Assistant is a trademark of its respective owner. PocketOS is not affiliated with or endorsed by Home Assistant.</p>
 </footer>
 <script src="assets/site.js"></script>
 </body></html>

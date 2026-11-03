@@ -14,6 +14,7 @@ website is its own artwork (firmware/main/ui/ui_home.c); this mark doesn't repla
 | `pocketos-wordmark-*.svg` | The word only |
 | `pocketos-mark-*.svg` | The eyes only. Small spaces, stickers, watermark |
 | `pocketos-app-icon.svg`, `-512.png`, `-180.png`, `favicon-32.png` | App, Home Screen and browser icons |
+| `pocketos-app-icon-square.svg`, `-square-512.png` | The same icon without rounded corners, for platforms that apply their own mask (Apple touch icon, maskable web app icon) |
 
 Each comes in `gradient` (white to `#56B9FF` to `#9860F5`, for dark backgrounds), `white` and
 `black`. Every file is cropped tight to the artwork.

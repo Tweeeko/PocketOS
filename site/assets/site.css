@@ -31,14 +31,31 @@ a:hover{color:#fff}
 .skip{position:absolute;left:-999px}.skip:focus{left:16px;top:16px;z-index:50;padding:10px 14px;background:var(--ink);color:var(--night);border-radius:12px}
 
 /* ---------- aurora: the colour the glass bends ---------- */
-.aurora{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background:radial-gradient(120% 90% at 50% 120%,#111a44 0%,var(--night) 60%)}
-.aurora i{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;will-change:transform}
-.aurora i:nth-child(1){width:55vmax;height:55vmax;left:-15vmax;top:-20vmax;background:radial-gradient(circle,var(--eye),transparent 65%);animation:drift1 46s ease-in-out infinite alternate}
-.aurora i:nth-child(2){width:50vmax;height:50vmax;right:-18vmax;top:10vh;background:radial-gradient(circle,var(--iris),transparent 65%);animation:drift2 58s ease-in-out infinite alternate}
-.aurora i:nth-child(3){width:38vmax;height:38vmax;left:20vw;bottom:-22vmax;background:radial-gradient(circle,var(--lamp),transparent 65%);opacity:.32;animation:drift3 52s ease-in-out infinite alternate}
-@keyframes drift1{to{transform:translate(18vw,22vh) scale(1.15)}}
-@keyframes drift2{to{transform:translate(-22vw,30vh) scale(.9)}}
-@keyframes drift3{to{transform:translate(24vw,-14vh) scale(1.2)}}
+/* Why it's built this way (it used to jump while scrolling on phones and iPad):
+   - The stage was pinned with inset:0, so it resized whenever the browser's toolbar collapsed or
+     expanded mid-scroll, and the light anchored to its bottom edge jumped. It's now a fixed size
+     (the largest viewport, lvh) anchored to the top, so scrolling never changes its geometry.
+   - Each light was a huge layer with a 90px blur filter. When the layer was resized the browser
+     re-rasterised the blur, which showed as a flash. The softness is now in the gradient itself.
+   - Each light moved along one line, stopped and turned back. Each now drifts on two independent
+     axes with different periods (the outer element moves sideways, its ::before moves up and
+     down and breathes), so the path never meets a visible start or end. */
+.aurora{position:fixed;left:0;top:0;width:100%;height:100vh;height:100lvh;z-index:-1;overflow:hidden;pointer-events:none;contain:strict;
+  background:radial-gradient(120% 90% at 50% 120%,#111a44 0%,var(--night) 60%)}
+.aurora i{position:absolute;display:block;border-radius:50%;opacity:.55;will-change:transform;animation:ax var(--tx) ease-in-out infinite alternate}
+.aurora i::before{content:"";position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle,color-mix(in srgb,var(--c) 64%,transparent) 0%,color-mix(in srgb,var(--c) 56%,transparent) 18%,color-mix(in srgb,var(--c) 34%,transparent) 38%,color-mix(in srgb,var(--c) 13%,transparent) 56%,color-mix(in srgb,var(--c) 3%,transparent) 68%,transparent 76%);
+  will-change:transform;animation:ay var(--ty) ease-in-out infinite alternate}
+.aurora i:nth-child(1){--c:var(--eye);width:58vmax;height:58vmax;left:-16vmax;top:-21vmax;--dx:18vw;--dy:22lvh;--k:1.15;--tx:46s;--ty:33s}
+.aurora i:nth-child(2){--c:var(--iris);width:53vmax;height:53vmax;right:-19vmax;top:10lvh;--dx:-22vw;--dy:30lvh;--k:.9;--tx:58s;--ty:41s}
+.aurora i:nth-child(3){--c:var(--lamp);width:40vmax;height:40vmax;left:calc(20vw - 1vmax);top:calc(100lvh - 17vmax);opacity:.32;--dx:24vw;--dy:-14lvh;--k:1.2;--tx:52s;--ty:37s}
+@keyframes ax{from{transform:translate3d(0,0,0)}to{transform:translate3d(var(--dx),0,0)}}
+@keyframes ay{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(0,var(--dy),0) scale(var(--k))}}
+@media (prefers-reduced-motion:reduce){
+  /* still: the lights rest part-way along their paths, so the page keeps its colour */
+  .aurora i{transform:translate3d(calc(var(--dx) * .35),0,0)}
+  .aurora i::before{transform:translate3d(0,calc(var(--dy) * .35),0)}
+}
 /* fine grain stops the gradients banding */
 .aurora::after{content:"";position:absolute;inset:0;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
@@ -315,6 +332,68 @@ esp-web-install-button:not(:defined) [slot=unsupported],esp-web-install-button:n
 .notice{display:block;margin-top:12px;color:var(--mist);font-size:15px;max-width:44ch}
 .aside b{color:var(--ink)}
 
+
+/* ---------- getting started ---------- */
+.spec-sub{font:600 14px var(--text);color:var(--haze);margin:-26px 0 34px}
+.journey{border-radius:28px;padding:10px;margin-bottom:28px}
+.journey ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.journey a{display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 6px;border-radius:20px;color:var(--mist);text-decoration:none;font-size:14px;text-align:center;line-height:1.25}
+.journey a:hover{background:rgba(255,255,255,.07);color:var(--ink)}
+.journey i{font:600 14px var(--display);font-style:normal;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:var(--ink);
+  background:linear-gradient(150deg,rgba(255,255,255,.22),rgba(255,255,255,.05));box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 0 0 1px rgba(255,255,255,.14)}
+.step{display:grid;grid-template-columns:64px 1fr;gap:clamp(14px,2.5vw,28px);scroll-margin-top:90px}
+.step .n{font:500 26px var(--display);width:56px;height:56px;border-radius:50%;display:grid;place-items:center;
+  background:linear-gradient(150deg,rgba(127,227,255,.28),rgba(140,124,255,.12));box-shadow:inset 0 1px 0 rgba(255,255,255,.5),inset 0 0 0 1px rgba(255,255,255,.16)}
+.step h2{margin-top:10px}
+.step .numbered{margin-top:16px}
+.aside.warn{border-left:3px solid var(--lamp)}
+
+/* ---------- where to buy ---------- */
+.buy{max-width:1240px;margin:0 auto;padding:110px 28px 40px}
+.eyebrow{font:600 14px var(--text);color:var(--cyan);margin:0 0 14px;letter-spacing:.02em}
+.buy-hero{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(28px,5vw,70px);align-items:center;min-height:calc(100svh - 150px)}
+.buy-hero h1{margin-bottom:22px}
+.buy-hero h1 span{display:block;color:var(--mist);font-size:.62em;margin-top:.3em;letter-spacing:-.03em}
+.buy-hero .lede{margin-bottom:28px}
+/* product images: a fixed 4:3 frame; the picture fills it without stretching, so any photo can replace a render */
+.shot{position:relative;margin:0;aspect-ratio:4/3;border-radius:32px;overflow:hidden;background:#0b1024;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),0 40px 80px -40px rgba(0,0,0,.9)}
+.shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.badge{position:absolute;left:16px;bottom:14px;font:500 12.5px var(--text);color:var(--mist);padding:5px 11px;border-radius:999px;
+  background:rgba(7,11,28,.55);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
+.avail{margin:0;border-radius:26px;padding:20px 24px}
+.avail-rows{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.avail dt{font:600 13.5px var(--text);color:var(--haze);margin-bottom:4px}
+.avail dd{margin:0;font:500 clamp(22px,2.4vw,28px) var(--display);letter-spacing:-.03em}
+.avail-note{color:var(--mist);font-size:16px;margin:16px 0 0;max-width:44ch}
+.avail .row{margin-top:18px}
+.buy-feature,.in-box{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(22px,4vw,48px);align-items:center;padding:clamp(50px,8vw,100px) 0 0}
+.buy-feature .panel,.in-box .panel{border-radius:36px}
+.buy-feature h2,.in-box h2{font-size:clamp(28px,3.6vw,44px);margin-bottom:16px}
+.buy-feature p{color:var(--mist)}
+.buy-feature .plain{margin:8px 0 18px}
+.pack{padding:clamp(70px,10vw,130px) 0 0}
+.sec-head{max-width:720px;margin-bottom:36px}
+.sec-head h2{margin-bottom:16px}
+.pack-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.pack-item{margin:0}
+.pack-item figcaption{padding:16px 6px 0}
+.pack-item h3{margin-bottom:4px}
+.pack-item p{color:var(--mist);font-size:16.5px;margin:0}
+.in-box{grid-template-columns:1fr 1fr}
+.box-list{list-style:none;margin:0;padding:0}
+.box-list li{display:grid;grid-template-columns:1fr auto;gap:2px 12px;padding:16px 0;border-top:1px solid rgba(255,255,255,.1)}
+.box-list li:last-child{border-bottom:1px solid rgba(255,255,255,.1)}
+.box-list b{font-weight:600}
+.box-list li>span:last-child{grid-column:1/-1;color:var(--mist);font-size:16px}
+.box-list .tag{font:500 12.5px var(--text);color:var(--lamp);padding:3px 10px;border-radius:999px;background:rgba(255,184,107,.1);box-shadow:inset 0 0 0 1px rgba(255,184,107,.35);align-self:center}
+.box-list li.tbc b{color:var(--mist)}
+.avail-band{padding:clamp(70px,10vw,120px) 0 20px}
+.avail-band .panel{border-radius:44px;padding:clamp(28px,5vw,60px);display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}
+.avail-band h2{margin-bottom:14px}
+.avail-band .avail{padding:0}
+.center{text-align:center;margin:30px auto 0}
+
 /* footer */
 footer.end{max-width:1240px;margin:40px auto 0;padding:46px 28px 50px;border-top:1px solid rgba(255,255,255,.08);color:var(--haze);font-size:15px}
 .foot{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:30px}
@@ -341,11 +420,20 @@ footer.end{max-width:1240px;margin:40px auto 0;padding:46px 28px 50px;border-top
   .doc{grid-template-columns:1fr}.toc{position:static;display:flex;flex-wrap:wrap}
   .toc p{flex-basis:100%;margin:10px 14px 2px}
   .installer{grid-template-columns:1fr;text-align:center;justify-items:center}
+  .journey ol{grid-template-columns:repeat(4,1fr)}
+  .buy{padding-top:90px}
+  .buy-hero,.buy-feature,.in-box,.avail-band .panel{grid-template-columns:1fr}
+  .buy-hero{min-height:0;text-align:center}.buy-hero .lede{margin-left:auto;margin-right:auto}.buy-hero .avail{text-align:left}
+  .buy-hero .shot{order:-1}
+  .pack-grid{grid-template-columns:1fr}
 }
 @media (max-width:560px){
   body{font-size:17px}
   .prose td:first-child,.block td:first-child{white-space:normal}
   .spec-grid{grid-template-columns:1fr}
+  .journey ol{grid-template-columns:repeat(2,1fr)}
+  .step{grid-template-columns:1fr}.step .n{width:44px;height:44px;font-size:20px}
+  .shot{border-radius:24px}
   .block th:nth-child(3),.block td:nth-child(3){display:none}
 }
 @media (prefers-reduced-motion:reduce){
