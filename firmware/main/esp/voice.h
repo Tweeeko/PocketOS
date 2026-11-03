@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 #pragma once
 // Push-to-talk: hold BOOT, speak, release. Audio goes to Home Assistant's Assist pipeline
 // (speech-to-text + intent), which needs a voice pipeline set up in Home Assistant.

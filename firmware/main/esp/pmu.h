@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 #pragma once
 // AXP2101 power chip: battery level, charging state and the PWR side button.
 #include <stdbool.h>

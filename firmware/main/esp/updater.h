@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 #pragma once
 // Over-the-air updates from the published releases (see docs/releasing.md).
 //

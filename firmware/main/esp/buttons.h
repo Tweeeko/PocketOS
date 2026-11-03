@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 #pragma once
 // Side buttons (documented in docs/controls.md):
 //   BOOT  click        open/close the Settings QR code, or confirm a reset requested from the website

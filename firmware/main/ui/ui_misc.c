@@ -1,3 +1,4 @@
+// PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 // Settings QR screen, first-time setup screen and push-to-talk screen.
 #include "ui_priv.h"
 #include <string.h>
