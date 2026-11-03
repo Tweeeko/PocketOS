@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PocketOS">
+<meta name="theme-color" content="#05060b">
+<link rel="apple-touch-icon" href="data:image/png;base64,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">
+<link rel="icon" href="data:image/png;base64,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">
+<title>PocketOS</title>
+<style>
+:root{--bg:#05060b;--ink:#f1f3ff;--dim:#8b91ae;--blue:#6aa7ff;--vio:#9b7bff;--glass:rgba(255,255,255,.065);--line:rgba(255,255,255,.14);--ok:#7be3a4;--warn:#ffd166;--bad:#ff7a8a;color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:radial-gradient(60% 40% at 15% 0,rgba(106,167,255,.2),transparent 70%),radial-gradient(60% 40% at 95% 30%,rgba(155,123,255,.16),transparent 70%),var(--bg);background-attachment:fixed;color:var(--ink);font:16px/1.45 -apple-system,"SF Pro Text","Segoe UI",system-ui,sans-serif}
+body{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+#app{max-width:560px;margin:0 auto;padding:0 16px 120px}
+a{color:var(--blue)}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:20px 2px 6px}
+header .t{min-width:0}header b{font-size:22px;letter-spacing:-.02em;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}header span{font-size:13px;color:var(--dim);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pill{flex:none;font-size:13px;padding:6px 12px;border-radius:99px;border:1px solid var(--line);background:var(--glass);display:flex;gap:7px;align-items:center}
+.pill::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok)}.pill.bad::before{background:var(--bad);box-shadow:0 0 8px var(--bad)}.pill.warn::before{background:var(--warn);box-shadow:0 0 8px var(--warn)}
+.edit{font-size:13px;color:var(--dim);margin:2px 2px 14px}
+.card{background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.035));border:1px solid var(--line);border-radius:22px;padding:16px;margin:0 0 14px;box-shadow:inset 0 1px 0 rgba(255,255,255,.22)}
+.card h2{margin:0 0 4px;font-size:17px}.card p{margin:4px 0 10px;color:var(--dim);font-size:14px}.card p.ok{color:var(--ok)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.st{padding:12px;border-radius:16px;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.08);min-width:0}.st small{display:block;color:var(--dim);font-size:12px}.st b{font-size:15px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.st.bad b{color:var(--bad)}.st.warn b{color:var(--warn)}
+.row{display:flex;align-items:center;gap:10px;padding:11px 0;border-top:1px solid rgba(255,255,255,.07)}.row:first-child{border-top:0}.row .t{flex:1;min-width:0}.row .t b{display:block;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.row .t small{display:block;color:var(--dim);font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+h3{margin:18px 4px 8px;font-size:12px;color:var(--dim);text-transform:uppercase;letter-spacing:.09em}
+.btn{display:inline-block;border:0;border-radius:14px;padding:12px 16px;font:600 15px system-ui,-apple-system,sans-serif;color:#fff;background:linear-gradient(135deg,var(--blue),var(--vio));box-shadow:0 6px 18px rgba(106,167,255,.28);text-decoration:none;cursor:pointer}
+.btn.g{background:var(--glass);border:1px solid var(--line);box-shadow:none;color:var(--ink)}.btn.d{background:rgba(255,90,110,.18);border:1px solid rgba(255,90,110,.5);box-shadow:none;color:#ffb3bd}.btn.s{padding:9px 12px;font-size:14px}
+.btn:disabled{opacity:.45}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+label.f{display:block;font-size:13px;color:var(--dim);margin:12px 0 6px}
+input[type=text],input[type=password],input[type=url],input[type=search],select{width:100%;background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:12px;color:var(--ink);padding:12px;font:16px system-ui,-apple-system,sans-serif}
+select{appearance:none;-webkit-appearance:none}
+input[type=range]{width:100%;accent-color:var(--blue);height:32px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}.seg button{flex:1;min-width:60px;padding:10px 8px;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--ink);font:15px system-ui,-apple-system,sans-serif}.seg button.on{border-color:var(--blue);background:rgba(106,167,255,.2)}
+.sw{position:relative;width:48px;height:28px;flex:none}.sw input{opacity:0;position:absolute;inset:0;width:100%;height:100%;margin:0;z-index:1;cursor:pointer}.sw i{position:absolute;inset:0;border-radius:14px;background:#2a2d3b;transition:.2s}.sw i::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.2s}.sw input:checked+i{background:var(--blue)}.sw input:checked+i::after{left:23px}.sw input:focus-visible+i{outline:2px solid var(--blue);outline-offset:2px}
+.ib{width:38px;height:38px;flex:none;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--dim);font-size:16px;cursor:pointer}.ib.on{color:var(--warn);border-color:var(--warn)}.ib:disabled{opacity:.3}
+.banner{display:flex;gap:12px;align-items:center;border-color:rgba(106,167,255,.5)}.banner .t{flex:1}
+nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));width:min(528px,calc(100% - 24px));display:flex;padding:6px;border-radius:24px;background:rgba(18,20,34,.82);border:1px solid var(--line);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);box-shadow:0 12px 40px #000;z-index:5}
+nav button{flex:1;min-width:0;padding:11px 0;border:0;background:transparent;color:var(--dim);font:600 13px system-ui,-apple-system,sans-serif;border-radius:18px;white-space:nowrap;cursor:pointer}nav button.on{color:var(--ink);background:rgba(106,167,255,.22)}nav button em{font-style:normal;color:var(--blue)}
+#toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom,0px));transform:translate(-50%,10px);padding:11px 18px;border-radius:16px;background:rgba(20,22,36,.97);border:1px solid var(--line);font-size:14px;opacity:0;transition:.25s;pointer-events:none;width:max-content;max-width:90vw;text-align:center;z-index:20}#toast.show{opacity:1;transform:translate(-50%,0)}#toast.bad{border-color:var(--bad)}#toast.good{border-color:var(--ok)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:20px;z-index:30}.modal .card{max-width:400px;width:100%;margin:0;background:#141625}
+.center{text-align:center;padding-top:9vh}.center h1{font-size:28px;letter-spacing:-.03em;margin:8px 0}
+.pin{font:600 30px ui-monospace,Menlo,monospace!important;letter-spacing:.3em;text-align:center}
+.err{color:var(--bad);font-size:14px;margin-top:8px;min-height:1px}.okm{color:var(--ok);font-size:14px;margin-top:8px}
+.pv{width:128px;height:128px;border-radius:50%;flex:none;background:radial-gradient(60% 60% at 30% 25%,rgba(106,167,255,.3),transparent 70%),radial-gradient(60% 60% at 75% 80%,rgba(155,123,255,.28),transparent 70%),#000;border:3px solid #3a3d4c;box-shadow:0 0 0 2px #1a1c26,0 10px 30px #000;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.pc{display:flex;gap:14px;margin-top:6px}.pc u{width:11px;height:15px;border-radius:50%;background:currentColor;box-shadow:0 0 10px currentColor;animation:bl 4s infinite}@keyframes bl{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}.ptm{font-size:15px;font-weight:600}.pcp{font-size:10px;color:var(--dim)}
+.pt{display:grid;grid-template-columns:1fr 1fr;gap:5px;width:88px}.pt i{font-style:normal;font-size:9px;padding:9px 4px;text-align:center;border-radius:10px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.stp{display:flex;gap:6px;justify-content:center;margin:6px 0 14px}.stp i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2)}.stp i.on{background:var(--blue);width:22px;border-radius:4px}
+ol.how{padding-left:20px;margin:6px 0}ol.how li{margin:9px 0}
+.opt{display:block;width:100%;text-align:left;padding:14px 16px;border-radius:18px;border:1px solid var(--line);background:var(--glass);color:var(--ink);font:16px system-ui,-apple-system,sans-serif;margin-bottom:10px;cursor:pointer}.opt b{display:block}.opt small{color:var(--dim)}.opt.on{border-color:var(--blue);background:rgba(106,167,255,.15)}
+.net{display:flex;align-items:center;gap:10px}.net b{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bars{display:flex;gap:2px;align-items:flex-end;height:14px}.bars i{width:4px;background:rgba(255,255,255,.25);border-radius:1px}.bars i.on{background:var(--ink)}
+.bar{height:8px;border-radius:4px;background:rgba(255,255,255,.1);overflow:hidden;margin-top:10px}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--vio));transition:width .2s}
+.kbd{display:inline-block;padding:1px 7px;border-radius:6px;border:1px solid var(--line);font-size:12px;font-weight:600}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.25);border-top-color:var(--ink);border-radius:50%;animation:sp 1s linear infinite;vertical-align:-2px;margin-right:6px}@keyframes sp{to{transform:rotate(360deg)}}
+.hide{display:none!important}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style></head><body>
+<div id="app"><div class="center"><p style="color:var(--dim)"><span class="spin"></span>Connecting to PocketOS…</p></div></div><div id="toast" role="status" aria-live="polite"></div><div id="modal"></div>
+<script>
+'use strict';
+/* PocketOS settings website. Served by the device itself and talks only to it (API v2, docs/api.md).
+   Nothing here contacts the internet. A setting is only shown as saved once PocketOS confirms it. */
+const API='/api/v2';
+const $=s=>document.querySelector(s),E=$('#app');
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const bytes=s=>new TextEncoder().encode(s).length;
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+
+let info=null,cfg=null,ents=null,token=null,tab='home',wiz=null,reach=true,lastOk=0,entsLoading=false,batt=null,battAt=0,updWatching=false;
+let setup={step:0,nets:null,scanning:false,pick:null,joined:null};
+
+/* ---------- talking to PocketOS ---------- */
+async function api(path,opt={}){
+  const ctl=new AbortController(),tm=setTimeout(()=>ctl.abort(),opt.timeout||12000);
+  const h={};if(token)h.Authorization='Bearer '+token;
+  let body=opt.body;if(body!==undefined&&!(body instanceof Blob)&&!(body instanceof ArrayBuffer)){h['Content-Type']='application/json';body=JSON.stringify(body)}
+  try{
+    const r=await fetch(API+path,{method:opt.method||(body!==undefined?'POST':'GET'),headers:h,body,signal:ctl.signal,cache:'no-store'});
+    let data=null;try{data=await r.json()}catch(e){}
+    reach=true;lastOk=Date.now();
+    if(r.status===401&&path!=='/pair'){forgetToken();render();return{ok:false,status:401,data,msg:'Pair this phone again with the code on PocketOS'}}
+    return{ok:r.ok,status:r.status,data,msg:(data&&data.error)||('PocketOS answered '+r.status)};
+  }catch(e){reach=false;return{ok:false,status:0,data:null,msg:'Couldn’t reach PocketOS. Nothing was changed.'}}
+  finally{clearTimeout(tm)}
+}
+const tokKey=()=>'pocketos-token-'+(info?info.id:'');
+function forgetToken(){token=null;store.del(tokKey())}
+
+function note(m,kind){const t=$('#toast');t.textContent=m;t.className='show'+(kind?' '+kind:'');clearTimeout(note.t);note.t=setTimeout(()=>t.className='',kind==='bad'?4200:2600)}
+/* Save a settings change. The page only updates once PocketOS sends back what it now has stored. */
+async function save(patch,okMsg){
+  note('Saving to '+(cfg?cfg.name:'PocketOS')+'…');
+  const r=await api('/config',{body:patch});
+  if(r.ok&&r.data&&r.data.name!==undefined){cfg=r.data;note(okMsg||'Saved on PocketOS ✓','good')}
+  else note(r.msg,'bad');
+  render();return r.ok;
+}
+async function setFlag(id,flags,okMsg){
+  note('Saving…');
+  const r=await api('/entities',{body:Object.assign({id},flags)});
+  if(r.ok){const e=ents&&ents.entities.find(x=>x.id===id);if(e)Object.assign(e,flags.known?{new:false}:{},flags.fav!==undefined?{fav:flags.fav}:{},flags.hidden!==undefined?{hidden:flags.hidden}:{});note(okMsg||'Saved on PocketOS ✓','good');refreshInfo(true)}
+  else note(r.msg,'bad');
+  render();return r.ok;
+}
+async function loadInfo(){const r=await api('/info');if(r.ok&&r.data)info=r.data;return r.ok}
+async function loadCfg(){const r=await api('/config');if(r.ok&&r.data)cfg=r.data;return r.ok}
+async function loadEnts(){entsLoading=true;const r=await api('/entities');entsLoading=false;if(r.ok&&r.data)ents=r.data;return r.ok}
+async function refreshInfo(quiet){const ok=await loadInfo();if(!quiet&&canRerender())render();else updHead();return ok}
+function canRerender(){const a=document.activeElement;return !(a&&(a.matches('input,select,textarea')))&&!$('#modal').innerHTML}
+
+/* ---------- little builders ---------- */
+const sw=(attrs,on,label)=>'<label class="sw"><input type="checkbox" '+attrs+(on?' checked':'')+' aria-label="'+esc(label||'')+'"><i></i></label>';
+const seg=(k,opts,v)=>'<div class="seg" role="group">'+opts.map(o=>'<button data-a="seg" data-k="'+k+'" data-v="'+esc(JSON.stringify(o[0]))+'" class="'+(o[0]===v?'on':'')+'" aria-pressed="'+(o[0]===v)+'">'+esc(o[1])+'</button>').join('')+'</div>';
+const st=(l,v,cls)=>'<div class="st '+(cls||'')+'"><small>'+esc(l)+'</small><b>'+esc(v)+'</b></div>';
+function ask(title,text,btn,fn,danger){$('#modal').innerHTML='<div class="modal" role="dialog" aria-modal="true"><div class="card"><h2>'+esc(title)+'</h2><p>'+text+'</p><div class="btns"><button class="btn g" data-a="x">Cancel</button><button class="btn '+(danger?'d':'')+'" data-a="go">'+esc(btn)+'</button></div></div></div>';ask.f=fn;setTimeout(()=>{const b=$('#modal [data-a=go]');b&&b.focus()},30)}
+function sheet(html){$('#modal').innerHTML='<div class="modal" role="dialog" aria-modal="true"><div class="card">'+html+'</div></div>'}
+const closeModal=()=>{$('#modal').innerHTML=''};
+const signal=r=>r>=-55?'Strong':r>=-67?'Good':r>=-75?'Fair':'Weak';
+const bars=r=>{const n=r>=-55?4:r>=-67?3:r>=-75?2:1;return '<span class="bars" aria-label="'+signal(r)+' signal">'+[5,8,11,14].map((h,i)=>'<i style="height:'+h+'px" class="'+(i<n?'on':'')+'"></i>').join('')+'</span>'};
+function upFor(s){s=Math.round(s);if(s<90)return s+' s';if(s<5400)return Math.round(s/60)+' min';if(s<172800)return Math.round(s/3600)+' h';return Math.round(s/86400)+' days'}
+const EYE={blue:'#6aa7ff',violet:'#9b7bff',white:'#e8ecff'};
+const DOMAIN={light:'Light',switch:'Switch',climate:'Heating',media_player:'Media',fan:'Fan',cover:'Blind',lock:'Lock',sensor:'Sensor',binary_sensor:'Sensor',scene:'Scene',script:'Script'};
+const TZ=[['GMT0BST,M3.5.0/1,M10.5.0','UK, Ireland, Portugal'],['CET-1CEST,M3.5.0,M10.5.0/3','Central Europe (Paris, Berlin, Madrid)'],['EET-2EEST,M3.5.0/3,M10.5.0/4','Eastern Europe (Athens, Helsinki)'],['EST5EDT,M3.2.0,M11.1.0','US Eastern'],['CST6CDT,M3.2.0,M11.1.0','US Central'],['MST7MDT,M3.2.0,M11.1.0','US Mountain'],['MST7','Arizona'],['PST8PDT,M3.2.0,M11.1.0','US Pacific'],['AKST9AKDT,M3.2.0,M11.1.0','Alaska'],['HST10','Hawaii'],['AEST-10AEDT,M10.1.0,M4.1.0/3','Sydney, Melbourne'],['AEST-10','Brisbane'],['ACST-9:30ACDT,M10.1.0,M4.1.0/3','Adelaide'],['AWST-8','Perth'],['NZST-12NZDT,M9.5.0,M4.1.0/3','New Zealand'],['IST-5:30','India'],['CST-8','China, Singapore'],['JST-9','Japan'],['UTC0','UTC']];
+const TILE_HELP={favourites:'Your starred devices',lights:'All lights',heating:'Thermostats',media:'Speakers and TVs',locks:'Door locks',rooms:'Everything by room',scenes:'Scenes and scripts',plugs:'Smart plugs and switches',fans:'Fans',blinds:'Blinds and curtains',sensors:'Temperature and other readings'};
+const haUrl=()=>(cfg&&cfg.ha_url)||'http://homeassistant.local:8123';
+const safeHref=u=>/^https?:\/\//i.test(u)?u:'#';
+
+/* ---------- header ---------- */
+function headerHtml(){return '<header><div class="t"><b id="hn">'+esc(cfg?cfg.name:info.name)+'</b><span>'+esc(info.host||location.host)+' · on your home Wi-Fi</span></div><div class="pill" id="pill">Connected</div></header><div class="edit">You’re changing this PocketOS only.</div>'}
+function updHead(){const p=$('#pill');if(!p)return;p.className='pill '+(reach?'':'bad');p.textContent=reach?'Connected':'Can’t reach'}
+
+/* ---------- first-time setup (PocketOS's own network) ---------- */
+function setupV(){
+  const s=setup;let b;
+  if(s.joined){const url='http://'+s.joined.host+'/';
+    b='<h2>PocketOS is on your Wi-Fi ✓</h2><p>It’s restarting now. You won’t need PocketOS’s own network again.</p><ol class="how"><li>Your phone goes back to your home Wi-Fi by itself. If it doesn’t, choose <b>'+esc(s.pick)+'</b> in your phone’s Wi-Fi settings.</li><li>Wait for the companion to appear on PocketOS (about 20 seconds).</li><li>Open your settings page:</li></ol><div class="btns"><a class="btn" href="'+esc(url)+'">Open '+esc(s.joined.host)+'</a></div><p style="margin-top:12px">If that doesn’t open, tap the <b>Settings</b> tile on PocketOS and scan its code'+(s.joined.ip?', or use <a href="http://'+esc(s.joined.ip)+'/">'+esc(s.joined.ip)+'</a>':'')+'.</p>';
+    return '<div class="center" style="text-align:left;padding-top:4vh"><div class="card">'+b+'</div></div>'}
+  if(s.step===0)b='<div style="font-size:42px;text-align:center" aria-hidden="true">◉ ◉</div><h2 style="text-align:center">Let’s set up '+esc(info.name)+'</h2><p style="text-align:center">First, PocketOS joins your home Wi-Fi. It takes a minute, and nothing leaves your home.</p><div class="btns" style="justify-content:center"><button class="btn" data-a="sstep" data-v="1">Start</button></div>';
+  else{
+    let list;
+    if(s.scanning)list='<p><span class="spin"></span>Looking for Wi-Fi networks…</p>';
+    else if(!s.nets)list='';
+    else if(!s.nets.length)list='<p>No networks found. Move closer to your router and try again.</p>';
+    else list=s.nets.map(n=>'<button class="opt net '+(s.pick===n.ssid?'on':'')+'" data-a="pick" data-v="'+esc(n.ssid)+'"><b>'+esc(n.ssid)+'</b>'+(n.secure?'<span aria-label="Password protected">🔒</span>':'')+bars(n.rssi)+'</button>').join('');
+    b='<h2>Choose your home Wi-Fi</h2><p>PocketOS uses 2.4 GHz Wi-Fi, which most routers provide alongside 5 GHz.</p>'+list+
+      '<div class="btns"><button class="btn g s" data-a="scan">'+(s.nets?'Search again':'Search for networks')+'</button><button class="btn g s" data-a="manual">Type the name instead</button></div>'+
+      '<div id="man" class="'+(s.manual?'':'hide')+'"><label class="f" for="ssid">Network name</label><input type="text" id="ssid" autocapitalize="off" autocorrect="off" maxlength="32" value="'+esc(s.manual&&s.pick||'')+'"></div>'+
+      '<label class="f" for="wpw">Wi-Fi password</label><input type="password" id="wpw" maxlength="63" autocomplete="current-password"><label style="display:flex;gap:8px;align-items:center;margin-top:8px;font-size:14px;color:var(--dim)"><input type="checkbox" data-a2="showpw"> Show password</label>'+
+      '<div class="btns"><button class="btn" data-a="join" id="joinb">Connect</button></div><div id="werr" class="err"></div>';
+  }
+  return '<header><div class="t"><b>'+esc(info.name)+'</b><span>First-time setup</span></div></header><div class="stp"><i class="'+(s.step===0?'on':'')+'"></i><i class="'+(s.step===1?'on':'')+'"></i><i></i><i></i></div><div class="card">'+b+'</div>';
+}
+async function scan(){setup.scanning=true;render();const r=await api('/wifi/scan',{timeout:20000});setup.scanning=false;
+  if(r.ok){const seen={};setup.nets=(r.data.networks||[]).filter(n=>n.ssid&&!seen[n.ssid]&&(seen[n.ssid]=1)).sort((a,b)=>b.rssi-a.rssi)}else{setup.nets=[];note(r.msg,'bad')}render()}
+async function join(){
+  const ssid=setup.manual?$('#ssid').value.trim():setup.pick,pw=$('#wpw').value,er=$('#werr');
+  if(!ssid){er.textContent='Choose your network first.';return}
+  const n=setup.nets&&setup.nets.find(x=>x.ssid===ssid);
+  if(n&&n.secure&&!pw){er.textContent='Enter the Wi-Fi password.';return}
+  if(pw&&pw.length<8){er.textContent='Wi-Fi passwords are at least 8 characters.';return}
+  er.textContent='';const b=$('#joinb');b.disabled=true;b.innerHTML='<span class="spin"></span>Joining…';
+  const r=await api('/wifi',{body:{ssid,password:pw},timeout:40000});
+  if(r.ok){setup.pick=ssid;setup.joined={host:r.data.host||(info.host||''),ip:r.data.ip||''};render()}
+  else{b.disabled=false;b.textContent='Connect';$('#werr').textContent=r.msg}
+}
+
+/* ---------- pairing ---------- */
+function pairV(){return '<div class="center"><div class="card"><div style="font-size:38px" aria-hidden="true">◉ ◉</div><h1>Connect to '+esc(info.name)+'</h1><p>Enter the 6-digit code on the PocketOS screen.</p><p style="font-size:13px">Can’t see a code? Press the <b>BOOT</b> button on its side.</p><input class="pin" id="pin" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="······" aria-label="6-digit code"><div id="perr" class="err"></div><div class="btns" style="justify-content:center"><button class="btn" data-a="pair">Connect</button></div><p style="margin-top:14px;font-size:13px">You do this once on each phone or tablet.</p></div></div>'}
+async function pair(){
+  const v=($('#pin').value||'').replace(/\D/g,''),er=$('#perr');
+  if(v.length!==6){er.textContent='The code has 6 digits.';return}
+  er.textContent='';const r=await api('/pair',{body:{pin:v}});
+  if(r.ok&&r.data&&r.data.token){token=r.data.token;store.set(tokKey(),token);await start();note('This phone is connected ✓','good')}
+  else{er.textContent=r.msg;$('#pin').value='';$('#pin').focus()}
+}
+
+/* ---------- guided setup after pairing (Home Assistant) ---------- */
+const doneKey=()=>'pocketos-setup-'+info.id;
+function wizV(){
+  const z=wiz;let b;
+  if(z==='ha')b='<h2>Do you use Home Assistant?</h2><p>It’s a free app that links smart-home brands together so PocketOS can control them. Alexa, Google Home or Apple Home on their own aren’t Home Assistant.</p><button class="opt" data-a="wz" data-v="connect"><b>Yes, I use it</b><small>Connect it now</small></button><button class="opt" data-a="wz" data-v="none"><b>No, or I’m not sure</b><small>See what you’d need</small></button>';
+  else if(z==='none')b='<h2>Getting Home Assistant</h2><p>It runs at home, for example on a Home Assistant Green box, a Raspberry Pi or a spare PC. Your smart devices are then added inside it.</p><div class="btns"><a class="btn" href="https://www.home-assistant.io/installation/" target="_blank" rel="noopener noreferrer">How to install ↗</a><button class="btn g" data-a="wz" data-v="ha">Back</button></div><p style="margin-top:12px">Without it, PocketOS still shows its companion, clock and moods. You can connect it any time from the <b>Smart home</b> tab.</p><div class="btns"><button class="btn g" data-a="wz" data-v="done">Finish for now</button></div>';
+  else if(z==='connect')b='<h2>Connect Home Assistant</h2><p>PocketOS gets its own login, so your main account stays private.</p>'+guideHtml()+'<label class="f" for="wurl">Home Assistant address</label><input type="url" id="wurl" value="'+esc(haUrl())+'" autocapitalize="off" autocorrect="off"><label class="f" for="wtok">Token</label><input type="password" id="wtok" placeholder="Paste token" autocomplete="off"><div class="btns"><button class="btn" data-a="wizha" id="wizb">Test and connect</button><button class="btn g" data-a="wz" data-v="ha">Back</button></div><div id="wmsg" class="err"></div>';
+  else if(z==='fav'){const list=ents?ents.entities.filter(e=>!e.hidden&&e.domain!=='sensor'&&e.domain!=='binary_sensor'):[];
+    b='<h2>Pick your favourites</h2><p>Favourites get the first tile on PocketOS. You can change these any time in <b>Devices</b>.</p>'+(list.length?'<div>'+list.map(e=>'<div class="row"><div class="t"><b>'+esc(e.name)+'</b><small>'+esc(e.area||'No room')+' · '+esc(DOMAIN[e.domain]||e.domain)+'</small></div>'+sw('data-k="fav" data-id="'+esc(e.id)+'"',e.fav,'Favourite '+e.name)+'</div>').join('')+'</div>':'<p>'+(entsLoading?'<span class="spin"></span>Loading your devices…':'No devices yet. Add them in Home Assistant and they’ll appear here.')+'</p>')+'<div class="btns"><button class="btn" data-a="wz" data-v="done">Finish</button></div>'}
+  else b='<h2>All set</h2><p>'+(info.ha.status==='connected'?'PocketOS now shows your rooms, devices and scenes.':'PocketOS is ready with its companion and clock. Connect Home Assistant any time from the Smart home tab.')+'</p><p>Tip: tap the <b>Settings</b> tile on PocketOS any time to get back here.</p><div class="btns"><button class="btn" data-a="wzend">Go to my dashboard</button></div>';
+  const p={ha:0,none:1,connect:1,fav:2,done:3}[z];
+  return headerHtml()+'<div class="stp">'+[0,1,2,3].map(i=>'<i class="'+(i===p?'on':'')+'"></i>').join('')+'</div><div class="card">'+b+'</div>'+(z!=='done'?'<div class="btns" style="justify-content:center"><button class="btn g" data-a="wzend">Skip setup for now</button></div>':'');
+}
+function guideHtml(){return '<ol class="how"><li><a href="'+esc(safeHref(haUrl()))+'" target="_blank" rel="noopener noreferrer">Open Home Assistant ↗</a></li><li>Go to <b>Settings → People → Add person</b>. Name it <i>PocketOS</i>, turn on <b>Allow person to login</b>, and leave <b>Administrator</b> off.</li><li>Sign in as PocketOS (a private browser window is easiest).</li><li>Tap its name at the bottom left, open <b>Security</b>, and under <b>Long-lived access tokens</b> choose <b>Create token</b>. Copy it.</li><li>Paste it below. It’s kept on PocketOS only and never shown again.</li></ol><p style="font-size:13px">Menu names can differ slightly between Home Assistant versions. Home Assistant tokens can do anything that user can do, which is why a separate non-admin user is safer than your own.</p>'}
+
+/* Test, save, then wait until PocketOS itself reports it's connected. */
+async function connectHA(url,tok,msgEl,btn){
+  const set=(t,ok)=>{msgEl.className=ok?'okm':'err';msgEl.innerHTML=t};
+  url=url.trim().replace(/\/+$/,'');
+  if(!/^https?:\/\/[^\s/]+/i.test(url)){set('The address should look like http://homeassistant.local:8123');return false}
+  if(!tok&&!(cfg&&cfg.ha_token_set)){set('Paste the token first.');return false}
+  const lbl=btn&&btn.textContent;if(btn){btn.disabled=true;btn.innerHTML='<span class="spin"></span>Testing…'}
+  const done=ok=>{if(btn){btn.disabled=false;btn.textContent=lbl}return ok};
+  const t=await api('/ha/test',{body:{url,token:tok},timeout:20000});
+  if(!t.ok){set(esc(t.msg));return done(false)}
+  if(btn)btn.innerHTML='<span class="spin"></span>Connecting…';
+  const r=await api('/ha',{body:{url,token:tok}});
+  if(!r.ok){set(esc(r.msg));return done(false)}
+  await loadCfg();
+  for(let i=0;i<15;i++){await new Promise(z=>setTimeout(z,1500));await loadInfo();
+    if(info.ha.status==='connected'){set('Connected ✓ PocketOS can see '+info.ha.devices+' devices.',true);await loadEnts();return done(true)}
+    if(info.ha.status==='error'){set(esc(info.ha.error||'Home Assistant refused the connection.'));return done(false)}}
+  set('Saved, but PocketOS hasn’t connected yet. Check the address and that Home Assistant is running.');return done(false);
+}
+
+
+/* ---------- battery ---------- */
+async function loadBatt(){const r=await api('/battery');if(r.ok&&r.data){batt=r.data;battAt=Date.now()}return r.ok}
+const hrs=h=>h<1?'under an hour':h<36?Math.round(h)+' hours':(Math.round(h/2.4)/10)+' days';
+function ago(ts){const s=Math.max(0,Date.now()/1000-ts);if(s<90)return 'just now';if(s<5400)return Math.round(s/60)+' minutes ago';if(s<129600)return Math.round(s/3600)+' hours ago';return Math.round(s/86400)+' days ago'}
+function battChart(b){
+  const now=b.now||Date.now()/1000,t0=now-48*3600,H=b.history.filter(r=>r[0]>=t0);
+  if(H.length<2)return '<p style="font-size:13px">The chart fills in over the next few hours.</p>';
+  const W=320,Ht=112,L=30,T=6,B=20,x=t=>L+(t-t0)/(now-t0)*(W-L-4),y=p=>T+(100-p)/100*(Ht-T-B);
+  let shade='',line='',d='';
+  for(let i=0;i<H.length;i++){const r=H[i],gap=i&&r[0]-H[i-1][0]>7200;
+    d+=(i===0||gap?'M':'L')+x(r[0]).toFixed(1)+' '+y(r[1]).toFixed(1);
+    if(r[3]&2){const e=i<H.length-1?H[i+1][0]:now;shade+='<rect x="'+x(r[0]).toFixed(1)+'" y="'+T+'" width="'+Math.max(1,x(e)-x(r[0])).toFixed(1)+'" height="'+(Ht-T-B)+'" fill="rgba(123,227,164,.13)"/>'}}
+  const grid=[0,50,100].map(p=>'<line x1="'+L+'" x2="'+(W-4)+'" y1="'+y(p)+'" y2="'+y(p)+'" stroke="rgba(255,255,255,.08)"/><text x="'+(L-6)+'" y="'+(y(p)+4)+'" text-anchor="end" font-size="10" fill="#8b91ae">'+p+'%</text>').join('');
+  const xl=[[t0,'48 h ago','start'],[now-24*3600,'24 h','middle'],[now,'now','end']].map(a=>'<text x="'+x(a[0])+'" y="'+(Ht-5)+'" text-anchor="'+a[2]+'" font-size="10" fill="#8b91ae">'+a[1]+'</text>').join('');
+  line='<path d="'+d+'" fill="none" stroke="#6aa7ff" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
+  return '<svg viewBox="0 0 '+W+' '+Ht+'" width="100%" role="img" aria-label="Battery level over the last 48 hours" style="display:block;margin-top:8px">'+grid+shade+line+xl+'</svg><p style="font-size:12px;margin:2px 0 0"><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:rgba(123,227,164,.35);vertical-align:-1px"></span> Plugged in</p>';
+}
+function battCard(){
+  if(Date.now()-battAt>55000)loadBatt().then(()=>{if(tab==='home'&&canRerender()&&!wiz)render()});
+  const b=batt;
+  if(!b)return '<div class="card"><h2>Battery</h2><p><span class="spin"></span>Reading the battery…</p></div>';
+  if(!b.present)return '<div class="card"><h2>Battery</h2><p>No battery found. PocketOS is running from USB power.</p></div>';
+  const e=b.estimate||{},state=b.charging?'Charging':b.plugged?(b.full||b.percent>=100?'Plugged in · full':'Plugged in'):'On battery';
+  let est=e.known&&e.hours_left!=null?'About <b>'+hrs(e.hours_left)+'</b> left, going by how you’ve used it lately.':e.known?'A full charge lasts about <b>'+hrs(e.full_h)+'</b> with your use.':'Still learning how long a charge lasts. Check back after a few hours off the charger.';
+  return '<div class="card"><h2>Battery</h2><div style="display:flex;align-items:baseline;gap:10px"><b style="font-size:34px;letter-spacing:-.02em">'+(b.percent!=null?b.percent+'%':'—')+'</b><span style="color:var(--dim);font-size:14px">'+state+(b.mv?' · '+(b.mv/1000).toFixed(2)+' V':'')+'</span></div><p style="margin-top:6px">'+est+(e.known?' <span style="font-size:12px">(from '+Math.round(e.basis_h)+' h of readings)</span>':'')+'</p>'+battChart(b)+(b.last_full?'<p style="font-size:13px;margin-top:8px">Last fully charged '+ago(b.last_full)+'.</p>':'')+'</div>';
+}
+
+/* ---------- updates ---------- */
+function updBanner(){const u=info.update;if(!u||!u.available||(u.state!=='available'&&u.state!=='downloading'))return '';
+  return '<div class="card banner"><div class="t"><h2>PocketOS '+esc(u.available)+' is ready</h2><p style="margin:0">'+esc(u.notes||'A new version is available.')+'</p>'+(u.state==='downloading'?'<div class="bar"><i style="width:'+u.progress+'%"></i></div>':'')+'</div>'+(u.state==='downloading'?'':'<button class="btn" data-a="updinstall">Install</button>')+'</div>'}
+function updCard(){
+  const u=info.update||{};let s;
+  if(!u.online)s='<p>This build doesn’t look online for updates. Use “Install from a file” below.</p>';
+  else if(u.state==='checking')s='<p><span class="spin"></span>Checking for updates…</p>';
+  else if(u.state==='downloading')s='<p>Installing '+esc(u.available||'')+'… '+u.progress+'%</p><div class="bar"><i style="width:'+u.progress+'%"></i></div>';
+  else if(u.available)s='<p class="ok" style="color:var(--ok)">Version '+esc(u.available)+' is ready.</p><p>'+esc(u.notes||'')+'</p>'+(u.error?'<p class="err">Last try: '+esc(u.error)+'</p>':'')+'<div class="btns"><button class="btn" data-a="updinstall">Install '+esc(u.available)+'</button></div>';
+  else if(u.state==='failed'&&u.error)s='<p class="err">Couldn’t check: '+esc(u.error)+'</p>';
+  else if(u.state==='latest')s='<p>You’re on the latest version'+(u.checked?' (checked '+ago(u.checked)+')':'')+'.</p>';
+  else s='<p>Not checked yet.</p>';
+  return '<div class="card"><h2>Updates</h2><p style="margin-top:0">You’re on <b>v'+esc(info.firmware)+'</b>.</p>'+s+
+   (u.online?'<div class="btns"><button class="btn g" data-a="updcheck" '+(u.state==='checking'||u.state==='downloading'?'disabled':'')+'>Check now</button></div><label class="f">New versions</label>'+seg('updates',[['off','Don’t check'],['notify','Tell me'],['auto','Install overnight']],cfg.updates)+
+   '<p style="margin-top:8px;font-size:13px">'+(cfg.updates==='auto'?'Installs between 2 and 5 am while PocketOS is charging and nobody is using it. ':cfg.updates==='notify'?'PocketOS looks once a day and tells you here and on its screen. ':'')+'Checking downloads a small file from GitHub. Nothing about your home or devices is sent.</p>':'')+'</div>';
+}
+async function watchUpdate(target){
+  if(updWatching)return;updWatching=true;const t0=Date.now();let gone=false;
+  while(Date.now()-t0<240000){await new Promise(z=>setTimeout(z,1500));
+    const ok=await loadInfo();
+    if(!ok){if(!gone){gone=true;sheet('<h2><span class="spin"></span>Installing</h2><p>PocketOS is restarting into version '+esc(target)+'. This page reconnects by itself.</p>')}continue}
+    if(info.firmware===target){closeModal();updWatching=false;batt=null;battAt=0;render();note('Now running v'+target+' ✓','good');return}
+    if(gone){closeModal();updWatching=false;render();note('PocketOS restarted on v'+info.firmware+'. The new version didn’t start properly, so it went back by itself.','bad');return}
+    const u=info.update||{};
+    if(u.state!=='downloading'&&u.state!=='installed'){updWatching=false;if(canRerender())render();if(u.error)note('Update failed: '+u.error+'. Nothing changed.','bad');return}
+    if(canRerender()&&(tab==='home'||tab==='more'))render()}
+  updWatching=false;closeModal();note('PocketOS hasn’t come back yet. Check its screen, then reload this page.','bad');
+}
+async function checkUpdate(){
+  const r=await api('/update/check',{body:{}});if(!r.ok)return note(r.msg,'bad');
+  info.update=Object.assign({},info.update,{state:'checking'});render();
+  for(let i=0;i<40;i++){await new Promise(z=>setTimeout(z,1000));await loadInfo();if(info.update&&info.update.state!=='checking')break}
+  render();const u=info.update||{};note(u.available?'Version '+u.available+' is ready':u.state==='latest'?'PocketOS is up to date':'Couldn’t check: '+(u.error||'no answer'),u.available||u.state==='latest'?'good':'bad');
+}
+
+/* ---------- tabs ---------- */
+function homeV(){
+  const h=info.ha,issues=[];
+  if(!reach)issues.push('PocketOS isn’t answering');
+  if(h.status==='error')issues.push('Home Assistant: '+(h.error||'connection problem'));
+  if(h.status==='not_set')issues.push('Home Assistant isn’t connected yet');
+  const B=info.battery||{},bat=B.percent!=null?B.percent+'%'+(B.charging?' · charging':B.plugged?' · plugged in':B.hours_left!=null?' · '+B.hours_left+' h left':''):(B.plugged?'USB power':'No battery');
+  const haTxt={connected:'Connected',connecting:'Connecting…',error:'Problem',not_set:'Not connected'}[h.status]||h.status;
+  let o='<div class="card"><h2>Status</h2><p>'+(issues.length?esc(issues.join('. '))+'.':'Everything is working.')+'</p><div class="grid">'+
+    st('Wi-Fi',info.wifi.ssid?info.wifi.ssid+' · '+signal(info.wifi.rssi):'—')+st('Home Assistant',haTxt,h.status==='connected'?'':h.status==='connecting'?'warn':'bad')+
+    st('Devices on PocketOS',h.status==='connected'?String(h.devices):'—')+st('Battery',bat,info.battery&&info.battery.percent!=null&&info.battery.percent<15&&!info.battery.charging?'bad':'')+
+    st('Firmware','v'+info.firmware)+st('Running for',upFor(info.uptime_s))+'</div>'+
+    (h.status!=='connected'?'<div class="btns"><button class="btn" data-a="tab" data-v="ha">'+(h.status==='not_set'?'Connect Home Assistant':'Fix connection')+'</button></div>':'')+'</div>';
+  o+=updBanner();
+  if(h.new>0&&cfg&&!cfg.auto_add)o+='<div class="card banner"><div class="t"><h2>'+h.new+' new device'+(h.new>1?'s':'')+' found</h2><p style="margin:0">Added in Home Assistant since you last looked.</p></div><button class="btn" data-a="tab" data-v="dev">Review</button></div>';
+  if(!store.get('pocketos-tip-a2hs'))o+='<div class="card"><h2>Keep this page handy</h2><p>On iPhone or iPad tap <b>Share</b>, then <b>Add to Home Screen</b>. On Android tap <b>⋮</b>, then <b>Add to Home screen</b>. It works whenever you’re on your home Wi-Fi. You can also tap the <b>Settings</b> tile on PocketOS and scan its code.</p><div class="btns"><button class="btn g" data-a="tip">Got it</button></div></div>';
+  o+=battCard();
+  o+='<div class="card"><h2>What to do here</h2><div class="row"><div class="t"><b>Choose devices and favourites</b><small>What PocketOS shows and controls</small></div><button class="btn g s" data-a="tab" data-v="dev">Devices</button></div><div class="row"><div class="t"><b>Change how it looks</b><small>Menu tiles, clock, brightness, companion</small></div><button class="btn g s" data-a="tab" data-v="look">Look</button></div><div class="row"><div class="t"><b>Side buttons</b><small>What BOOT and PWR do</small></div><button class="btn g s" data-a="buttons">Show</button></div></div>';
+  return o;
+}
+function devRow(e){
+  return '<div class="row" data-n="'+esc((e.name+' '+e.area+' '+(DOMAIN[e.domain]||'')).toLowerCase())+'"><div class="t"><b>'+esc(e.name)+'</b><small>'+esc([e.status,e.controls].filter(Boolean).join(' · '))+'</small></div>'+
+    '<button class="ib '+(e.fav?'on':'')+'" data-a="fav" data-id="'+esc(e.id)+'" aria-pressed="'+!!e.fav+'" aria-label="Favourite '+esc(e.name)+'" '+(e.hidden?'disabled':'')+'>★</button>'+
+    sw('data-k="show" data-id="'+esc(e.id)+'"',!e.hidden,'Show '+e.name+' on PocketOS')+'</div>';
+}
+function devV(){
+  if(info.ha.status==='not_set')return '<div class="card"><h2>No smart home connected</h2><p>PocketOS gets its devices from Home Assistant. Connect it first, and your lights, heating and speakers appear here.</p><div class="btns"><button class="btn" data-a="tab" data-v="ha">Connect Home Assistant</button></div></div>';
+  if(!ents)return '<div class="card"><p>'+(entsLoading?'<span class="spin"></span>Loading devices from PocketOS…':'Couldn’t load devices.')+'</p>'+(entsLoading?'':'<div class="btns"><button class="btn g" data-a="reload">Try again</button></div>')+'</div>';
+  const all=ents.entities,fresh=all.filter(e=>e.new),rest=all.filter(e=>!e.new);
+  let h='';
+  if(info.ha.status!=='connected')h+='<div class="card"><p style="color:var(--warn);margin:0">Home Assistant isn’t connected right now, so this list may be out of date.</p></div>';
+  if(fresh.length)h+='<h3>New in Home Assistant</h3><div class="card"><p>Add them to PocketOS, or skip ones you don’t need on it.</p>'+fresh.map(e=>'<div class="row"><div class="t"><b>'+esc(e.name)+'</b><small>'+esc(e.area||'No room')+' · '+esc(e.controls||DOMAIN[e.domain]||'')+'</small></div><button class="btn s" data-a="add" data-id="'+esc(e.id)+'">Add</button><button class="btn g s" data-a="skip" data-id="'+esc(e.id)+'">Skip</button></div>').join('')+(fresh.length>1?'<div class="btns"><button class="btn g" data-a="addall">Add all '+fresh.length+'</button></div>':'')+'</div>';
+  if(!rest.length&&!fresh.length)return h+'<div class="card"><h2>No devices yet</h2><p>Add devices in Home Assistant and they’ll appear here.</p><div class="btns"><a class="btn g" href="'+esc(safeHref(haUrl()))+'/config/integrations" target="_blank" rel="noopener noreferrer">Open Home Assistant ↗</a></div></div>';
+  h+='<input type="search" id="q" placeholder="Search devices" aria-label="Search devices" style="margin:6px 0 2px">';
+  const groups={},scenes=[];
+  rest.forEach(e=>{if(e.domain==='scene'||e.domain==='script')scenes.push(e);else(groups[e.area||'']=groups[e.area||'']||[]).push(e)});
+  const names=Object.keys(groups).sort((a,b)=>a===''?1:b===''?-1:a.localeCompare(b));
+  names.forEach(n=>{h+='<div class="grp"><h3>'+esc(n||'No room')+'</h3><div class="card">'+groups[n].sort((a,b)=>a.name.localeCompare(b.name)).map(devRow).join('')+'</div></div>'});
+  if(scenes.length)h+='<div class="grp"><h3>Scenes and scripts</h3><div class="card">'+scenes.map(devRow).join('')+'</div></div>';
+  h+='<p class="edit">★ = favourite on PocketOS. Switch = show or hide it. Rooms come from Home Assistant.</p><div class="btns"><button class="btn g" data-a="reload">Refresh list</button></div><p id="noq" class="edit hide">No devices match.</p>';
+  return h;
+}
+function previewHtml(mode){
+  const c=cfg,d=new Date();let hh=d.getHours();const mm=String(d.getMinutes()).padStart(2,'0');hh=c.clock_24h?String(hh).padStart(2,'0'):(hh%12||12);
+  const nf=c.favourites.length;let b;
+  if(mode==='tiles'){const t=c.tiles.filter(x=>x.show).slice(0,3);b='<div class="pt"><i>Settings</i>'+t.map(x=>'<i>'+esc(x.label)+'</i>').join('')+'</div>'}
+  else b='<div class="pc" style="color:'+EYE[c.eye]+'"><u></u><u></u></div><div class="ptm">'+hh+':'+mm+'</div><div class="pcp">'+(nf?nf+' favourite'+(nf>1?'s':''):'No favourites yet')+'</div>';
+  return '<div class="card" style="display:flex;gap:14px;align-items:center"><div class="pv" id="pv" style="filter:brightness('+(.4+c.brightness*.006).toFixed(2)+')">'+b+'</div><div><h2>'+(mode==='tiles'?'Menu preview':'Preview')+'</h2><p style="margin:0">'+(mode==='tiles'?'The first page of the PocketOS menu. Settings is always first.':'Roughly how PocketOS looks. It changes once PocketOS confirms each save.')+'</p></div></div>';
+}
+function lookV(){
+  const c=cfg,tzKnown=TZ.some(t=>t[0]===c.tz);let phoneTz='';try{phoneTz=Intl.DateTimeFormat().resolvedOptions().timeZone}catch(e){}
+  return previewHtml('home')+
+  '<div class="card"><h2>Name</h2><p>Shown at the top of this page and on its Settings screen. Handy if there are two.</p><input type="text" id="nm" value="'+esc(c.name)+'" maxlength="24" aria-label="Name"><div class="btns"><button class="btn" data-a="name">Save name</button></div></div>'+
+  previewHtml('tiles')+
+  '<div class="card"><h2>Menu tiles</h2><p>Rename tiles, change the order, and choose which go on the main menu. Tiles that are off stay reachable under <b>More</b>.</p>'+
+   c.tiles.map((t,i)=>'<div class="row"><div class="t"><input type="text" value="'+esc(t.label)+'" maxlength="12" data-k="tn" data-i="'+i+'" aria-label="Name for '+esc(TILE_HELP[t.key]||t.key)+' tile"><small style="margin-top:4px;white-space:normal">'+esc(TILE_HELP[t.key]||'')+'<br>'+(t.show?'On the main menu':'Under More')+'</small></div><button class="ib" data-a="mv" data-i="'+i+'" data-v="-1" '+(i?'':'disabled')+' aria-label="Move up">▲</button><button class="ib" data-a="mv" data-i="'+i+'" data-v="1" '+(i<c.tiles.length-1?'':'disabled')+' aria-label="Move down">▼</button>'+sw('data-k="ts" data-i="'+i+'"',t.show,'Show '+t.label+' on main menu')+'</div>').join('')+'</div>'+
+  '<div class="card"><h2>Clock and date</h2>'+seg('clock_24h',[[true,'24-hour'],[false,'12-hour']],c.clock_24h)+'<div style="height:8px"></div>'+seg('date_format',[['dmy','Day / Month'],['mdy','Month / Day']],c.date_format)+
+   '<label class="f" for="tz">Time zone</label><select id="tz" data-k="tz">'+(tzKnown?'':'<option value="'+esc(c.tz)+'" selected>Custom ('+esc(c.tz)+')</option>')+TZ.map(t=>'<option value="'+esc(t[0])+'" '+(t[0]===c.tz?'selected':'')+'>'+esc(t[1])+'</option>').join('')+'</select>'+(phoneTz?'<p style="margin-top:6px;font-size:13px">This phone is set to '+esc(phoneTz)+'. Summer time changes automatically.</p>':'')+'</div>'+
+  '<div class="card"><h2>Screen</h2><p id="bl">Brightness '+c.brightness+'%</p><input type="range" min="10" max="100" step="5" value="'+c.brightness+'" data-k="brightness" aria-label="Brightness"><label class="f">Turn the screen off after</label>'+seg('sleep_s',[[15,'15 s'],[30,'30 s'],[60,'1 min'],[0,'Never']],c.sleep_s)+(c.sleep_s===0?'<p style="margin-top:8px;font-size:13px">“Never” uses much more battery.</p>':'')+'</div>'+
+  '<div class="card"><h2>Companion</h2><label class="f">Eye colour</label>'+seg('eye',[['blue','Blue'],['violet','Violet'],['white','White']],c.eye)+'<label class="f">Animation</label>'+seg('anim',[['calm','Calm'],['lively','Lively'],['off','Off']],c.anim)+
+   '<div class="row" style="margin-top:10px"><div class="t"><b>Look alert when a door is unlocked</b><small>The companion shows it if a lock is left open</small></div>'+sw('data-k="alerts"',c.alerts,'Alert when unlocked')+'</div></div>'+
+  '<div class="btns" style="margin-bottom:14px"><button class="btn g" data-a="defl">Restore look to default</button></div>';
+}
+function haV(){
+  const h=info.ha,c=cfg;
+  const s={connected:'<p class="ok">Connected. PocketOS can see '+h.devices+' devices.</p>',connecting:'<p style="color:var(--warn)"><span class="spin"></span>Connecting…</p>',error:'<p style="color:var(--bad)">'+esc(h.error||'Couldn’t connect')+'</p>',not_set:'<p>Not connected yet.</p>'}[h.status]||'';
+  return '<div class="card"><h2>Home Assistant</h2>'+s+
+   '<label class="f" for="url">Address</label><input type="url" id="url" value="'+esc(haUrl())+'" autocapitalize="off" autocorrect="off">'+
+   '<label class="f" for="tok">Access token</label><input type="password" id="tok" autocomplete="off" placeholder="'+(c.ha_token_set?'A token is saved. Paste a new one to replace it':'Paste a token')+'">'+
+   '<p style="margin-top:8px">Use a token from a separate, non-admin Home Assistant user. Tokens aren’t limited in what they can do, so this keeps your main login out of it. It stays on PocketOS and is never shown again.</p>'+
+   '<div class="btns"><button class="btn" data-a="conn" id="connb">'+(h.status==='connected'?'Save and reconnect':'Test and connect')+'</button>'+(c.ha_token_set?'<button class="btn d" data-a="disc">Disconnect</button>':'')+'</div><div id="hmsg"></div></div>'+
+  '<div class="card"><h2>Need help connecting?</h2><p>New to Home Assistant? We’ll walk you through it step by step.</p><div class="btns"><button class="btn g" data-a="wz" data-v="connect">Guide me</button><button class="btn g" data-a="wz" data-v="none">I don’t have Home Assistant</button></div></div>'+
+  '<div class="card"><div class="row"><div class="t"><b style="white-space:normal">Add new devices automatically</b><small style="white-space:normal">When you add something in Home Assistant, PocketOS shows it straight away. Turn off to review each one first.</small></div>'+sw('data-k="auto_add"',c.auto_add,'Add new devices automatically')+'</div></div>'+
+  '<div class="card"><h2>Add more smart devices</h2><p>New lights, plugs and speakers are added inside Home Assistant, on your home Wi-Fi. PocketOS picks them up by itself.</p><div class="btns"><a class="btn g" href="'+esc(safeHref(haUrl()))+'/config/integrations" target="_blank" rel="noopener noreferrer">Open Home Assistant ↗</a><button class="btn" data-a="find">Check for new devices</button></div></div>'+
+  '<div class="card"><h2>Voice</h2><p>Hold <b>BOOT</b> and speak, then let go. This uses the voice assistant set up in Home Assistant (Settings → Voice assistants), so what you say goes to your Home Assistant, not to PocketOS’s makers.</p></div>';
+}
+function moreV(){
+  return '<div class="card"><h2>This PocketOS</h2><div class="grid">'+st('Name',cfg.name)+st('Device ID',info.id)+st('Firmware','v'+info.firmware)+st('Address',info.host||'—')+st('IP address',info.wifi.ip||'—')+st('Wi-Fi',info.wifi.ssid||'—')+'</div><p style="margin-top:12px">Each PocketOS has its own address and keeps its own settings. If you have two, add each one to your Home Screen.</p></div>'+
+  updCard()+'<div class="card"><h2>Install from a file</h2><p>For testing a build yourself: choose a <b>pocketos.bin</b> file. PocketOS checks it, and if it doesn’t start properly it goes back to the current version by itself.</p><input type="file" id="fw" accept=".bin,application/octet-stream" class="hide"><div class="btns"><button class="btn g" data-a="pickfw">Choose file…</button></div><div id="fwm"></div></div>'+
+  '<div class="card"><h2>Back up settings</h2><p>Save your look, tiles and device choices to a file. It doesn’t include Wi-Fi or Home Assistant passwords or tokens.</p><input type="file" id="imp" accept=".json,application/json" class="hide"><div class="btns"><button class="btn g" data-a="exp">Download backup</button><button class="btn g" data-a="pickimp">Restore from file…</button></div></div>'+
+  '<div class="card"><h2>Side buttons</h2>'+buttonsHtml()+'</div>'+
+  '<div class="card"><h2>Phones and tablets</h2><p>Paired phones stay connected, even after a restart.</p><div class="btns"><button class="btn g" data-a="forgetme">Forget this phone</button><button class="btn g" data-a="unpairall">Forget all phones</button></div></div>'+
+  '<div class="card"><h2>Maintenance</h2><div class="btns"><button class="btn g" data-a="wz" data-v="ha">Run the setup guide</button><button class="btn g" data-a="rest">Restart</button><button class="btn g" data-a="newwifi">Change Wi-Fi network</button><button class="btn d" data-a="reset">Reset everything</button></div></div>'+
+  '<p class="edit">PocketOS keeps everything on the device and your home network. There’s no account, cloud, advertising or tracking.</p>';
+}
+function buttonsHtml(){return '<div class="row"><div class="t"><b>BOOT, press</b><small>Show the Settings code (or wake the screen)</small></div></div><div class="row"><div class="t"><b>BOOT, press twice</b><small>Back to the companion</small></div></div><div class="row"><div class="t"><b>BOOT, hold</b><small>Talk to Home Assistant, let go when done</small></div></div><div class="row"><div class="t"><b>PWR, press</b><small>Screen off or on</small></div></div><div class="row"><div class="t"><b>PWR, hold</b><small>Keep holding to switch off</small></div></div>'}
+
+const TABS=[['home','Home'],['dev','Devices'],['look','Look'],['ha','Smart home'],['more','More']];
+function render(){
+  if(!info){E.innerHTML='<div class="center"><div class="card"><h1>Can’t reach PocketOS</h1><p>Make sure this phone is on the same Wi-Fi as PocketOS, and that PocketOS is switched on.</p><div class="btns" style="justify-content:center"><button class="btn" data-a="retry">Try again</button></div></div></div>';return}
+  if(info.mode==='setup'){E.innerHTML=setupV();return}
+  if(!token){E.innerHTML=pairV();setTimeout(()=>{const p=$('#pin');p&&p.focus()},50);return}
+  if(!cfg){E.innerHTML='<div class="center"><p><span class="spin"></span>Loading…</p></div>';return}
+  if(wiz){E.innerHTML=wizV();return}
+  const v={home:homeV,dev:devV,look:lookV,ha:haV,more:moreV}[tab]();
+  const sy=scrollY,q=$('#q')&&$('#q').value;
+  E.innerHTML=headerHtml()+'<main>'+v+'</main><nav aria-label="Sections">'+TABS.map(t=>'<button data-a="tab" data-v="'+t[0]+'" class="'+(tab===t[0]?'on':'')+'" '+(tab===t[0]?'aria-current="page"':'')+'>'+t[1]+(t[0]==='dev'&&info.ha.new>0&&!cfg.auto_add?' <em>•</em>':'')+'</button>').join('')+'</nav>';
+  updHead();if(q&&$('#q')){$('#q').value=q;filter(q)}scrollTo(0,sy);
+}
+function filter(q){q=q.trim().toLowerCase();let any=false;document.querySelectorAll('.grp').forEach(g=>{let n=0;g.querySelectorAll('.row').forEach(r=>{const m=!q||r.dataset.n.includes(q);r.classList.toggle('hide',!m);if(m)n++});g.classList.toggle('hide',!n);if(n)any=true});const nq=$('#noq');nq&&nq.classList.toggle('hide',any)}
+function go(t){tab=t;render();scrollTo(0,0);refreshInfo(true);if(t==='dev'&&info.ha.status!=='not_set'){loadEnts().then(()=>{if(tab==='dev')render()});if(!ents)render()}}
+
+/* ---------- actions ---------- */
+function tilesWith(fn){const t=cfg.tiles.map(x=>({key:x.key,label:x.label,show:x.show}));fn(t);return t}
+async function uploadFw(f){
+  const m=$('#fwm');m.className='';
+  const head=new Uint8Array(await f.slice(0,112).arrayBuffer()),dv=new DataView(head.buffer);
+  const str=(a,b)=>new TextDecoder().decode(head.slice(a,b)).replace(/\0.*$/s,'');
+  if(head.length<112||head[0]!==0xE9||dv.getUint32(32,true)!==0xABCD5432){m.className='err';m.textContent=f.name.includes('full')?'That’s the full-flash file for a computer. Choose pocketos.bin instead.':'That isn’t a PocketOS firmware file.';return}
+  const ver=str(48,80),proj=str(80,112);
+  if(proj!=='pocketos'){m.className='err';m.textContent='That firmware is for “'+proj+'”, not PocketOS.';return}
+  if(f.size>6*1024*1024){m.className='err';m.textContent='That file is too big for PocketOS.';return}
+  ask('Install version '+ver+'?','You’re on v'+esc(info.firmware)+'. PocketOS restarts when it’s done, which takes about a minute. Keep this page open and PocketOS charging.','Install',()=>{
+    m.innerHTML='<p>Sending update…</p><div class="bar"><i id="fwb"></i></div>';
+    const x=new XMLHttpRequest();x.open('POST',API+'/ota');x.setRequestHeader('Authorization','Bearer '+token);x.setRequestHeader('Content-Type','application/octet-stream');x.timeout=180000;
+    x.upload.onprogress=e=>{if(e.lengthComputable)$('#fwb').style.width=Math.round(e.loaded/e.total*100)+'%'};
+    x.onload=async()=>{let d={};try{d=JSON.parse(x.responseText)}catch(e){}
+      if(x.status!==200){m.className='err';m.textContent=d.error||'Update failed. PocketOS is still on the old version.';return}
+      m.innerHTML='<p><span class="spin"></span>Installed. Waiting for PocketOS to restart…</p>';
+      const t0=Date.now();await new Promise(z=>setTimeout(z,5000));
+      while(Date.now()-t0<120000){if(await loadInfo()&&info.firmware){if(info.firmware===ver){render();const n=$('#fwm');if(n)n.innerHTML='<p class="okm">Now running v'+esc(ver)+' ✓</p>';note('Updated to v'+ver+' ✓','good');return}else{m.className='err';m.textContent='PocketOS restarted on v'+info.firmware+'. The new version didn’t start properly, so it went back automatically.';return}}await new Promise(z=>setTimeout(z,3000))}
+      m.className='err';m.textContent='PocketOS hasn’t come back yet. Check its screen, then reload this page.'};
+    x.onerror=x.ontimeout=()=>{m.className='err';m.textContent='The upload stopped. PocketOS is still on the old version.'};
+    x.send(f)});
+}
+async function exportCfg(){
+  const r=await api('/export');if(!r.ok)return note(r.msg,'bad');
+  const blob=new Blob([JSON.stringify(r.data,null,2)],{type:'application/json'}),a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);a.download=(cfg.name.replace(/[^\w-]+/g,'-')||'pocketos')+'-settings.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);note('Backup downloaded ✓','good');
+}
+async function importCfg(f){
+  let j;try{j=JSON.parse(await f.text())}catch(e){return note('That file isn’t a PocketOS backup.','bad')}
+  if(!j||typeof j!=='object'||Array.isArray(j)||j.name===undefined||!Array.isArray(j.tiles))return note('That file isn’t a PocketOS backup.','bad');
+  ['ha_url','ha_token','ha_token_set','schema'].forEach(k=>delete j[k]);   // connection details are never restored from a file
+  ask('Restore “'+esc(j.name)+'”?','This replaces the look, tiles and device choices on '+esc(cfg.name)+'. Wi-Fi and Home Assistant stay as they are.','Restore',()=>save(j,'Settings restored ✓'));
+}
+async function resetFlow(){
+  const r=await api('/reset',{body:{}});if(!r.ok)return note(r.msg,'bad');
+  let left=15;
+  const draw=()=>sheet('<h2>Confirm on PocketOS</h2><p>To erase it, press the <b>BOOT</b> button on the side of PocketOS now.</p><p style="font-size:28px;font-weight:700;margin:6px 0">'+left+' s</p><p>If you don’t, nothing is erased.</p>');
+  draw();
+  const iv=setInterval(async()=>{left--;
+    const alive=await loadInfo();
+    if(!alive){clearInterval(iv);forgetToken();sheet('<h2>PocketOS was reset</h2><p>It’s restarting into first-time setup. Join the <b>PocketOS</b> Wi-Fi network shown on its screen to set it up again.</p><div class="btns"><button class="btn" data-a="x">OK</button></div>');return}
+    if(left<=0){clearInterval(iv);sheet('<h2>Reset cancelled</h2><p>BOOT wasn’t pressed, so nothing was erased.</p><div class="btns"><button class="btn" data-a="x">OK</button></div>');return}
+    draw()},1000);
+}
+
+document.addEventListener('click',async e=>{
+  const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,v=b.dataset.v,id=b.dataset.id;
+  if(a==='tab')go(v);
+  else if(a==='retry'){await start()}
+  else if(a==='sstep'){setup.step=+v;render();if(setup.step===1&&!setup.nets)scan()}
+  else if(a==='scan')scan();
+  else if(a==='pick'){setup.pick=v;setup.manual=false;render();const p=$('#wpw');p&&p.focus()}
+  else if(a==='manual'){setup.manual=true;setup.pick='';render();$('#ssid').focus()}
+  else if(a==='join')join();
+  else if(a==='pair')pair();
+  else if(a==='wz'){wiz=v;if(v==='fav'&&!ents){loadEnts().then(render)}render();scrollTo(0,0)}
+  else if(a==='wzend'){wiz=null;store.set(doneKey(),'1');tab='home';render();scrollTo(0,0)}
+  else if(a==='wizha'){if(await connectHA($('#wurl').value,$('#wtok').value,$('#wmsg'),$('#wizb'))){await loadEnts();wiz='fav';render();scrollTo(0,0)}}
+  else if(a==='tip'){store.set('pocketos-tip-a2hs','1');render()}
+  else if(a==='buttons')sheet('<h2>Side buttons</h2>'+buttonsHtml()+'<div class="btns"><button class="btn" data-a="x">Done</button></div>');
+  else if(a==='seg'){const k=b.dataset.k,val=JSON.parse(v);if(cfg[k]!==val)save({[k]:val})}
+  else if(a==='name'){const n=$('#nm').value.trim();if(!n||bytes(n)>24)return note('Names are 1 to 24 characters','bad');if(n!==cfg.name)save({name:n},'Name saved on PocketOS ✓')}
+  else if(a==='mv'){const i=+b.dataset.i,j=i+(+v);save({tiles:tilesWith(t=>{[t[i],t[j]]=[t[j],t[i]]})},'Menu order saved ✓')}
+  else if(a==='defl')ask('Restore look to default?','Clock, brightness, sleep and companion go back to normal. Tiles, devices and Home Assistant stay as they are.','Restore',()=>save({brightness:80,clock_24h:true,date_format:'dmy',sleep_s:30,eye:'blue',anim:'lively',alerts:true},'Look restored ✓'));
+  else if(a==='fav')setFlag(id,{fav:!b.classList.contains('on')});
+  else if(a==='add')setFlag(id,{known:true,hidden:false},'Added to PocketOS ✓');
+  else if(a==='skip')setFlag(id,{known:true,hidden:true},'Skipped. You can still show it later.');
+  else if(a==='addall'){note('Saving…');const r=await api('/entities',{body:{all_known:true}});if(r.ok){ents.entities.forEach(x=>x.new=false);await loadInfo();note('All added ✓','good')}else note(r.msg,'bad');render()}
+  else if(a==='reload'){ents=ents||null;entsLoading=true;render();await loadEnts();await loadInfo();render()}
+  else if(a==='conn')connectHA($('#url').value,$('#tok').value,$('#hmsg'),$('#connb')).then(ok=>{if(ok)setTimeout(render,1500)});
+  else if(a==='disc')ask('Disconnect Home Assistant?','PocketOS stops controlling your home and forgets the token. You can reconnect any time.','Disconnect',async()=>{note('Disconnecting…');const r=await api('/ha/disconnect',{body:{}});if(r.ok){await loadCfg();await loadInfo();ents=null;note('Disconnected','good')}else note(r.msg,'bad');render()},true);
+  else if(a==='find'){note('Checking…');await loadInfo();await loadEnts();const n=info.ha.new;note(n?n+' new device'+(n>1?'s':'')+' found':cfg.auto_add?'Up to date. New devices appear by themselves.':'No new devices','good');if(n)go('dev');else render()}
+  else if(a==='pickfw')$('#fw').click();
+  else if(a==='updcheck')checkUpdate();
+  else if(a==='updinstall'){const u=info.update||{};const B=info.battery||{};
+    if(B.percent!=null&&B.percent<30&&!B.plugged)return note('Charge PocketOS to 30% or plug it in first','bad');
+    ask('Install version '+esc(u.available)+'?',esc(u.notes||'')+'<br><br>PocketOS downloads it, checks it, and restarts. It takes a minute or two. If the new version doesn’t start properly, it goes back to v'+esc(info.firmware)+' by itself.','Install',async()=>{const r=await api('/update/install',{body:{}});if(!r.ok)return note(r.msg,'bad');info.update=Object.assign({},u,{state:'downloading',progress:0});render();watchUpdate(u.available)})}
+  else if(a==='pickimp')$('#imp').click();
+  else if(a==='exp')exportCfg();
+  else if(a==='forgetme')ask('Forget this phone?','You’ll need the code on PocketOS to connect again.','Forget',()=>{forgetToken();render()});
+  else if(a==='unpairall')ask('Forget all phones?','Every phone and tablet, including this one, will need the code on PocketOS to connect again. Use this if a phone was lost or sold.','Forget all',async()=>{const r=await api('/unpair_all',{body:{}});if(r.ok){forgetToken();render();note('All phones forgotten','good')}else note(r.msg,'bad')},true);
+  else if(a==='rest')ask('Restart '+esc(cfg.name)+'?','It will be back in about 20 seconds. Your settings stay as they are.','Restart',async()=>{const r=await api('/restart',{body:{}});if(r.ok){note('Restarting… back in about 20 seconds');setTimeout(()=>refreshInfo(),20000)}else note(r.msg,'bad')});
+  else if(a==='newwifi')ask('Change Wi-Fi network?','PocketOS forgets its Wi-Fi and restarts into setup. Then join the <b>PocketOS</b> network shown on its screen and choose your new Wi-Fi. Your settings and devices are kept.','Change Wi-Fi',async()=>{const r=await api('/wifi/forget',{body:{}});if(r.ok)sheet('<h2>Restarting into setup</h2><p>On this phone, open Wi-Fi settings and join the <b>PocketOS</b> network shown on its screen (it also shows a code to scan). This page then opens by itself.</p><div class="btns"><button class="btn" data-a="x">OK</button></div>');else note(r.msg,'bad')},true);
+  else if(a==='reset')ask('Reset everything?','This erases Wi-Fi, Home Assistant and every setting on '+esc(cfg.name)+', and returns it to first-time setup. You’ll confirm with the BOOT button on the device.','Erase it',resetFlow,true);
+  else if(a==='x')closeModal();
+  else if(a==='go'){const f=ask.f;closeModal();f&&f()}
+});
+document.addEventListener('change',e=>{
+  const t=e.target,k=t.dataset.k;
+  if(t.id==='fw'&&t.files[0]){uploadFw(t.files[0]);t.value='';return}
+  if(t.id==='imp'&&t.files[0]){importCfg(t.files[0]);t.value='';return}
+  if(t.dataset.a2==='showpw'){$('#wpw').type=t.checked?'text':'password';return}
+  if(!k)return;
+  if(k==='fav'&&t.dataset.id){setFlag(t.dataset.id,{fav:t.checked});return}
+  if(k==='show'){setFlag(t.dataset.id,{hidden:!t.checked});return}
+  if(k==='brightness'){save({brightness:+t.value});return}
+  if(k==='tz'){save({tz:t.value},'Time zone saved ✓');return}
+  if(k==='auto_add'||k==='alerts'){const on=t.checked;save({[k]:on},k==='auto_add'?(on?'New devices will appear automatically ✓':'You’ll review new devices first ✓'):undefined);return}
+  if(k==='ts'){const i=+t.dataset.i,on=t.checked;save({tiles:tilesWith(x=>{x[i].show=on})},on?'On the main menu ✓':'Moved under More ✓');return}
+  if(k==='tn'){const i=+t.dataset.i,n=t.value.trim();if(!n||bytes(n)>12){note('Tile names are 1 to 12 characters','bad');t.value=cfg.tiles[i].label;return}if(n!==cfg.tiles[i].label)save({tiles:tilesWith(x=>{x[i].label=n})},'Tile renamed ✓')}
+});
+document.addEventListener('input',e=>{const t=e.target;
+  if(t.id==='q')filter(t.value);
+  if(t.dataset.k==='brightness'){const l=$('#bl');if(l)l.textContent='Brightness '+t.value+'%';const p=$('#pv');if(p)p.style.filter='brightness('+(.4+t.value*.006).toFixed(2)+')'}
+  if(t.id==='pin'){t.value=t.value.replace(/\D/g,'').slice(0,6);if(t.value.length===6)pair()}});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'){const t=e.target;if(t.id==='pin')pair();else if(t.id==='wpw')join();else if(t.id==='nm')$('[data-a=name]').click();else if(t.dataset&&t.dataset.k==='tn')t.blur()}if(e.key==='Escape'&&$('#modal').innerHTML)closeModal()});
+
+async function start(){
+  if(!await loadInfo()){info=null;render();return}
+  if(info.mode==='setup'){render();return}
+  token=store.get(tokKey());
+  if(token&&await loadCfg()){
+    if(!store.get(doneKey())&&info.ha.status==='not_set'&&!wiz)wiz='ha';
+    if(info.ha.status!=='not_set')loadEnts();
+  }
+  render();
+}
+setInterval(async()=>{if(!info||info.mode==='setup'||!token||document.hidden)return;
+  const before=JSON.stringify(info);await loadInfo();
+  if(JSON.stringify(info)!==before&&canRerender()&&!wiz&&(tab==='home'||tab==='ha'||tab==='more'))render();else updHead();
+  if(info.update&&info.update.state==='downloading'&&!updWatching)watchUpdate(info.update.available)},10000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&token)refreshInfo()});
+start();
+</script></body></html>
