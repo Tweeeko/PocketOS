@@ -1,0 +1,70 @@
+<!doctype html>
+<!-- PocketOS, created by Leeko. Copyright (c) 2026 Leeko. -->
+<html lang="en-GB"><head><meta charset="utf-8">
+<meta name="author" content="Leeko">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PocketOS privacy</title>
+<meta name="description" content="What PocketOS stores, what it sends and to whom. No account, no cloud and no analytics.">
+<meta name="theme-color" content="#070b1c">
+<meta property="og:title" content="PocketOS privacy"><meta property="og:description" content="What PocketOS stores, what it sends and to whom. No account, no cloud and no analytics."><meta property="og:image" content="media/poster.jpg">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><meta name="apple-mobile-web-app-title" content="PocketOS">
+<link rel="preload" href="fonts/unbounded.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="assets/site.css">
+</head><body>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar" id="top">
+  <div class="bar">
+    <a class="brand" href="./"><img src="assets/logo.svg" alt="PocketOS" width="190" height="18"></a>
+    <nav class="links" aria-label="Main"><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="demo.html">Try it</a><a href="setup.html">Setup</a><a href="help.html" aria-current="page">Support</a><a href="changes.html">What’s new</a></nav>
+    <a class="btn small cta" href="buy.html">Where to buy</a>
+    <button class="menu" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menu"><i></i><i></i></button>
+  </div>
+  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="demo.html">Try it</a><a href="setup.html">Setup</a><a href="help.html" aria-current="page">Support</a><a href="changes.html">What’s new</a><a href="buy.html">Where to buy</a></nav>
+</header>
+
+<main id="main" class="page">
+  <header class="intro">
+    <h1>Privacy</h1>
+    <p class="lede">PocketOS is designed to keep your home to yourself. There’s no account, no cloud service and no analytics.</p>
+  </header>
+
+  <section class="block glass">
+    <h2>On the PocketOS Device</h2>
+    <ul class="plain">
+      <li><b>Stored only on PocketOS:</b> your Wi-Fi name and password, Home Assistant address and token, devices, names and settings.</li>
+      <li><b>Sent only to your Home Assistant:</b> the commands you give, and your voice when you hold the Boot button. Voice is handled by the assistant you set up in Home Assistant.</li>
+      <li><b>Update checks:</b> once a day, PocketOS downloads a small file from GitHub to see if there’s a new version. It sends nothing about you or your home. Like any website, GitHub can see the internet address the request comes from. You can turn update checks off under <b>More → Updates</b>.</li>
+      <li><b>Nothing else:</b> PocketOS has no microphone wake word, sends no usage data and has no advertising.</li>
+    </ul>
+  </section>
+
+  <section class="block glass">
+    <h2>This website</h2>
+    <ul class="plain">
+      <li>No cookies, analytics or tracking.</li>
+      <li>The website is hosted by Vercel, which keeps standard server logs, including visitors’ internet addresses.</li>
+      <li><a href="demo.html">Try PocketOS</a> runs entirely in your browser. Nothing you do there is sent anywhere.</li>
+    </ul>
+  </section>
+
+  <section class="block glass">
+    <h2>Questions</h2>
+    <p>For privacy questions or to report a security problem, see <a href="security.html">Security</a>.</p>
+    <p class="note">PocketOS is designed by Leeko. This notice describes the PocketOS Device and this website.</p>
+  </section>
+</main>
+
+<footer class="end">
+  <div class="foot">
+    <div><img src="assets/logo.svg" alt="PocketOS" width="150" height="14"><p>The pocket-sized smart-home companion.<br>Designed by Leeko.</p></div>
+    <nav aria-label="Product"><h4>Product</h4><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="demo.html">Try PocketOS</a><a href="buy.html">Where to buy</a><a href="changes.html">What’s new</a></nav>
+    <nav aria-label="Support"><h4>Support</h4><a href="setup.html">Getting started</a><a href="help.html">Support</a><a href="recovery.html">Software recovery</a><a href="privacy.html">Privacy</a><a href="security.html">Security</a></nav>
+    <nav aria-label="Project"><h4>Project</h4><a href="https://github.com/Tweeeko/PocketOS">Source code</a><a href="https://github.com/Tweeeko/PocketOS/releases">Releases</a></nav>
+  </div>
+  <p class="legal">© 2026 Leeko. Home Assistant is a trademark of its respective owner. PocketOS is not affiliated with or endorsed by Home Assistant.</p>
+</footer>
+<script src="assets/site.js"></script>
+</body></html>

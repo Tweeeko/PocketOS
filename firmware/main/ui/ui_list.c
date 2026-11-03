@@ -145,6 +145,8 @@ static void collect(void)
         add(R_INFO, "", "Created by", "Leeko", false);
         snprintf(sub, sizeof sub, "%d devices, %d rooms", m->n, m->na);
         add(R_INFO, "", "Home", sub, false);
+        add(R_SCREEN, "wifi", "Change Wi-Fi network", "Keeps your settings", false);
+        add(R_SCREEN, "reset", "Reset PocketOS", "Erases everything on it", false);
         break;
     case L_COMPANION: {
         static const char *EYE_N[] = {"Blue", "Violet", "White"}, *ANIM_N[] = {"Calm", "Lively", "Off"};
@@ -266,6 +268,8 @@ static void row_cb(lv_event_t *e)
         return;
     case R_SCREEN:
         if (!strcmp(r->id, "settings")) { ui_toggle_settings_qr(); return; }
+        if (!strcmp(r->id, "wifi")) { app_request_confirm(CONFIRM_WIFI); return; }    // the Boot button confirms
+        if (!strcmp(r->id, "reset")) { app_request_confirm(CONFIRM_RESET); return; }
         n.kind = SCR_LIST;
         n.list = !strcmp(r->id, "info") ? L_INFO : !strcmp(r->id, "hidden") ? L_HIDDEN : L_COMPANION;
         nav_push(&n);

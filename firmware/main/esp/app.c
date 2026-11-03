@@ -16,6 +16,7 @@
 #include "ha_client.h"
 #include "voice.h"
 #include "ui.h"
+#include "web.h"
 
 static const char *TAG = "app";
 
@@ -173,6 +174,16 @@ void app_on_ha_synced(void)
 /* ---------- status setters ---------- */
 
 #define ST_SET(code) do { xSemaphoreTake(st_lock, portMAX_DELAY); code; xSemaphoreGive(st_lock); } while (0)
+
+void app_set_wifi_rejected(bool rejected, const char *ssid)
+{
+    ST_SET(
+        s_status.wifi_rejected = rejected;
+        snprintf(s_status.wifi_ssid, sizeof s_status.wifi_ssid, "%s", ssid ? ssid : "");
+    );
+}
+
+void app_request_confirm(confirm_kind_t kind) { web_confirm_start(kind); }
 
 void app_set_wifi(bool setup_mode, bool connected, const char *ip, const char *host, const char *ap_ssid, const char *ap_pass)
 {

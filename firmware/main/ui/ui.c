@@ -142,11 +142,13 @@ void ui_toast(const char *text, int ms)
     if (ms > 0) { toast_t = lv_timer_create(toast_hide, (uint32_t)ms, NULL); lv_timer_set_repeat_count(toast_t, 1); }
 }
 
-void ui_reset_prompt(bool on)
+void ui_confirm_prompt(const char *text)
 {
-    if (on) { lv_obj_remove_flag(reset_lbl, LV_OBJ_FLAG_HIDDEN); ui_wake(); }
+    if (text) { lv_label_set_text(reset_lbl, text); lv_obj_remove_flag(reset_lbl, LV_OBJ_FLAG_HIDDEN); lv_obj_move_foreground(reset_lbl); ui_wake(); }
     else lv_obj_add_flag(reset_lbl, LV_OBJ_FLAG_HIDDEN);
 }
+
+void ui_reset_prompt(bool on) { ui_confirm_prompt(on ? "Press the Boot button\nto erase everything" : NULL); }
 
 void ui_set_asleep(bool s)
 {

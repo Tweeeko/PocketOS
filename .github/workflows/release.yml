@@ -7,6 +7,11 @@ name: Release
 
 on:
   workflow_dispatch:
+    inputs:
+      rollout:
+        description: "Share of devices offered it automatically at first (1-100). Raise it later with the Rollout workflow."
+        default: "100"
+        required: true
 
 permissions:
   contents: write
@@ -47,7 +52,10 @@ jobs:
           path: firmware
           command: (idf.py -D SDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.release" build || (cd build && ninja -k 0; exit 1)) && idf.py merge-bin -o pocketos-full.bin   # on failure, list every error, not just the first
 
-      - name: Check the build and write manifest.json
+      - name: Check the build, sign it and write manifest.json
+        env:
+          SIGNING_KEY: ${{ secrets.POCKETOS_SIGNING_KEY }}
+          ROLLOUT: ${{ inputs.rollout }}
         run: |
           VER=${{ steps.v.outputs.version }}
           mkdir out
@@ -58,14 +66,30 @@ jobs:
           # The version inside the binary must match (esp_app_desc_t.version at offset 48)
           INSIDE=$(dd if=out/pocketos.bin bs=1 skip=48 count=32 2>/dev/null | tr -d '\0')
           [ "$INSIDE" = "$VER" ] || { echo "::error::binary says '$INSIDE', expected '$VER'"; exit 1; }
+          # Sign it. Devices only install updates signed with the release key (POCKETOS_SIGNING_KEY);
+          # the public half is firmware/main/esp/signing_key.pem. Without the key, nothing is published.
+          [ -n "$SIGNING_KEY" ] || { echo "::error::The POCKETOS_SIGNING_KEY secret is missing: add it under Settings > Secrets and variables > Actions"; exit 1; }
+          umask 077; printf '%s\n' "$SIGNING_KEY" > key.pem
+          openssl dgst -sha256 -sign key.pem -out sig.der out/pocketos.bin
+          rm -f key.pem
+          openssl dgst -sha256 -verify firmware/main/esp/signing_key.pem -signature sig.der out/pocketos.bin \
+            || { echo "::error::The signing key doesn't match the public key in the firmware"; exit 1; }
+          python3 - <<'PY'
+          sig = open("sig.der", "rb").read()
+          assert 8 <= len(sig) <= 72 and sig[0] == 0x30
+          trailer = sig + bytes(72 - len(sig)) + len(sig).to_bytes(2, "little") + b"PSIG01"
+          open("out/pocketos.bin", "ab").write(trailer)
+          PY
           SIZE=$(stat -c %s out/pocketos.bin)
           SHA=$(sha256sum out/pocketos.bin | cut -d' ' -f1)
           FULLSHA=$(sha256sum out/pocketos-full.bin | cut -d' ' -f1)
-          python3 - "$VER" "$SIZE" "$SHA" "$GITHUB_REPOSITORY" "$FULLSHA" <<'PY'
+          python3 - "$VER" "$SIZE" "$SHA" "$GITHUB_REPOSITORY" "$FULLSHA" "$ROLLOUT" <<'PY'
           import json, sys
-          ver, size, sha, repo, full_sha = sys.argv[1:]
+          ver, size, sha, repo, full_sha, rollout = sys.argv[1:]
+          rollout = int(rollout)
+          assert 1 <= rollout <= 100, "rollout must be 1 to 100"
           notes = open("notes.md").read().strip()[:390]
-          json.dump({"version": ver, "size": int(size), "sha256": sha, "notes": notes, "full_sha256": full_sha,
+          json.dump({"version": ver, "size": int(size), "sha256": sha, "notes": notes, "full_sha256": full_sha, "rollout": rollout,
                      "url": f"https://github.com/{repo}/releases/download/v{ver}/pocketos.bin"},
                     open("out/manifest.json", "w"), indent=2)
           PY

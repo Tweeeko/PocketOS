@@ -23,6 +23,7 @@
 #include "ui.h"
 #include "power.h"
 #include "updater.h"
+#include "sigcheck.h"
 
 static const char *TAG = "web";
 
@@ -141,11 +142,15 @@ static esp_err_t h_info(httpd_req_t *req)
     cJSON_AddStringToObject(o, "name", s->name);
     cJSON_AddStringToObject(o, "firmware", st.firmware);
     cJSON_AddStringToObject(o, "mode", st.setup_mode ? "setup" : "normal");
+    cJSON_AddStringToObject(o, "host", st.host);
+    // Before pairing, anyone on the Wi-Fi sees only enough to pair: no network, battery or home details
+    bool paired = authorised(req);
+    cJSON_AddBoolToObject(o, "paired", paired);
+    if (!paired && !st.setup_mode) { free(s); return send_json(req, "200 OK", o); }
     cJSON *w = cJSON_AddObjectToObject(o, "wifi");
     cJSON_AddStringToObject(w, "ssid", st.setup_mode ? n.ap_ssid : n.ssid);
     cJSON_AddNumberToObject(w, "rssi", n.rssi);
     cJSON_AddStringToObject(w, "ip", n.ip);
-    cJSON_AddStringToObject(o, "host", st.host);
     cJSON *b = cJSON_AddObjectToObject(o, "battery");
     if (st.battery >= 0) cJSON_AddNumberToObject(b, "percent", st.battery); else cJSON_AddNullToObject(b, "percent");
     cJSON_AddBoolToObject(b, "charging", st.charging);
@@ -422,31 +427,51 @@ static esp_err_t h_restart(httpd_req_t *req)
     return send_json(req, "202 Accepted", ok_obj());
 }
 
+static confirm_kind_t s_confirm;
+
 static void reset_expired_cb(void *arg)
 {
-    if (s_reset_deadline_us) { s_reset_deadline_us = 0; UI_LOCK(); ui_reset_prompt(false); ui_toast("Reset cancelled", 1500); UI_UNLOCK(); }
+    if (s_reset_deadline_us) {
+        s_reset_deadline_us = 0;
+        const char *t = s_confirm == CONFIRM_WIFI ? "Wi-Fi unchanged" : "Reset cancelled";
+        UI_LOCK(); ui_confirm_prompt(NULL); ui_toast(t, 1500); UI_UNLOCK();
+    }
+}
+
+void web_confirm_start(confirm_kind_t kind)
+{
+    s_confirm = kind;
+    s_reset_deadline_us = esp_timer_get_time() + 15LL * 1000000;
+    esp_timer_stop(s_reset_timer);
+    esp_timer_start_once(s_reset_timer, 15 * 1000 * 1000);
+    UI_LOCK();
+    ui_confirm_prompt(kind == CONFIRM_WIFI ? "Set up Wi-Fi again?\nPress the Boot button\nto confirm" : "Press the Boot button\nto erase everything");
+    UI_UNLOCK();
 }
 
 static esp_err_t h_reset(httpd_req_t *req)
 {
     REQUIRE_AUTH(req);
-    s_reset_deadline_us = esp_timer_get_time() + 15LL * 1000000;
-    esp_timer_stop(s_reset_timer);
-    esp_timer_start_once(s_reset_timer, 15 * 1000 * 1000);
-    UI_LOCK(); ui_reset_prompt(true); UI_UNLOCK();
+    web_confirm_start(CONFIRM_RESET);
     cJSON *o = ok_obj();
     cJSON_AddStringToObject(o, "confirm", "Press the Boot button on PocketOS within 15 seconds");
     return send_json(req, "202 Accepted", o);
 }
 
-bool web_reset_pending(void) { return s_reset_deadline_us && esp_timer_get_time() < s_reset_deadline_us; }
+bool web_confirm_pending(void) { return s_reset_deadline_us && esp_timer_get_time() < s_reset_deadline_us; }
 
-void web_reset_confirmed(void)
+void web_confirm_do(void)
 {
     s_reset_deadline_us = 0;
     esp_timer_stop(s_reset_timer);
-    UI_LOCK(); ui_reset_prompt(false); ui_toast("Erasing...", 0); UI_UNLOCK();
-    storage_factory_reset();
+    if (s_confirm == CONFIRM_WIFI) {
+        // New router or password: forget only the Wi-Fi, restart into setup. Settings stay.
+        storage_wifi_set("", "");
+        UI_LOCK(); ui_confirm_prompt(NULL); ui_toast("Restarting into Wi-Fi setup...", 0); UI_UNLOCK();
+    } else {
+        UI_LOCK(); ui_confirm_prompt(NULL); ui_toast("Erasing...", 0); UI_UNLOCK();
+        storage_factory_reset();
+    }
     esp_timer_start_once(s_restart_timer, 800 * 1000);
 }
 
@@ -495,22 +520,33 @@ static esp_err_t h_ota(httpd_req_t *req)
     if (req->content_len <= 0 || req->content_len > part->size)
         return send_error(req, "400 Bad Request", "That file is the wrong size for PocketOS firmware", NULL);
     esp_ota_handle_t h;
+    if (req->content_len <= UPDATE_TRAILER) return send_error(req, "400 Bad Request", "That file is the wrong size for PocketOS firmware", NULL);
     if (esp_ota_begin(part, OTA_WITH_SEQUENTIAL_WRITES, &h) != ESP_OK)
         return send_error(req, "500 Internal Server Error", "Couldn't start the update", NULL);
     UI_LOCK(); ui_toast("Updating...", 0); UI_UNLOCK();
     char *buf = malloc(4096);
     size_t left = req->content_len;
     esp_err_t err = buf ? ESP_OK : ESP_ERR_NO_MEM;
+    sig_stream_t sig;   // only firmware signed by PocketOS's release key is accepted
+    sig_begin(&sig, (uint32_t)req->content_len);
     int timeouts = 0;
     while (err == ESP_OK && left > 0) {
         int r = httpd_req_recv(req, buf, left < 4096 ? left : 4096);
         if (r == HTTPD_SOCK_ERR_TIMEOUT) { if (++timeouts > 5) err = ESP_ERR_TIMEOUT; continue; }
         if (r <= 0) { err = ESP_FAIL; break; }
         timeouts = 0;
-        err = esp_ota_write(h, buf, (size_t)r);
+        size_t img = sig_feed(&sig, (const uint8_t *)buf, (size_t)r);
+        if (img) err = esp_ota_write(h, buf, img);
         left -= (size_t)r;
     }
     free(buf);
+    const char *why = NULL;
+    if (err == ESP_OK && !sig_finish(&sig, &why)) {
+        esp_ota_abort(h);
+        UI_LOCK(); ui_toast("Update refused: not official PocketOS firmware", 4000); UI_UNLOCK();
+        return send_error(req, "400 Bad Request", "That file isn't official PocketOS firmware, so it wasn't installed. Nothing changed.", NULL);
+    }
+    if (err != ESP_OK) sig_abort(&sig);
     if (err == ESP_OK) err = esp_ota_end(h); else esp_ota_abort(h);
     if (err == ESP_OK) err = esp_ota_set_boot_partition(part);
     if (err != ESP_OK) {

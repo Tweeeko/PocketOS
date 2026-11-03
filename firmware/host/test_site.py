@@ -69,6 +69,8 @@ with sync_playwright() as pw:
     # ---------- 2. pairing and the Home Assistant guide ----------
     srv = server(8092); P = 8092; U = f"http://127.0.0.1:{P}/"
     try:
+        pre = json.loads(urllib.request.urlopen(U + "api/v2/info").read())
+        check(pre["paired"] is False and "wifi" not in pre and "battery" not in pre and "ha" not in pre, "before pairing, PocketOS shares only its name")
         pg = newpage(); pg.goto(U)
         expect(pg.locator("#pin")).to_be_visible(); shot(pg, "04-pair")
         pg.fill("#pin", "000000")

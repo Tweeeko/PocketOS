@@ -1,0 +1,36 @@
+# PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
+# Changes how many devices are offered the latest release automatically (staged release).
+# 0 pauses it (for example if a problem turns up), 100 offers it to everyone. People can still
+# install it by choosing "Check for updates" on the settings page.
+name: Rollout
+on:
+  workflow_dispatch:
+    inputs:
+      rollout:
+        description: "Share of devices offered the latest release automatically (0-100)"
+        required: true
+        default: "100"
+permissions:
+  contents: write
+jobs:
+  rollout:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update manifest.json on the latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ROLLOUT: ${{ inputs.rollout }}
+        run: |
+          TAG=$(gh release view -R "$GITHUB_REPOSITORY" --json tagName -q .tagName)
+          gh release download "$TAG" -R "$GITHUB_REPOSITORY" -p manifest.json
+          python3 - <<'PY'
+          import json, os
+          r = int(os.environ["ROLLOUT"])
+          assert 0 <= r <= 100, "rollout must be 0 to 100"
+          m = json.load(open("manifest.json"))
+          m["rollout"] = r
+          json.dump(m, open("manifest.json", "w"), indent=2)
+          print(json.dumps(m, indent=2))
+          PY
+          gh release upload "$TAG" manifest.json -R "$GITHUB_REPOSITORY" --clobber
+          echo "$TAG is now offered automatically to $ROLLOUT% of devices"

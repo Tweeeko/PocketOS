@@ -157,7 +157,7 @@ static void power_task(void *arg)
         UI_UNLOCK();
 
         // Away from home: no home Wi-Fi for a while
-        if (!st.setup_mode && !st.wifi) away_s++;
+        if (!st.setup_mode && !st.wifi && !st.wifi_rejected) away_s++;   // a rejected password isn't "away"
         else away_s = 0;
         if (away_s >= AWAY_AFTER_S && asleep && !st.plugged) {
             if (s_unsaved) blog_save();

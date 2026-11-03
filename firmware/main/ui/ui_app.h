@@ -30,6 +30,8 @@ typedef struct {
     ha_status_t ha;
     char ha_error[80];
     bool time_ok;
+    bool wifi_rejected;       // the home Wi-Fi is there but won't accept the saved password
+    char wifi_ssid[33];
     char firmware[16];
 } app_status_t;
 
@@ -53,3 +55,7 @@ uint32_t app_ms(void);
 typedef enum { UI_POST_TOAST, UI_POST_VOICE } ui_post_kind_t;
 typedef struct { ui_post_kind_t kind; int arg; char text[160]; } ui_post_t;   // arg: toast ms, or voice_state_t
 bool app_ui_take(ui_post_t *out);
+
+// Things done on PocketOS itself that need the Boot button to confirm (within 15 s)
+typedef enum { CONFIRM_RESET = 1, CONFIRM_WIFI = 2 } confirm_kind_t;
+void app_request_confirm(confirm_kind_t kind);

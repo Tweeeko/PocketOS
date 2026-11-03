@@ -174,9 +174,9 @@
         <details><summary>I’m asked for a pairing code again</summary><p>This happens after <b>Forget all phones</b> or a reset. Press the <b>Boot button</b> to show the code on PocketOS.</p></details>
         <details><summary>Home Assistant won’t connect</summary><p>Check that Home Assistant is running and that the address on the <b>Smart home</b> page is the one you use to open it, for example <code>http://homeassistant.local:8123</code>. If PocketOS says its sign-in was refused, create a new access token in Home Assistant and paste it in again.</p></details>
         <details><summary>A device shows “No response”</summary><p>Home Assistant didn’t confirm the change. Check that the device is powered and available in Home Assistant.</p></details>
-        <details><summary>I’ve changed my router or Wi-Fi password</summary><p>On the settings page, choose <b>More → Change Wi-Fi network</b>. PocketOS restarts in setup mode and keeps your other settings. If you can no longer reach the settings page, reset PocketOS.</p></details>
+        <details><summary>I’ve changed my router or Wi-Fi password</summary><p>If only the password changed, PocketOS notices and its screen says <b>Wi-Fi changed? Press Boot</b>. Press the Boot button, then press it again to confirm. For a new router, open <b>More → This PocketOS → Change Wi-Fi network</b> on PocketOS and press the Boot button to confirm. Either way, PocketOS restarts into setup and keeps all your other settings. Then follow <a href="setup.html#wifi">Connect to Wi-Fi</a>.</p></details>
         <details><summary>PocketOS won’t start</summary><p>Connect it to a USB-C charger for a few minutes, then hold the <b>Power button</b> for a second. If it still doesn’t start, its software can be reinstalled from <a href="recovery.html">Software recovery</a>. This erases its settings.</p></details>
-        <details><summary>Resetting PocketOS</summary><p>On the settings page, choose <b>More → Reset everything</b>, then press the <b>Boot button</b> on PocketOS within 15 seconds to confirm. Nothing is erased unless you press it.</p></details>
+        <details><summary>Resetting PocketOS</summary><p>On PocketOS, open <b>More → This PocketOS → Reset PocketOS</b> and press the Boot button to confirm. Or, on the settings page, choose <b>More → Reset everything</b>, then press the <b>Boot button</b> on PocketOS within 15 seconds to confirm. Nothing is erased unless you press it.</p></details>
       </section>
 
       <section class="block glass" id="privacy">
@@ -186,7 +186,9 @@
           <li><b>Home Assistant</b>: PocketOS connects only to your own Home Assistant. Voice requests go there too.</li>
           <li><b>Updates</b>: once a day PocketOS downloads a small file from GitHub to check for a new version. Nothing about you or your home is sent. You can turn this off.</li>
           <li><b>This website</b> uses no cookies or analytics. Like any host, Vercel can see visitors’ IP addresses.</li>
+          <li><b>On your Wi-Fi</b>, the settings page isn’t encrypted between your phone and PocketOS, like most home devices. Your Wi-Fi password keeps outsiders out.</li>
         </ul>
+        <p class="note">Lost or sold your PocketOS? See <a href="security.html#lost">how to cut off its access</a>. Full details: <a href="privacy.html">Privacy</a> and <a href="security.html">Security</a>.</p>
       </section>
     </div>
   </div>
@@ -196,7 +198,7 @@
   <div class="foot">
     <div><img src="assets/logo.svg" alt="PocketOS" width="150" height="14"><p>The pocket-sized smart-home companion.<br>Designed by Leeko.</p></div>
     <nav aria-label="Product"><h4>Product</h4><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="demo.html">Try PocketOS</a><a href="buy.html">Where to buy</a><a href="changes.html">What’s new</a></nav>
-    <nav aria-label="Support"><h4>Support</h4><a href="setup.html">Getting started</a><a href="help.html">Support</a><a href="recovery.html">Software recovery</a><a href="help.html#privacy">Privacy</a></nav>
+    <nav aria-label="Support"><h4>Support</h4><a href="setup.html">Getting started</a><a href="help.html">Support</a><a href="recovery.html">Software recovery</a><a href="privacy.html">Privacy</a><a href="security.html">Security</a></nav>
     <nav aria-label="Project"><h4>Project</h4><a href="https://github.com/Tweeeko/PocketOS">Source code</a><a href="https://github.com/Tweeeko/PocketOS/releases">Releases</a></nav>
   </div>
   <p class="legal">© 2026 Leeko. Home Assistant is a trademark of its respective owner. PocketOS is not affiliated with or endorsed by Home Assistant.</p>

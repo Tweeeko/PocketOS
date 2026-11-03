@@ -5,5 +5,8 @@
 
 // Local settings website + API v1 (see docs/api.md).
 esp_err_t web_start(void);
-bool web_reset_pending(void);     // true for 15 s after the website asks for a reset
-void web_reset_confirmed(void);   // BOOT pressed in time: erase and restart
+#include "ui_app.h"
+// A reset (from the website or PocketOS) or a Wi-Fi change (from PocketOS) waits 15 s for the Boot button
+void web_confirm_start(confirm_kind_t kind);
+bool web_confirm_pending(void);
+void web_confirm_do(void);        // Boot pressed in time

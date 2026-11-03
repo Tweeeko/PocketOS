@@ -68,7 +68,30 @@ bool update_parse_manifest(const char *json, update_manifest_t *m, const char **
     snprintf(m->url, sizeof m->url, "%s", url);
     m->size = (uint32_t)size->valuedouble;
     snprintf(m->notes, sizeof m->notes, "%s", notes ? notes : "");
+    const cJSON *ro = cJSON_GetObjectItem(j, "rollout");
+    m->rollout = 100;
+    if (ro) {
+        if (!cJSON_IsNumber(ro) || ro->valuedouble < 0 || ro->valuedouble > 100) FAIL("Update rollout is wrong");
+        m->rollout = (int)ro->valuedouble;
+    }
     cJSON_Delete(j);
     *err = NULL;
     return true;
+}
+
+bool update_trailer(const uint8_t tail[UPDATE_TRAILER], const uint8_t **sig, size_t *sig_len)
+{
+    if (memcmp(tail + 74, "PSIG01", 6) != 0) return false;
+    size_t n = (size_t)tail[72] | ((size_t)tail[73] << 8);
+    if (n < 8 || n > 72 || tail[0] != 0x30) return false;   // a DER SEQUENCE
+    *sig = tail;
+    *sig_len = n;
+    return true;
+}
+
+int update_bucket(const uint8_t mac[6])
+{
+    uint32_t h = 2166136261u;   // FNV-1a
+    for (int i = 0; i < 6; i++) { h ^= mac[i]; h *= 16777619u; }
+    return (int)(h % 100);
 }

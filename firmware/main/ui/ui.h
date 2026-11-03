@@ -19,5 +19,6 @@ bool ui_is_asleep(void);
 void ui_wake(void);
 void ui_toast(const char *text, int ms);
 void ui_voice(voice_state_t st, const char *text);
-void ui_reset_prompt(bool on);      // "Press BOOT to erase" after the website asks for a reset
+void ui_reset_prompt(bool on);      // "Press the Boot button to erase everything"
+void ui_confirm_prompt(const char *text);   // any "press the Boot button to..." question; NULL hides it
 void ui_react_happy(void);

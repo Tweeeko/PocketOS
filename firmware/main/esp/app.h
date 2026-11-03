@@ -23,6 +23,7 @@ void app_mark_all_known(void);
 void app_ui_post(ui_post_kind_t kind, int arg, const char *text);   // never blocks   // "add all new devices" in one save
 
 // Status fields updated by other modules
+void app_set_wifi_rejected(bool rejected, const char *ssid);
 void app_set_wifi(bool setup_mode, bool connected, const char *ip, const char *host, const char *ap_ssid, const char *ap_pass);
 void app_set_ha(ha_status_t st, const char *error);
 void app_set_pin(const char *pin);

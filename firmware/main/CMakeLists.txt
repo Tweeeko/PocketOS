@@ -7,7 +7,7 @@ file(GLOB ESP_SRCS esp/*.c)
 idf_component_register(
     SRCS ${CORE_SRCS} ${UI_SRCS} ${ESP_SRCS}
     INCLUDE_DIRS "core" "ui" "esp"
-    EMBED_TXTFILES "www/index.html"
+    EMBED_TXTFILES "www/index.html" "esp/signing_key.pem"   # public key that release firmware is signed with
 )
 
 # Large generated assets (fonts, background) are const data in flash

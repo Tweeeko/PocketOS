@@ -26,8 +26,14 @@ static void on_button(button_event_t ev)
     bool asleep = ui_is_asleep();
     switch (ev) {
     case BTN_BOOT_CLICK:
-        if (web_reset_pending()) { UI_UNLOCK(); web_reset_confirmed(); return; }
-        if (asleep) ui_wake(); else ui_toggle_settings_qr();
+        if (web_confirm_pending()) { UI_UNLOCK(); web_confirm_do(); return; }
+        if (asleep) { ui_wake(); break; }
+        {   // The home Wi-Fi turned down the saved password: the Boot button offers to set it up again
+            app_status_t st;
+            app_status(&st);
+            if (st.wifi_rejected) { UI_UNLOCK(); web_confirm_start(CONFIRM_WIFI); return; }
+        }
+        ui_toggle_settings_qr();
         break;
     case BTN_BOOT_DOUBLE:
         ui_wake();

@@ -528,6 +528,7 @@ async function start(){
   if(info.mode==='setup'){render();return}
   token=store.get(tokKey());
   if(token&&await loadCfg()){
+    if(!info.paired)await loadInfo();   // before pairing PocketOS only shares its name
     if(!store.get(doneKey())&&info.ha.status==='not_set'&&!wiz)wiz='ha';
     if(info.ha.status!=='not_set')loadEnts();
   }

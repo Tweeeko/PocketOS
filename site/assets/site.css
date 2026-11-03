@@ -412,6 +412,10 @@ esp-web-install-button:not(:defined) [slot=unsupported],esp-web-install-button:n
 .key-card dt{font-weight:600;color:var(--ink);font-size:15.5px}
 .key-card dd{margin:2px 0 0;color:var(--mist);font-size:15.5px;line-height:1.5}
 
+.req{margin:18px 0 0;font-size:15px;color:var(--mist)}.req b{color:var(--ink)}
+.need{margin-bottom:28px}.need h2{margin-bottom:26px}
+.fine b{color:var(--mist)}
+
 /* footer */
 footer.end{max-width:1240px;margin:40px auto 0;padding:46px 28px 50px;border-top:1px solid rgba(255,255,255,.08);color:var(--haze);font-size:15px}
 .foot{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:30px}
@@ -426,7 +430,7 @@ footer.end{max-width:1240px;margin:40px auto 0;padding:46px 28px 50px;border-top
 @media (max-width:900px){
   .links,.cta{display:none}.menu{display:grid;margin-left:auto}.bar{height:60px;padding:0 18px}
   .hero{grid-template-columns:1fr;text-align:center;padding-top:100px;gap:60px}
-  .hero .copy{margin:0 auto}.hero .lede{margin-left:auto;margin-right:auto}.hero .row{justify-content:center}
+  .hero .copy{margin:0 auto}.req{text-align:center}.hero .lede{margin-left:auto;margin-right:auto}.hero .row{justify-content:center}
   .hero .stage{order:-1}
   .chapters{grid-template-columns:1fr;padding-top:0}
   .pin{display:none}

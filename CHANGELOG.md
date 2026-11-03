@@ -4,6 +4,13 @@ Each release needs a section here headed with its version, exactly as in `firmwa
 The text under it (keep it short and plain) is shown on the settings website when the update
 is offered.
 
+## 0.1.4
+- If your Wi-Fi password changes, PocketOS says so and the Boot button takes you straight to Wi-Fi setup
+- Change Wi-Fi network and Reset PocketOS are now on PocketOS itself, under More → This PocketOS, confirmed with the Boot button
+- Updates must be signed by PocketOS: firmware from anywhere else is refused
+- New versions can be released gradually, and paused if a problem turns up
+- PocketOS joins WPA2 Wi-Fi or better, and shares no network or home details with anyone who hasn't paired
+
 ## 0.1.3
 - Works with larger homes: up to 256 devices, with lights, heating and locks always loaded before sensors
 - Sensors now show room temperature and humidity only, so power and signal readings don't crowd your lists

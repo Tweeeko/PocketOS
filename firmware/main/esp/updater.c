@@ -18,6 +18,8 @@
 #include "mbedtls/sha256.h"
 #include "sdkconfig.h"
 #include "update.h"
+#include "sigcheck.h"
+#include "esp_mac.h"
 #include "app.h"
 #include "ui.h"
 
@@ -131,6 +133,16 @@ static void do_check(bool manual)
     }
     const char *mine = esp_app_get_description()->version;
     bool newer = version_cmp(m.version, mine) > 0;
+    // Staged release: only part of all devices are offered it automatically at first. Asking
+    // for a check on the settings page always offers it.
+    if (newer && !manual && m.rollout < 100) {
+        uint8_t mac[6] = {0};
+        esp_read_mac(mac, ESP_MAC_WIFI_STA);
+        if (update_bucket(mac) >= m.rollout) {
+            ESP_LOGI(TAG, "%s is being released gradually; not offered here yet", m.version);
+            newer = false;
+        }
+    }
     xSemaphoreTake(s_lock, portMAX_DELAY);
     bool was = s_have && !strcmp(s_man.version, m.version);
     s_have = newer;
@@ -183,6 +195,8 @@ static void do_install(void)
     mbedtls_sha256_context sha;
     mbedtls_sha256_init(&sha);
     mbedtls_sha256_starts(&sha, 0);
+    sig_stream_t sig;   // signature over the image; only the image is written to flash
+    sig_begin(&sig, m.size);
     char *buf = malloc(4096);
     if (!buf && !why) why = "Out of memory";
     uint32_t total = 0;
@@ -197,7 +211,8 @@ static void do_install(void)
         }
         if (total + (uint32_t)r > m.size) { why = "The download is bigger than expected"; break; }
         mbedtls_sha256_update(&sha, (const unsigned char *)buf, r);
-        if (esp_ota_write(ota, buf, r) != ESP_OK) { why = "Couldn't write the update"; break; }
+        size_t img = sig_feed(&sig, (const uint8_t *)buf, (size_t)r);
+        if (img && esp_ota_write(ota, buf, img) != ESP_OK) { why = "Couldn't write the update"; break; }
         total += (uint32_t)r;
         int pct = (int)((uint64_t)total * 100 / m.size);
         if (pct != last_pct) {
@@ -215,6 +230,8 @@ static void do_install(void)
 
     if (!why && total != m.size) why = "The download was incomplete";
     if (!why && memcmp(digest, m.sha256, 32) != 0) why = "The download didn't match its checksum";
+    if (!why) { if (!sig_finish(&sig, &why)) ESP_LOGE(TAG, "rejected: not signed by the release key"); }
+    else sig_abort(&sig);
     if (ota_open) {
         if (why) esp_ota_abort(ota);
         else if (esp_ota_end(ota) != ESP_OK) why = "The update isn't a valid PocketOS firmware";   // checks the image

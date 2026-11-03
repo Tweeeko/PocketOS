@@ -30,6 +30,7 @@ static int s_retries;
 static esp_timer_handle_t s_retry_timer;
 
 static void retry_cb(void *arg) { esp_wifi_connect(); }
+static int s_refusals;   // the home network turning PocketOS away, in a row
 
 // Wi-Fi config fields are fixed-size and need not be NUL-terminated (a 32-char SSID fills them).
 static void copy_field(uint8_t *dst, size_t dst_len, const char *src)
@@ -59,6 +60,16 @@ static void on_event(void *arg, esp_event_base_t base, int32_t id, void *data)
     if (base == WIFI_EVENT && id == WIFI_EVENT_STA_DISCONNECTED) {
         s_st.connected = false;
         s_st.ip[0] = 0;
+        // The network is there but turns PocketOS away (changed password or security): after a few
+        // tries, say so on screen and offer to set up Wi-Fi again. Not seen at all = away from home.
+        uint16_t reason = ((wifi_event_sta_disconnected_t *)data)->reason;
+        bool refused = reason == WIFI_REASON_AUTH_FAIL || reason == WIFI_REASON_4WAY_HANDSHAKE_TIMEOUT ||
+                       reason == WIFI_REASON_HANDSHAKE_TIMEOUT || reason == WIFI_REASON_AUTH_EXPIRE ||
+                       reason == WIFI_REASON_NO_AP_FOUND_W_COMPATIBLE_SECURITY || reason == WIFI_REASON_NO_AP_FOUND_IN_AUTHMODE_THRESHOLD;
+        if (s_st.mode == NET_NORMAL && !s_joining) {
+            if (refused) { if (++s_refusals == 4) app_set_wifi_rejected(true, s_st.ssid); }
+            else if (reason == WIFI_REASON_NO_AP_FOUND) s_refusals = 0;
+        }
         if (s_joining) {
             if (++s_retries >= 3) xEventGroupSetBits(s_ev, FAILED);
             else esp_wifi_connect();
@@ -68,6 +79,8 @@ static void on_event(void *arg, esp_event_base_t base, int32_t id, void *data)
         }
         notify();
     } else if (base == IP_EVENT && id == IP_EVENT_STA_GOT_IP) {
+        if (s_refusals >= 4) app_set_wifi_rejected(false, NULL);
+        s_refusals = 0;
         ip_event_got_ip_t *e = (ip_event_got_ip_t *)data;
         snprintf(s_st.ip, sizeof(s_st.ip), IPSTR, IP2STR(&e->ip_info.ip));
         s_st.connected = true;
@@ -117,7 +130,7 @@ esp_err_t net_start(void)
         wifi_config_t sta = {0};
         copy_field(sta.sta.ssid, sizeof(sta.sta.ssid), ssid);
         copy_field(sta.sta.password, sizeof(sta.sta.password), pass);
-        sta.sta.threshold.authmode = pass[0] ? WIFI_AUTH_WPA_PSK : WIFI_AUTH_OPEN;
+        sta.sta.threshold.authmode = pass[0] ? WIFI_AUTH_WPA2_PSK : WIFI_AUTH_OPEN;   // WPA2 or better
         ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
         ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &sta));
         ESP_ERROR_CHECK(esp_wifi_start());
@@ -180,6 +193,7 @@ esp_err_t net_try_join(const char *ssid, const char *pass, char *ip_out, size_t 
     wifi_config_t sta = {0};
     copy_field(sta.sta.ssid, sizeof(sta.sta.ssid), ssid);
     copy_field(sta.sta.password, sizeof(sta.sta.password), pass);
+    sta.sta.threshold.authmode = pass[0] ? WIFI_AUTH_WPA2_PSK : WIFI_AUTH_OPEN;   // WPA2 or better
     s_joining = true;
     s_retries = 0;
     xEventGroupClearBits(s_ev, GOT_IP | FAILED);

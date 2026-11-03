@@ -84,7 +84,7 @@
       hist.push([t, Math.floor(pct), Math.floor(3500 + pct * 6.5), fl]);
     }
     S = { cfg: defaults(), ents: ENTITIES(), pin: pin(), tokens: [TOKEN], bad: 0, lockedUntil: 0, ha: 'connected', haError: '',
-      firmware: '0.1.1', hist, battery: hist[hist.length - 1][1], booted: Date.now(), upd: { state: 'idle', progress: 0, error: '', checked: null },
+      firmware: '0.1.4', hist, battery: hist[hist.length - 1][1], booted: Date.now(), upd: { state: 'idle', progress: 0, error: '', checked: null },
       resetUntil: 0, downUntil: 0 };
     S.cfg.known = S.ents.map(e => e.id);
   }
@@ -305,7 +305,9 @@
         r.push({ kind: 'info', label: 'Address', sub: 'pocketos-a1b2.local' });
         r.push({ kind: 'info', label: 'Firmware', sub: S.firmware });
         r.push({ kind: 'info', label: 'Created by', sub: 'Leeko' });
-        r.push({ kind: 'info', label: 'Home', sub: `${ents().length} devices, ${AREAS.length} rooms` }); break;
+        r.push({ kind: 'info', label: 'Home', sub: `${ents().length} devices, ${AREAS.length} rooms` });
+        r.push({ kind: 'screen', id: 'wifi', label: 'Change Wi-Fi network', sub: 'Keeps your settings' });
+        r.push({ kind: 'screen', id: 'reset', label: 'Reset PocketOS', sub: 'Erases everything on it' }); break;
       case 'companion': {
         const c = S.cfg, cap = s => s[0].toUpperCase() + s.slice(1);
         r.push({ kind: 'set', id: 'eye', label: 'Eye colour', sub: cap(c.eye) });
@@ -430,7 +432,7 @@
     }, 900);
   }
   function resetPrompt(on) {
-    if (on) showOverlay('reset', '<div class="resetp"><p>Press the Boot button<br>to erase everything</p></div>');
+    if (on) showOverlay('reset', `<div class="resetp"><p>${S.confirm === 'wifi' ? 'Set up Wi-Fi again?<br>Press the Boot button<br>to confirm' : 'Press the Boot button<br>to erase everything'}</p></div>`);
     else if (overlay === 'reset') hideOverlay();
   }
 
@@ -564,7 +566,11 @@
       if (r.kind === 'all') { ents().filter(e => visible(e) && catMatch(r.id, e) && (e.dom === 'lock' ? !e.on : e.on)).forEach(e => act(e.id, 'toggle')); return toast('Sent to every device', 1500); }
       if (r.kind === 'room') return go({ k: 'list', list: 'room', arg: r.id });
       if (r.kind === 'tile') return go({ k: 'list', list: r.id === 'rooms' ? 'rooms' : r.id === 'favourites' ? 'favs' : 'cat', arg: r.id });
-      if (r.kind === 'screen') { if (r.id === 'settings') return showOverlay('qr', qrHTML()); return go({ k: 'list', list: r.id }); }
+      if (r.kind === 'screen') {
+        if (r.id === 'settings') return showOverlay('qr', qrHTML());
+        if (r.id === 'wifi' || r.id === 'reset') { S.confirm = r.id; S.resetUntil = Date.now() + 15000; return resetPrompt(true); }   // the Boot button confirms
+        return go({ k: 'list', list: r.id });
+      }
       if (r.kind === 'set') {   // cycle_setting
         const c = S.cfg, EY = ['blue', 'violet', 'white'], AN = ['calm', 'lively', 'off'], SL = [15, 30, 60, 0];
         if (r.id === 'eye') c.eye = EY[(EY.indexOf(c.eye) + 1) % 3];
@@ -608,7 +614,11 @@
         if (clicks === 2) { clicks = 0; clearTimeout(clickT); wake(); hideOverlay(); home(); return; }
         clickT = setTimeout(() => {
           clicks = 0;
-          if (S.resetUntil && Date.now() < S.resetUntil) { S.resetUntil = 0; doReset(); return; }
+          if (S.resetUntil && Date.now() < S.resetUntil) {
+            S.resetUntil = 0;
+            if (S.confirm === 'wifi') { S.confirm = null; resetPrompt(false); return toast('On a real PocketOS, it now restarts into Wi-Fi setup', 3000); }
+            doReset(); return;
+          }
           if (asleep) return wake();
           if (overlay === 'qr') hideOverlay(); else if (!overlay) showOverlay('qr', qrHTML());
         }, 350);
@@ -716,7 +726,8 @@
     if (method === 'GET') {
       if (path === '/info') {
         const list = ents();
-        return R2(200, { api: 2, schema: 2, id: 'a1b2', name: c.name, firmware: S.firmware, mode: 'normal', wifi: { ssid: 'HomeNet', rssi: -58, ip: '192.168.1.42' },
+        if (!authed) return R2(200, { api: 2, schema: 4, id: 'a1b2', name: c.name, firmware: S.firmware, mode: 'normal', host: 'pocketos-a1b2.local', paired: false });
+        return R2(200, { api: 2, schema: 4, id: 'a1b2', name: c.name, firmware: S.firmware, mode: 'normal', paired: true, wifi: { ssid: 'HomeNet', rssi: -58, ip: '192.168.1.42' },
           host: 'pocketos-a1b2.local', battery: { percent: S.battery, charging: false, plugged: false, mv: 3500 + S.battery * 6 + 100, hours_left: Math.round(S.battery / 4) },
           ha: { status: S.ha, error: S.haError, devices: list.filter(visible).length, new: c.auto_add ? 0 : list.filter(e => !c.known.includes(e.id)).length },
           uptime_s: Math.floor((Date.now() - S.booted) / 1000), update: updInfo() });
@@ -786,7 +797,7 @@
     if (path === '/restart') { S.downUntil = Date.now() + 3000; S.booted = Date.now() + 3000; hideOverlay(); bootUp(); return R2(202, { ok: true }); }
     if (path === '/wifi/forget') return R2(400, { error: 'Changing Wi-Fi isn’t available in the demo.' });
     if (path === '/unpair_all') { S.tokens = []; return R2(200, { ok: true }); }
-    if (path === '/reset') { S.resetUntil = Date.now() + 15000; wake(); resetPrompt(true); return R2(202, { ok: true, confirm: 'Press the Boot button on PocketOS within 15 seconds' }); }
+    if (path === '/reset') { S.confirm = 'reset'; S.resetUntil = Date.now() + 15000; wake(); resetPrompt(true); return R2(202, { ok: true, confirm: 'Press the Boot button on PocketOS within 15 seconds' }); }
     return R2(404, { error: 'Not found' });
   }
 

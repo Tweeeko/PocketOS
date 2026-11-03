@@ -16,6 +16,15 @@ GitHub hosts the files.
 2. The Release workflow needs permission to create releases. It asks for it itself
    (`permissions: contents: write`). If your account restricts that, enable it under
    **Settings → Actions → General → Workflow permissions → Read and write**.
+3. **The signing key.** PocketOS only installs updates signed with the PocketOS release key.
+   Add the private key (the whole `pocketos-signing-key.pem`, including the BEGIN and END lines)
+   as a secret: **Settings → Secrets and variables → Actions → New repository secret**, named
+   `POCKETOS_SIGNING_KEY`. Keep an offline copy somewhere safe, such as a password manager.
+   If it is lost, devices can't be sent updates again without being reflashed over USB; if it
+   leaks, someone else could sign firmware, so replace it and ship a new public key in an update.
+   The public half is `firmware/main/esp/signing_key.pem`.
+4. **Private security reports.** **Settings → Code security → Private vulnerability reporting →
+   Enable**, so the "Report a vulnerability" link on the Security page works.
 
 ## Every release (all from the GitHub website on an iPad)
 
@@ -28,16 +37,22 @@ GitHub hosts the files.
    ```
    Keep it to a sentence or two. It's shown on the settings website next to the Install button.
 3. Commit both changes to `main`.
-4. Open **Actions → Release → Run workflow**. It:
+4. Open **Actions → Release → Run workflow**. Choose how many devices get it automatically at
+   first (**rollout**, 1-100; 100 = everyone). It:
    - runs the tests;
    - builds the firmware;
    - checks the version inside the build matches `version.txt`;
+   - signs `pocketos.bin` with the release key and checks the signature;
    - publishes release `v0.2.0` with `pocketos.bin` (the update), `pocketos-full.bin` (first
      USB flash of a new board) and `manifest.json` (version, size and SHA-256 of `pocketos.bin`).
 5. The workflow then asks Vercel to rebuild the website, which picks up the new installer
    firmware and "What's new" (needs the one-time deploy hook in `docs/website.md`).
 6. Done. Each PocketOS notices within a day. To see it straight away, open its settings website,
    **More → Updates → Check now**.
+
+**Staged releases.** To start small, release with rollout 10, wait a few days, then open
+**Actions → Rollout → Run workflow** and enter 50, then 100. If a problem turns up, run Rollout
+with **0** to stop offering it while you fix it. (Anyone who chooses Check now still gets it.)
 
 If something's wrong with a release, **don't delete and reuse the version number**. Publish a
 fixed one with the next number.

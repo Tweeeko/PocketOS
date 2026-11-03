@@ -1,0 +1,99 @@
+<!doctype html>
+<!-- PocketOS, created by Leeko. Copyright (c) 2026 Leeko. -->
+<html lang="en-GB"><head><meta charset="utf-8">
+<meta name="author" content="Leeko">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PocketOS security</title>
+<meta name="description" content="How PocketOS protects your home, how to report a security problem, and how long PocketOS receives security updates.">
+<meta name="theme-color" content="#070b1c">
+<meta property="og:title" content="PocketOS security"><meta property="og:description" content="How PocketOS protects your home, how to report a security problem, and how long PocketOS receives security updates."><meta property="og:image" content="media/poster.jpg">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><meta name="apple-mobile-web-app-title" content="PocketOS">
+<link rel="preload" href="fonts/unbounded.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="assets/site.css">
+</head><body>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar" id="top">
+  <div class="bar">
+    <a class="brand" href="./"><img src="assets/logo.svg" alt="PocketOS" width="190" height="18"></a>
+    <nav class="links" aria-label="Main"><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="demo.html">Try it</a><a href="setup.html">Setup</a><a href="help.html" aria-current="page">Support</a><a href="changes.html">What’s new</a></nav>
+    <a class="btn small cta" href="buy.html">Where to buy</a>
+    <button class="menu" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menu"><i></i><i></i></button>
+  </div>
+  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="demo.html">Try it</a><a href="setup.html">Setup</a><a href="help.html" aria-current="page">Support</a><a href="changes.html">What’s new</a><a href="buy.html">Where to buy</a></nav>
+</header>
+
+<main id="main" class="page">
+  <header class="intro">
+    <h1>Security</h1>
+    <p class="lede">How PocketOS protects your home, how to report a problem, and how long PocketOS receives security updates.</p>
+  </header>
+
+  <div class="two">
+    <section class="block glass" id="report">
+      <h2>Report a security problem</h2>
+      <p>If you find a security weakness in PocketOS, please tell us privately so it can be fixed before it is made public.</p>
+      <ol class="numbered">
+        <li><b>Report it privately</b><span>Use <a href="https://github.com/Tweeeko/PocketOS/security/advisories/new">Report a vulnerability</a> on GitHub. Only the PocketOS team can see it.</span></li>
+        <li><b>Hear back</b><span>We acknowledge reports within 7 days and keep you updated until it’s resolved.</span></li>
+        <li><b>Fix and credit</b><span>Fixes are delivered as signed updates. With your permission, we credit you in the release notes.</span></li>
+      </ol>
+      <p class="note">Please don’t test against devices or homes that aren’t yours.</p>
+    </section>
+
+    <section class="block glass" id="support-period">
+      <h2>Security updates</h2>
+      <p>The PocketOS Device receives security updates <b>until at least 31 December 2029</b>. Updates are free and install over Wi-Fi.</p>
+      <ul class="plain">
+        <li>Updates are checked once a day, and install with a tap or automatically overnight.</li>
+        <li>New versions are released gradually, so any problem can be stopped before it reaches every device.</li>
+        <li>Release notes for every version are on <a href="changes.html">What’s new</a>.</li>
+      </ul>
+    </section>
+  </div>
+
+  <section class="block glass" id="how">
+    <h2>How PocketOS protects your home</h2>
+    <div class="tiles-list">
+      <div><b>No shared passwords</b><span>Every PocketOS creates its own setup Wi-Fi password the first time it starts. There are no default passwords.</span></div>
+      <div><b>Pairing on the device</b><span>A phone can only change settings after entering the 6-digit code shown on PocketOS. Repeated wrong codes are locked out.</span></div>
+      <div><b>Signed updates</b><span>PocketOS only installs firmware signed by PocketOS. Downloads are checked before they are installed, and a version that fails to start is rolled back.</span></div>
+      <div><b>Local only</b><span>PocketOS talks to your Home Assistant on your home network. There is no PocketOS account, cloud service or analytics.</span></div>
+      <div><b>Your token stays put</b><span>The Home Assistant token is stored only on PocketOS and is never shown again, even on the settings page.</span></div>
+      <div><b>Confirmed on the device</b><span>Erasing PocketOS or changing its Wi-Fi needs a press of the Boot button on PocketOS itself.</span></div>
+    </div>
+  </section>
+
+  <section class="block glass" id="limits">
+    <h2>What to know</h2>
+    <ul class="plain">
+      <li><b>Home Assistant access:</b> Home Assistant doesn’t limit a user to particular devices. The PocketOS user you create can see and control every device in your Home Assistant, so keep PocketOS somewhere you’d keep a house key.</li>
+      <li><b>On your Wi-Fi:</b> the settings page uses your home network without encryption between your phone and PocketOS, like most home devices. Your Wi-Fi password protects it from outsiders.</li>
+      <li><b>Lost, sold or given away:</b> see below to cut off its access straight away.</li>
+    </ul>
+  </section>
+
+  <section class="block glass" id="lost">
+    <h2>If PocketOS is lost or stolen</h2>
+    <ol class="numbered">
+      <li><b>Remove its access to Home Assistant</b><span>In Home Assistant, sign in as the PocketOS user, open its profile, and under <b>Security → Long-lived access tokens</b> delete the PocketOS token. Or, as an administrator, go to <b>Settings → People</b>, open PocketOS and turn off <b>Can log in</b>.</span></li>
+      <li><b>Optionally, change your Wi-Fi password</b><span>PocketOS stores your Wi-Fi password so it can reconnect.</span></li>
+      <li><b>If you find it again</b><span>Reset it from <b>More → This PocketOS → Reset PocketOS</b>, and set it up as new.</span></li>
+    </ol>
+    <p class="note">Selling or giving it away? Reset it first. That erases your Wi-Fi, Home Assistant connection and settings.</p>
+  </section>
+</main>
+
+<footer class="end">
+  <div class="foot">
+    <div><img src="assets/logo.svg" alt="PocketOS" width="150" height="14"><p>The pocket-sized smart-home companion.<br>Designed by Leeko.</p></div>
+    <nav aria-label="Product"><h4>Product</h4><a href="./#features">Features</a><a href="./#specs">Tech specs</a><a href="demo.html">Try PocketOS</a><a href="buy.html">Where to buy</a><a href="changes.html">What’s new</a></nav>
+    <nav aria-label="Support"><h4>Support</h4><a href="setup.html">Getting started</a><a href="help.html">Support</a><a href="recovery.html">Software recovery</a><a href="privacy.html">Privacy</a><a href="security.html">Security</a></nav>
+    <nav aria-label="Project"><h4>Project</h4><a href="https://github.com/Tweeeko/PocketOS">Source code</a><a href="https://github.com/Tweeeko/PocketOS/releases">Releases</a></nav>
+  </div>
+  <p class="legal">© 2026 Leeko. Home Assistant is a trademark of its respective owner. PocketOS is not affiliated with or endorsed by Home Assistant.</p>
+</footer>
+<script src="assets/site.js"></script>
+</body></html>

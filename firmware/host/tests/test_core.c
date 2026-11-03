@@ -392,6 +392,30 @@ static void test_registry_updates(void)
     CHECK(E("light.floor_lamp")->area == -1);
 }
 
+static void test_signed_updates(void)
+{
+    uint8_t tail[UPDATE_TRAILER] = {0};
+    const uint8_t *sig; size_t n;
+    CHECK(!update_trailer(tail, &sig, &n));                       // unsigned firmware
+    tail[0] = 0x30; tail[1] = 0x44; tail[72] = 70; memcpy(tail + 74, "PSIG01", 6);
+    CHECK(update_trailer(tail, &sig, &n) && n == 70 && sig == tail);
+    tail[72] = 90; CHECK(!update_trailer(tail, &sig, &n));        // impossible length
+    // staged releases: a stable group per device, spread over 0..99
+    uint8_t a[6] = {0x7c, 0xdf, 0xa1, 0, 0xab, 0x12}, b[6] = {0x7c, 0xdf, 0xa1, 0, 0xab, 0x13};
+    CHECK(update_bucket(a) == update_bucket(a) && update_bucket(a) >= 0 && update_bucket(a) < 100 && update_bucket(a) != update_bucket(b));
+    update_manifest_t m; const char *err;
+    const char *base = "{\"version\":\"0.2.0\",\"url\":\"https://x/p.bin\",\"size\":2000000,\"sha256\":\"%s\"%s}";
+    char js[512], hex[65];
+    memset(hex, 'a', 64);
+    hex[64] = 0;
+    snprintf(js, sizeof js, base, hex, "");
+    CHECK(update_parse_manifest(js, &m, &err) && m.rollout == 100);
+    snprintf(js, sizeof js, base, hex, ",\"rollout\":20");
+    CHECK(update_parse_manifest(js, &m, &err) && m.rollout == 20);
+    snprintf(js, sizeof js, base, hex, ",\"rollout\":150");
+    CHECK(!update_parse_manifest(js, &m, &err));
+}
+
 static void test_versions(void)
 {
     CHECK(version_cmp("0.1.0", "0.2.0") < 0);
@@ -468,6 +492,7 @@ int main(void)
     test_names_and_order();
     test_ha_robustness();
     test_registry_updates();
+    test_signed_updates();
     test_versions();
     test_battery();
     printf("%d checks, %d failed\n", checks, fails);

@@ -17,6 +17,7 @@ static model_t M;
 static settings_t S;
 static ha_ctx_t C;
 static app_status_t ST;
+static int last_confirm;
 static uint32_t now_ms = 1000;
 static uint16_t fb[SCR_W * SCR_H];
 static int pt_x, pt_y, pt_down;
@@ -44,6 +45,7 @@ bool app_settings_patch(const char *json)
     return ok;
 }
 
+void app_request_confirm(confirm_kind_t k) { last_confirm = k; ui_confirm_prompt(k == CONFIRM_WIFI ? "Set up Wi-Fi again?\nPress the Boot button\nto confirm" : "Press the Boot button\nto erase everything"); }
 bool app_ui_take(ui_post_t *out) { (void)out; return false; }
 bool app_set_flag(const char *list, const char *id, bool on) { bool ok = settings_set_flag(&S, list, id, on); M.version++; return ok; }
 bool app_fav_move(const char *id, int dir) { bool ok = settings_fav_move(&S, id, dir); M.version++; return ok; }
@@ -321,6 +323,19 @@ int main(void)
     snprintf(ST.update_version, sizeof ST.update_version, "0.3.0");
     open_ref(SCR_LIST, L_INFO, "");
     shot("list_info");
+    {   // the last rows: change Wi-Fi and reset, both confirmed with the Boot button
+        lv_obj_t *sc = lv_obj_get_child(lv_screen_active(), 0);
+        lv_obj_scroll_to_view(lv_obj_get_child(sc, lv_obj_get_child_count(sc) - 2), LV_ANIM_OFF);
+        run(200);
+        tap(233, 233); run(300);
+        expect(last_confirm == CONFIRM_WIFI, "This PocketOS > Change Wi-Fi network asks for the Boot button");
+        shot("confirm_wifi");
+        ui_confirm_prompt(NULL);
+    }
+    ST.wifi_rejected = true; snprintf(ST.wifi_ssid, sizeof ST.wifi_ssid, "HomeNet");
+    ui_home(); run(400);
+    shot("home_wifi_rejected");
+    ST.wifi_rejected = false;
     ST.update = UPD_LATEST;
     open_ref(SCR_LIST, L_COMPANION, "");
     tap(233, 233);   // centred row: eye colour -> violet

@@ -209,7 +209,10 @@ class H(BaseHTTPRequestHandler):
     def get(self, p):
         c = D.cfg
         if p == "/info":
-            return self.send(200, {"api": 2, "schema": 2, "id": "a1b2", "name": c["name"], "firmware": D.firmware,
+            if not D.setup and not self.authed():   # before pairing: only what's needed to pair
+                return self.send(200, {"api": 2, "schema": 4, "id": "a1b2", "name": c["name"], "firmware": D.firmware,
+                                       "mode": "normal", "host": "pocketos-a1b2.local", "paired": False})
+            return self.send(200, {"api": 2, "schema": 4, "id": "a1b2", "name": c["name"], "firmware": D.firmware, "paired": True,
                 "mode": "setup" if D.setup else "normal",
                 "wifi": {"ssid": "PocketOS-A1B2" if D.setup else "HomeNet", "rssi": -58, "ip": "192.168.4.1" if D.setup else "192.168.1.42"},
                 "host": "pocketos-a1b2.local", "battery": {"percent": D.battery, "charging": False, "plugged": False, "mv": 3500 + D.battery * 6 + 100, "hours_left": round(D.battery / 4)},
