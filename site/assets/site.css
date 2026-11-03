@@ -468,3 +468,21 @@ footer.end{max-width:1240px;margin:40px auto 0;padding:46px 28px 50px;border-top
 .kv div{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:16px;padding:12px 0;border-top:1px solid rgba(255,255,255,.08)}
 .kv dt{color:var(--mist);margin:0}.kv dd{margin:0}
 @media (max-width:640px){.kv div{grid-template-columns:1fr;gap:4px}}
+
+/* ---------- aluminium: light panels that echo the device's brushed silver case ---------- */
+.alu{position:relative;isolation:isolate;overflow:hidden;
+  --ink:#10162b;--mist:#4b5470;--haze:#6b7389;
+  color:var(--ink);color-scheme:light;
+  background:
+    repeating-linear-gradient(90deg,rgba(255,255,255,0) 0 2px,rgba(255,255,255,.22) 2px 3px,rgba(0,0,0,0) 3px 5px,rgba(0,0,0,.025) 5px 6px),
+    linear-gradient(160deg,#f4f6fa 0%,#dfe3ea 38%,#c9ced8 62%,#e9ecf1 100%);
+  border:1px solid rgba(255,255,255,.7);
+  box-shadow:inset 0 1px 0 #fff,inset 0 -1px 0 rgba(0,0,0,.12),0 30px 70px -30px rgba(0,0,0,.8)}
+/* a soft highlight across the metal, like light on a curved edge */
+.alu::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.55) 46%,transparent 60%)}
+.alu a{color:#1f56c4}.alu a:hover{color:#0b1020}
+.alu :focus-visible{outline-color:#1f56c4}
+.alu .spec-grid div{border-top-color:rgba(16,22,43,.14)}
+.alu .spec-sub{color:var(--haze)}
+.alu .plain li{color:#2a3150}.alu .plain li::before{background:#1f56c4}
