@@ -26,7 +26,7 @@
   function build(el) {
     const k = n++;
     const ring = el.hasAttribute('data-ring') ? `<svg class="ring" viewBox="0 0 200 200" aria-hidden="true"><defs><path id="rim${k}" d="M100 100m-95 0a95 95 0 1 1 190 0a95 95 0 1 1-190 0"/></defs><text><textPath href="#rim${k}" textLength="592" lengthAdjust="spacing">PocketOS ◦ a tiny companion for your whole home ◦ created by Leeko ◦</textPath></text></svg>` : '';
-    el.innerHTML = ring + `<div class="screen">
+    el.innerHTML = ring + `<span class="key k1"></span><span class="key k2"></span><div class="screen">
       <div class="scr s-companion"><div class="status"><span class="bat"></span>78%</div><div class="clock">08:24</div>
         <div class="orb"><div class="eyes"><i></i><i></i></div></div><div class="mood-cap">Good morning</div></div>
       <div class="scr s-menu"><div class="ttl">Home</div><div class="tiles">

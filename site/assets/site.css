@@ -85,8 +85,12 @@ p{margin:0 0 1em}
   background:conic-gradient(from 210deg,#8e94a8,#f4f6fb 12%,#7d8396 25%,#e3e7f1 38%,#6c7285 52%,#f7f8fc 64%,#8a90a3 78%,#dfe3ee 90%,#8e94a8);
   box-shadow:0 50px 120px -30px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.35),0 0 140px -20px rgba(106,167,255,.45);cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .pocket::before{content:"";position:absolute;inset:2.2%;border-radius:50%;background:linear-gradient(160deg,#20232d,#08090d);box-shadow:inset 0 2px 3px rgba(255,255,255,.35)}
-/* side buttons, as on the real case */
-.pocket::after{content:"";position:absolute;right:-1.4%;top:22%;width:2.6%;height:13%;border-radius:6px;background:linear-gradient(90deg,#c9cdd8,#f2f4f9);box-shadow:0 calc(var(--s)*.4) 0 #d6dae4}
+/* side buttons (PWR and BOOT), set into the rim at an angle like the real case */
+.key{position:absolute;width:3.4%;height:13%;border-radius:999px;pointer-events:none;
+  left:calc(50% + 50.8% * cos(var(--a)));top:calc(50% + 50.8% * sin(var(--a)));transform:translate(-50%,-50%) rotate(var(--a));
+  background:linear-gradient(90deg,#8a90a3 0%,#eef1f7 38%,#ffffff 52%,#b9bfcd 100%);
+  box-shadow:inset 0 0 0 .5px rgba(0,0,0,.35),inset -1px 0 1px rgba(0,0,0,.25),1px 0 3px rgba(0,0,0,.45)}
+.key.k1{--a:-34deg}.key.k2{--a:30deg}
 .screen{position:absolute;inset:6.5%;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 50% 38%,#14193a,#04050b 72%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),inset 0 0 40px rgba(0,0,0,.8);container-type:size;font-family:var(--text)}
 .screen::after{content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;background:linear-gradient(150deg,rgba(255,255,255,.14),transparent 30%)}
 .scr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transform:scale(.94);transition:opacity .5s ease,transform .6s cubic-bezier(.2,.8,.2,1);pointer-events:none}
