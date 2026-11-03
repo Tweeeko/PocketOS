@@ -44,7 +44,7 @@ jobs:
           esp_idf_version: release-v5.5
           target: esp32s3
           path: firmware
-          command: idf.py -D SDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.release" build && idf.py merge-bin -o pocketos-full.bin
+          command: (idf.py -D SDKCONFIG_DEFAULTS="sdkconfig.defaults;sdkconfig.release" build || (cd build && ninja -k 0; exit 1)) && idf.py merge-bin -o pocketos-full.bin   # on failure, list every error, not just the first
 
       - name: Check the build and write manifest.json
         run: |

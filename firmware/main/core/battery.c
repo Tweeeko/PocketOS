@@ -58,7 +58,7 @@ bool batt_log_add(batt_log_t *l, uint32_t now, int pct, int mv, bool charging, b
 // Least-squares drain over samples [a, b] (oldest-first indices), limited to the last 24 h.
 static bool fit(const batt_log_t *l, int a, int b, float *rate, float *span_h)
 {
-    batt_sample_t last, s;
+    batt_sample_t last = {0}, s = {0};
     batt_log_get(l, b, &last);
     while (a < b) { batt_log_get(l, a, &s); if (last.t - s.t <= MAX_SPAN_S) break; a++; }
     batt_log_get(l, a, &s);
@@ -90,7 +90,7 @@ batt_est_t batt_estimate(const batt_log_t *l, uint32_t now, int pct_now, bool pl
     // Walk stretches on battery from newest to oldest; use the first one that gives a fit.
     int end = n - 1;
     while (end >= 1) {
-        batt_sample_t s, p;
+        batt_sample_t s = {0}, p = {0};
         batt_log_get(l, end, &s);
         if (s.flags & BATT_PLUGGED) { end--; continue; }
         int start = end;
