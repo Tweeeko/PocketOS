@@ -8,7 +8,7 @@
   const shot = (key, eager) => {
     const im = P.images[key]; if (!im) return '';
     return `<img src="${esc(im.src)}" alt="${esc(im.alt)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">`
-      + (im.kind === 'render' ? '<span class="badge">Concept render</span>' : '');
+      + (im.kind === 'render' && !document.querySelector('main.buy') ? '<span class="badge">Concept render</span>' : '');   // not shown on the Buy page for now
   };
   document.querySelectorAll('[data-image]').forEach(f => { f.innerHTML = shot(f.dataset.image, f.hasAttribute('data-eager')); });
 
