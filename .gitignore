@@ -10,3 +10,6 @@ __pycache__/
 firmware/sdkconfig.release
 _site/
 .vercel/
+
+# Private business and funding documents (never publish)
+business/
