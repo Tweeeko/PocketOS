@@ -220,7 +220,7 @@
   // Home page: say when First Edition pre-orders are open (stays "Coming soon" otherwise)
   const preLine = $('[data-pre-line]');
   if (preLine) fetch('api/preorder', { cache: 'no-store' }).then(r => r.json()).then(s => {
-    if (s && s.ok && s.reason === 'open') preLine.textContent = 'First Edition pre-orders now open · limited to 25';
+    if (s && s.ok && s.reason === 'open') preLine.textContent = 'First Edition now available to pre-order · only 25';
     else if (s && s.ok && s.reason === 'sold_out') preLine.textContent = 'First Edition sold out';
   }).catch(() => {});
 

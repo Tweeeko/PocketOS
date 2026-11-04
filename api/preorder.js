@@ -50,7 +50,7 @@ function sessionParams(delivery, env, now) {
     automatic_tax: env.STRIPE_AUTOMATIC_TAX === '1' ? { enabled: true } : undefined,
     consent_collection: env.STRIPE_TERMS_CONSENT === '1' ? { terms_of_service: 'required' } : undefined,
     custom_text: {
-      submit: { message: `This is a pre-order. You pay now, and your PocketOS First Edition is expected to be delivered by ${PREORDER.deliveryBy}. You can cancel for a full refund at any time before it’s dispatched.` },
+      submit: { message: `You’re reserving one of only ${PREORDER.limit} PocketOS First Editions. Payment is taken today, and your PocketOS is expected to arrive by ${PREORDER.deliveryBy}. We’ll email you as soon as it’s on its way.` },
       terms_of_service_acceptance: env.STRIPE_TERMS_CONSENT === '1' ? { message: `I agree to the [terms of sale](${SITE}/terms), including the pre-order terms.` } : undefined,
     },
     metadata: { edition: PREORDER.edition },
