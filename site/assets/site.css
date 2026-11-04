@@ -725,3 +725,5 @@ details.spec-group[open]>summary{margin-bottom:6px}
   .brand-row{grid-template-columns:repeat(3,1fr)!important;gap:10px}
   .brand-row dt{font-size:15px}.brand-row dd{font-size:13px}
 }
+.glance-lead{margin:0;max-width:40em;color:var(--mist);font-size:18px;line-height:1.55}
+.glance-lead b{color:var(--ink);font-weight:600}

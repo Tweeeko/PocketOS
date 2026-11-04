@@ -24,11 +24,11 @@ window.POCKETOS_PRODUCT = {
   // "Take a closer look" on the Where to Buy page. A slot without an image shows a tidy placeholder
   // until a real photograph is added (set `image` to one of the keys above).
   closer: [
-    { image: 'hero',    title: 'Front',            text: 'A vivid round AMOLED screen, with a companion that shows your home’s mood.' },
-    { image: 'angle',   title: 'Side and buttons',  text: 'A precision aluminium case, with Power and Boot buttons right where your thumb falls.' },
-    { image: 'size',    title: 'Size',             text: 'About 55 mm across and 15 mm deep. Big enough to use, small enough to take anywhere.' },
-    { image: 'scale',   title: 'Next to your phone', text: 'Smaller than your phone and always ready. Carry it from room to room.' },
-    { image: 'home',    title: 'Around the home',  text: 'At home on a bedside table, a sofa arm or your desk.' },
+    { image: 'hero',    title: 'Front',            text: 'The round AMOLED screen and its companion.' },
+    { image: 'angle',   title: 'Side and buttons',  text: 'The aluminium case, with the Power and Boot buttons on the side.' },
+    { image: 'size',    title: 'Size',             text: 'About 55 mm across and 15 mm deep.' },
+    { image: 'scale',   title: 'Next to your phone', text: 'Smaller than a phone, easy to carry from room to room.' },
+    { image: 'home',    title: 'Around the home',  text: 'On a bedside table, sofa arm or desk.' },
     { image: 'boxOpen', title: 'Unboxing',         text: 'Face up in its fitted cradle, ready to switch on.' }
   ],
 
