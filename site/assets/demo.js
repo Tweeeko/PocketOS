@@ -694,13 +694,29 @@
     reloadSettings(2600);
   }
 
-  /* ---------- a short hint under the device: what to try next ---------- */
+  /* ---------- a rotating prompt under the device: something to try next ---------- */
   const hintEl = document.getElementById('demo-hint');
+  const TIPS = [
+    'Swipe up on the screen, then tap <em>Lights</em>',
+    'Open <em>Floor lamp</em> and drag around the ring to dim it',
+    'Hold <em>Boot</em> and talk to your home',
+    'Open <em>Locks</em>, unlock the <em>Front door</em> and watch the companion',
+    'Press and hold a device to favourite or hide it',
+    'Press <em>Boot</em> once to see the settings code',
+    'On the settings page, open <em>Look</em> and change the eye colour'
+  ];
+  let tipN = 0, tipT = null;
   function hint() {
     if (!hintEl) return;
-    hintEl.textContent = power === 'off' ? 'PocketOS is off. Hold the Power button for one second to switch it on.'
-      : asleep ? 'The screen is asleep. Tap it, or press the Power button, to wake it.'
-      : 'Swipe up on the screen for the menu. Swipe right to go back.';
+    clearTimeout(tipT);
+    const msg = power === 'off' ? 'PocketOS is off. Hold <em>Power</em> for a second to switch it on.'
+      : asleep ? 'The screen is asleep. Tap it, or press <em>Power</em>, to wake it.' : null;
+    hintEl.classList.remove('show');
+    setTimeout(() => {
+      hintEl.innerHTML = msg ? '<span>' + msg + '</span>' : '<span class="tip-k">Try</span><span>' + TIPS[tipN] + '</span>';
+      hintEl.classList.add('show');
+    }, reduce ? 0 : 220);
+    if (!msg) tipT = setTimeout(() => { tipN = (tipN + 1) % TIPS.length; hint(); }, 6500);
   }
 
   /* ---------- the settings page's view of the device (API v2, as mock_device.py) ---------- */
@@ -842,10 +858,6 @@
   try { localStorage.setItem('pocketos-token-a1b2', TOKEN); } catch (e) {}
   if (frame && !frame.getAttribute('src')) frame.src = frame.dataset.src;
 
-  document.getElementById('demo-restart') && document.getElementById('demo-restart').addEventListener('click', () => {
-    fresh(); try { localStorage.setItem('pocketos-token-a1b2', TOKEN); } catch (e) {}
-    hideOverlay(); power = 'on'; root.classList.remove('off'); setAsleep(false); stack = [{ k: 'home' }]; render(true); reloadSettings();
-  });
 
   // phones: switch between the device and the settings page
   $$('[data-pane]').forEach(b => b.addEventListener('click', () => {
