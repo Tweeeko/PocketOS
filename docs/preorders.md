@@ -60,7 +60,7 @@ webhook secret), then repeat steps 6 and 7 in live mode.
 |---|---|
 | `STRIPE_SECRET_KEY` | the restricted key |
 | `STRIPE_WEBHOOK_SECRET` | the webhook signing secret |
-| `PREORDER_DELIVERY_PENCE` | UK delivery charge in pence, e.g. `499` for £4.99 (`0` for free) |
+| `PREORDER_DELIVERY_PENCE` | optional: a different UK delivery charge in pence (it's £4.99 unless set; `0` for free) |
 | `PREORDER_DELIVERY_NAME` | optional, e.g. `Royal Mail Tracked 48` |
 | `STRIPE_TERMS_CONSENT` | `1` once step 2's terms URL is set (adds a "I agree to the terms" tick box) |
 | `STRIPE_AUTOMATIC_TAX` | `1` once step 5's head office address is set |

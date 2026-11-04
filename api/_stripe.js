@@ -6,7 +6,7 @@
 //   STRIPE_SECRET_KEY        a restricted key (rk_...) with Checkout Sessions: Write, nothing else
 //   STRIPE_WEBHOOK_SECRET    the signing secret of the webhook endpoint (whsec_...)
 //   PREORDERS_OPEN           "1" to take pre-orders
-//   PREORDER_DELIVERY_PENCE  UK delivery charge in pence, e.g. 499 for £4.99 (required to open)
+//   PREORDER_DELIVERY_PENCE  optional: overrides the £4.99 UK delivery charge (in pence)
 //   PREORDER_DELIVERY_NAME   optional, e.g. "Royal Mail Tracked 48"
 //   STRIPE_AUTOMATIC_TAX     "1" once Stripe Tax's head office address is set (collects VAT only where registered)
 //   STRIPE_TERMS_CONSENT     "1" once the terms of service URL is set in Stripe's public business details
@@ -22,6 +22,7 @@ const PREORDER = {
   name: 'PocketOS First Edition',
   description: 'Pre-order: one of the first 25 PocketOS, expected to be delivered by the end of April 2027.',
   pricePence: 9999,
+  deliveryPence: 499,                               // UK tracked delivery, £4.99
   limit: 25,
   closesAt: Date.parse('2027-01-31T23:59:59Z'),     // 23:59 UK time (GMT in January)
   deliveryBy: 'the end of April 2027',
@@ -81,7 +82,7 @@ async function unitsTaken(env, now = Date.now()) {
 
 // Is the pre-order open? Returns { open, reason, remaining }.
 async function availability(env = process.env, now = Date.now()) {
-  const delivery = parseInt(env.PREORDER_DELIVERY_PENCE, 10);
+  const delivery = env.PREORDER_DELIVERY_PENCE != null && env.PREORDER_DELIVERY_PENCE !== '' ? parseInt(env.PREORDER_DELIVERY_PENCE, 10) : PREORDER.deliveryPence;
   if (env.PREORDERS_OPEN !== '1' || !env.STRIPE_SECRET_KEY || !(delivery >= 0)) return { open: false, reason: 'soon', remaining: PREORDER.limit, delivery: null };
   if (now > PREORDER.closesAt) return { open: false, reason: 'closed', remaining: 0, delivery };
   const remaining = Math.max(0, PREORDER.limit - await unitsTaken(env, now));

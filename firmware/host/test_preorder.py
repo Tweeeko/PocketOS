@@ -87,7 +87,7 @@ r, log = run([
     {"name": "after deadline", "env": ENV, "now": AFTER},
 ])
 check(r["not set up"]["body"]["open"] is False and r["not set up"]["body"]["reason"] == "soon", "closed until keys and settings are in place")
-check(r["no delivery charge"]["body"]["reason"] == "soon", "won't open without a delivery charge")
+check(r["no delivery charge"]["body"]["open"] and r["no delivery charge"]["body"]["delivery_text"] == "£4.99", "delivery is £4.99 unless overridden")
 o = r["open"]["body"]
 check(o["open"] and o["remaining"] == 3 and o["price"] == "£99.99" and o["delivery_text"] == "£4.99", "counts paid and open checkouts for this edition only: 3 of 25 left")
 check(r["after deadline"]["body"]["reason"] == "closed", "closes after 31 January 2027")
