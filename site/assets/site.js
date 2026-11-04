@@ -260,20 +260,23 @@
     });
   }
 
-  // Getting started: highlight the step you're on in the sticky step bar
-  const jr = document.querySelector('.journey');
-  if (jr) {
-    const ol = jr.querySelector('ol'), links = [...jr.querySelectorAll('a')];
+  // Getting started and the user guide: highlight the section you're reading in the step bar or contents
+  document.querySelectorAll('.journey, .toc').forEach(nav => {
+    const bar = nav.querySelector('ol') || nav, links = [...nav.querySelectorAll('a[href^="#"]')];
     const secs = links.map(a => document.querySelector(a.getAttribute('href')));
+    const steps = nav.classList.contains('journey');
     let last = -1, ticking = false;
     const update = () => {
       ticking = false;
-      let cur = 0; secs.forEach((s, i) => { if (s && s.getBoundingClientRect().top < innerHeight * 0.4) cur = i; });
+      let cur = 0; secs.forEach((s, i) => { if (s && s.getBoundingClientRect().top < innerHeight * 0.35) cur = i; });
       if (cur === last) return; last = cur;
-      links.forEach((a, k) => { a.classList.toggle('done', k < cur); if (k === cur) a.setAttribute('aria-current', 'step'); else a.removeAttribute('aria-current'); });
-      const a = links[cur]; ol.scrollTo({ left: a.parentElement.offsetLeft - (ol.clientWidth - a.offsetWidth) / 2 });
+      links.forEach((a, k) => {
+        if (steps) a.classList.toggle('done', k < cur);
+        if (k === cur) a.setAttribute('aria-current', steps ? 'step' : 'location'); else a.removeAttribute('aria-current');
+      });
+      if (bar.scrollWidth > bar.clientWidth + 4) { const a = links[cur], el = steps ? a.parentElement : a; bar.scrollTo({ left: el.offsetLeft - (bar.clientWidth - a.offsetWidth) / 2 }); }
     };
     addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
     update();
-  }
+  });
 })();
