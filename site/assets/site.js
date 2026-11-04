@@ -217,6 +217,13 @@
     g.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
   }, { passive: true });
 
+  // Home page: say when First Edition pre-orders are open (stays "Coming soon" otherwise)
+  const preLine = $('[data-pre-line]');
+  if (preLine) fetch('api/preorder', { cache: 'no-store' }).then(r => r.json()).then(s => {
+    if (s && s.ok && s.reason === 'open') preLine.textContent = 'First Edition pre-orders now open · limited to 25';
+    else if (s && s.ok && s.reason === 'sold_out') preLine.textContent = 'First Edition sold out';
+  }).catch(() => {});
+
   // Collapsible sections: a link to one opens it; "Open all" opens or closes every spec group
   const openHash = () => { const t = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1))); if (t && t.tagName === 'DETAILS') t.open = true; };
   openHash(); addEventListener('hashchange', openHash);

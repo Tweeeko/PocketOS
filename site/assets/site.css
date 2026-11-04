@@ -666,3 +666,12 @@ details.spec-group[open]>summary{margin-bottom:6px}
 .sl-dots{display:flex;gap:8px;position:static}
 .sl-dots button{width:9px;height:9px;padding:0;border:0;border-radius:99px;background:rgba(255,255,255,.28);cursor:pointer;transition:width .2s,background .2s}
 .sl-dots button[aria-current]{width:26px;background:var(--cyan)}
+
+/* ---------- pre-orders ---------- */
+.preorder-box{margin:0 0 18px;padding:16px 18px;border-radius:20px;background:linear-gradient(140deg,rgba(127,227,255,.1),rgba(140,124,255,.08));box-shadow:inset 0 0 0 1px rgba(127,227,255,.3)}
+.preorder-box .pe-title{font:600 16px var(--display);letter-spacing:-.01em;margin:0 0 4px;color:var(--ink)}
+.preorder-box p{margin:0;color:#cdd3ee;font-size:15.5px;line-height:1.5}
+.pre-err{min-height:1.4em;margin:10px 0 0;color:var(--rose);font-size:15px}
+.btn[hidden],.preorder-box[hidden]{display:none!important}
+.confirm{max-width:760px;margin:0 auto;padding:clamp(28px,5vw,56px)}
+.confirm h1{font-size:clamp(30px,4.4vw,48px);margin-bottom:12px}

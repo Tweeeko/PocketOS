@@ -49,6 +49,32 @@
   if (stt) stt.textContent = a0.status;
   if (rn && a0.region) rn.textContent = 'Sold and delivered in the ' + (a0.region === 'UK only' ? 'UK only.' : a0.region + '.');
 
+  // First Edition pre-orders: live status from /api/preorder; the page stays "Coming soon" if it can't tell
+  const preBtn = document.querySelector('[data-preorder]');
+  if (preBtn) {
+    const soon = document.querySelector('[data-soon]'), box = document.querySelector('[data-preorder-box]'), msg = document.querySelector('[data-preorder-msg]');
+    fetch('api/preorder', { cache: 'no-store' }).then(r => r.json()).then(s => {
+      if (!s || !s.ok) return;
+      const pill = document.querySelector('[data-status]'), ship = document.querySelector('[data-region-note]');
+      if (s.reason === 'open') {
+        preBtn.hidden = false; soon.hidden = true; box.hidden = false;
+        if (pill) pill.textContent = s.remaining <= 10 ? `First Edition · ${s.remaining} left` : 'First Edition pre-order';
+        if (ship && s.delivery_text) ship.textContent = s.delivery_text === 'Free' ? 'Free UK delivery.' : `Plus ${s.delivery_text} UK delivery. UK only.`;
+      } else if (s.reason === 'sold_out') { if (pill) pill.textContent = 'First Edition sold out'; soon.textContent = 'First Edition sold out'; }
+      else if (s.reason === 'closed') { if (pill) pill.textContent = 'Pre-orders closed'; soon.textContent = 'Pre-orders closed'; }
+    }).catch(() => {});
+    preBtn.addEventListener('click', async () => {
+      preBtn.disabled = true; preBtn.textContent = 'Opening checkout…'; msg.textContent = '';
+      try {
+        const r = await fetch('api/preorder', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+        const j = await r.json().catch(() => ({}));
+        if (r.ok && j.ok && /^https:\/\/checkout\.stripe\.com\//.test(j.url)) { location.href = j.url; return; }
+        msg.textContent = j.error || 'Checkout couldn’t open. Nothing was charged. Please try again.';
+      } catch (_) { msg.textContent = 'Couldn’t reach the server. Check your connection and try again. Nothing was charged.'; }
+      preBtn.disabled = false; preBtn.textContent = 'Pre-order First Edition';
+    });
+  }
+
   const pack = document.querySelector('[data-packaging]');
   if (pack) pack.innerHTML = P.packaging.map((p, i) =>
     `<figure class="pack-item${i === 0 ? ' lead' : ''}"><div class="shot">${shot(p.image)}</div><figcaption><h3>${esc(p.title)}</h3><p>${esc(p.text)}</p></figcaption></figure>`).join('');

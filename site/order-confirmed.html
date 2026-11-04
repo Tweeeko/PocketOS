@@ -1,0 +1,70 @@
+<!doctype html>
+<!-- PocketOS, created by Leeko. Copyright (c) 2026 Leeko. -->
+<html lang="en-GB"><head><meta charset="utf-8">
+<meta name="author" content="Leeko">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Your PocketOS Pre-order</title>
+<meta name="description" content="Your PocketOS First Edition pre-order.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#070b1c">
+<meta property="og:title" content="PocketOS privacy"><meta property="og:description" content="What PocketOS stores, what it sends and to whom. No account, no cloud and no analytics."><meta property="og:image" content="https://www.pocketos.co.uk/media/poster.jpg">
+<meta property="og:type" content="website"><meta property="og:site_name" content="PocketOS"><meta name="twitter:card" content="summary_large_image">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml"><link rel="icon" href="assets/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png"><meta name="apple-mobile-web-app-title" content="PocketOS">
+<link rel="preload" href="fonts/unbounded-600.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="assets/site.css">
+</head><body>
+<div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar" id="top">
+  <div class="bar">
+    <a class="brand" href="./"><img src="assets/logo.svg" alt="PocketOS" width="190" height="18"></a>
+    <nav class="links" aria-label="Main"><a href="./">Overview</a><a href="specs.html">Tech Specs</a><a href="demo.html">Try It</a><a href="support.html">Support</a></nav>
+    <a class="btn small cta" href="buy.html">Buy</a>
+    <button class="menu" type="button" aria-expanded="false" aria-controls="drawer" aria-label="Menu"><i></i><i></i></button>
+  </div>
+  <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="./">Overview</a><a href="specs.html">Tech Specs</a><a href="demo.html">Try It</a><a href="support.html">Support</a><a href="buy.html">Buy</a></nav>
+</header>
+
+<main id="main" class="page">
+  <section class="block glass confirm" data-confirm>
+    <p class="eyebrow" data-order></p>
+    <h1 data-title>Checking your order…</h1>
+    <p class="lede" data-text>One moment while we check with our payment provider.</p>
+    <ul class="plain" data-next hidden>
+      <li>Stripe, our payment provider, emails you a receipt.</li>
+      <li>Your PocketOS First Edition is expected to be delivered by the end of April 2027. We’ll email you when it’s on its way.</li>
+      <li>You can cancel for a full refund at any time before it’s dispatched. Just <a href="contact.html">contact us</a> with your order number.</li>
+    </ul>
+    <div class="row" style="margin-top:22px"><a class="btn" href="setup.html">See how setup works</a><a class="btn ghost" href="./">Back to PocketOS</a></div>
+  </section>
+</main>
+
+<footer class="end">
+  <div class="foot">
+    <div><img src="assets/logo.svg" alt="PocketOS" width="150" height="14"><p>The pocket-sized smart-home companion.<br>Designed by Leeko.</p></div>
+    <nav aria-label="Explore PocketOS"><h2>Explore PocketOS</h2><a href="./">Overview</a><a href="specs.html">Tech Specs</a><a href="demo.html">Try PocketOS</a><a href="buy.html">Buy</a></nav>
+    <nav aria-label="Support"><h2>Support</h2><a href="setup.html">Get started</a><a href="help.html">User guide</a><a href="faq.html">Questions</a><a href="recovery.html">Software recovery</a><a href="changes.html">What’s new</a><a href="contact.html">Contact us</a></nav>
+    <nav aria-label="Policies"><h2>Policies</h2><a href="terms.html">Terms of sale</a><a href="returns.html">Returns and warranty</a><a href="privacy.html">Privacy</a><a href="security.html">Security</a><a href="compliance.html">Statement of compliance</a></nav>
+  </div>
+  <div class="legal-row">
+    <p class="legal">© 2026 Leeeko LTD. Registered office: PocketOS @ 32 Ferndale Avenue, Newcastle, NE28 7NE, United Kingdom. Home Assistant is a trademark of its respective owner. PocketOS is not affiliated with or endorsed by Home Assistant.</p>
+  </div>
+</footer>
+<script>
+// Shows how the checkout went, as Stripe reports it. Nothing personal is fetched or shown.
+(() => {
+  const q = new URLSearchParams(location.search).get('session_id'), $ = s => document.querySelector(s);
+  const set = (t, x, order, next) => { $('[data-title]').textContent = t; $('[data-text]').textContent = x; if (order) $('[data-order]').textContent = 'Order ' + order; $('[data-next]').hidden = !next; };
+  if (!q) return set('Pre-order', 'If you’ve just paid, check your email for your receipt. If anything looks wrong, contact us.', null, false);
+  fetch('api/preorder?session_id=' + encodeURIComponent(q), { cache: 'no-store' }).then(r => r.json()).then(s => {
+    if (!s.ok) throw 0;
+    if (s.payment_status === 'paid' || s.payment_status === 'no_payment_required') set('Thank you. Your First Edition is reserved.', 'Your pre-order is confirmed.', s.order, true);
+    else if (s.status === 'complete') set('Thank you. Your payment is on its way.', 'Your bank is still processing the payment. We’ll confirm your pre-order by email once it arrives.', s.order, false);
+    else set('Your pre-order isn’t finished', 'The checkout wasn’t completed, so nothing was charged. You can try again from the Buy page.', null, false);
+  }).catch(() => set('Thank you', 'We couldn’t check your order just now. If you paid, Stripe will email your receipt. If you have any questions, contact us.', null, false));
+})();
+</script>
+<script src="assets/site.js"></script>
+</body></html>
