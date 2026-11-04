@@ -217,11 +217,17 @@
     g.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
   }, { passive: true });
 
-  // Home page: say when First Edition pre-orders are open (stays "Coming soon" otherwise)
+  // Pre-order status, shared by the menu bar button and the home page (cached for two minutes per visit)
+  const preStatus = () => {
+    try { const c = JSON.parse(sessionStorage.getItem('po-pre') || 'null'); if (c && Date.now() - c.t < 120000) return Promise.resolve(c.s); } catch (e) {}
+    return fetch('/api/preorder', { cache: 'no-store' }).then(r => r.json()).then(s => { try { sessionStorage.setItem('po-pre', JSON.stringify({ t: Date.now(), s })); } catch (e) {} return s; });
+  };
   const preLine = $('[data-pre-line]');
-  if (preLine) fetch('api/preorder', { cache: 'no-store' }).then(r => r.json()).then(s => {
-    if (s && s.ok && s.reason === 'open') preLine.textContent = 'First Edition now available to pre-order · only 25';
-    else if (s && s.ok && s.reason === 'sold_out') preLine.textContent = 'First Edition sold out';
+  preStatus().then(s => {
+    if (!s || !s.ok) return;
+    if (s.reason === 'open') document.querySelectorAll('.cta').forEach(a => { a.textContent = 'Pre-order'; a.setAttribute('aria-label', 'Pre-order the First Edition'); });
+    if (preLine && s.reason === 'open') preLine.textContent = 'First Edition now available to pre-order · only 25';
+    else if (preLine && s.reason === 'sold_out') preLine.textContent = 'First Edition sold out';
   }).catch(() => {});
 
   // Collapsible sections: a link to one opens it; "Open all" opens or closes every spec group

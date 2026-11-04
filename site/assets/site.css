@@ -435,7 +435,7 @@ footer.end{max-width:1240px;margin:40px auto 0;padding:46px 28px 50px;border-top
 
 /* ---------- small screens ---------- */
 @media (max-width:900px){
-  .links,.cta{display:none}.menu{display:grid;margin-left:auto}.bar{height:60px;padding:0 18px}
+  .links{display:none}.cta{margin-left:auto}.menu{display:grid;margin-left:0}.bar{height:60px;padding:0 18px;gap:10px}
   .hero{grid-template-columns:1fr;text-align:center;padding-top:100px;gap:60px}
   .hero .copy{margin:0 auto}.req{text-align:center}.hero .lede{margin-left:auto;margin-right:auto}.hero .row{justify-content:center}
   .hero .stage{order:-1}
@@ -804,3 +804,10 @@ details.spec-group[open]>summary{margin-bottom:6px}
   .doc .sections>section{scroll-margin-top:140px}
 }
 @media (max-width:900px){.toc.glass::before,.toc.glass::after{display:none}}
+
+/* menu bar Buy / Pre-order button: always visible, beside the menu button on phones */
+.cta{font-weight:600}
+@media (max-width:900px){.cta{padding:10px 18px;font-size:15px}.brand img{height:17px}}
+@media (max-width:360px){.brand img{height:14px}.cta{padding:9px 14px}}
+.cta{white-space:nowrap;flex:none}
+@media (max-width:400px){.bar{padding:0 14px;gap:8px}.brand img{height:15px}.cta{padding:9px 14px;font-size:14.5px}}
