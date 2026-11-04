@@ -1,6 +1,6 @@
 // PocketOS, created by Leeko. Copyright (c) 2026 Leeko.
 // Stripe sends payment events here. Every event's signature is checked before anything happens.
-// A paid pre-order is emailed to Leeeko LTD (to the CONTACT_TO address set up for the contact form)
+// A paid pre-order is emailed to Leeko (to the CONTACT_TO address set up for the contact form)
 // with everything needed to dispatch it. Stripe emails the customer their receipt.
 //
 // In Stripe: Developers → Webhooks → Add endpoint → https://www.pocketos.co.uk/api/stripe-webhook
