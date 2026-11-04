@@ -259,4 +259,21 @@
       snd.setAttribute('aria-label', v.muted ? 'Turn sound on' : 'Turn sound off');
     });
   }
+
+  // Getting started: highlight the step you're on in the sticky step bar
+  const jr = document.querySelector('.journey');
+  if (jr) {
+    const ol = jr.querySelector('ol'), links = [...jr.querySelectorAll('a')];
+    const secs = links.map(a => document.querySelector(a.getAttribute('href')));
+    let last = -1, ticking = false;
+    const update = () => {
+      ticking = false;
+      let cur = 0; secs.forEach((s, i) => { if (s && s.getBoundingClientRect().top < innerHeight * 0.4) cur = i; });
+      if (cur === last) return; last = cur;
+      links.forEach((a, k) => { a.classList.toggle('done', k < cur); if (k === cur) a.setAttribute('aria-current', 'step'); else a.removeAttribute('aria-current'); });
+      const a = links[cur]; ol.scrollTo({ left: a.parentElement.offsetLeft - (ol.clientWidth - a.offsetWidth) / 2 });
+    };
+    addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+    update();
+  }
 })();
