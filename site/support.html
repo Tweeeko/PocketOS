@@ -27,26 +27,40 @@
   <nav class="drawer" id="drawer" aria-label="Main" hidden><a href="./">Overview</a><a href="specs.html">Tech Specs</a><a href="demo.html">Try It</a><a href="support.html" aria-current="page">Support</a><a href="buy.html">Buy</a></nav>
 </header>
 
-<main id="main" class="page">
+<main id="main" class="page support-page">
   <header class="intro">
-    <h1>PocketOS Support</h1>
+    <h1>How can we help?</h1>
     <p class="lede">Setup guides, answers and ways to get in touch.</p>
   </header>
-  <div class="hub">
-    <a class="xtile glass" href="setup.html"><b>Get started</b><span>Switch on, join Wi-Fi and connect Home Assistant, step by step.</span><i>Open</i></a>
-    <a class="xtile glass" href="help.html"><b>User guide</b><span>Controls, devices, voice, battery, updates and troubleshooting.</span><i>Open</i></a>
-    <a class="xtile glass" href="faq.html"><b>Questions</b><span>Quick answers about buying and using PocketOS.</span><i>Open</i></a>
-    <a class="xtile glass" href="recovery.html"><b>Software recovery</b><span>Reinstall PocketOS’s software from a computer.</span><i>Open</i></a>
-    <a class="xtile glass" href="changes.html"><b>What’s new</b><span>What changed in each software update.</span><i>Open</i></a>
-    <a class="xtile glass" href="contact.html"><b>Contact us</b><span>Send us a message and we’ll reply by email.</span><i>Open</i></a>
+
+  <div class="sp-main">
+    <a class="sp-card glass" href="setup.html"><span class="sp-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v9M7 6.5a8 8 0 1 0 10 0"/></svg></span><b>Get started</b><span>Switch on, join Wi-Fi and connect Home Assistant, step by step.</span></a>
+    <a class="sp-card glass" href="help.html"><span class="sp-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M8 7h7M8 11h7"/></svg></span><b>User guide</b><span>Controls, devices, voice, battery and updates.</span></a>
+    <a class="sp-card glass" href="faq.html"><span class="sp-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.5V14M12 17.5h.01"/></svg></span><b>Questions</b><span>Quick answers about buying and using PocketOS.</span></a>
   </div>
-  <section class="block glass">
-    <h2>Popular topics</h2>
-    <div class="topics"><a href="setup.html#home-assistant">Connect Home Assistant</a><a href="help.html#voice">Voice and spoken replies</a><a href="help.html#battery">Battery and charging</a><a href="help.html#updates">Updates</a><a href="help.html#troubleshooting">Troubleshooting</a><a href="help.html#controls">Buttons and controls</a><a href="returns.html">Returns and warranty</a></div>
+
+  <section class="sp-sec" aria-labelledby="topics-h">
+    <h2 id="topics-h">Popular topics</h2>
+    <div class="sp-topics rail">
+      <a class="sp-topic" href="setup.html#home-assistant"><span class="sp-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-7 9 7M5 10v10h14V10"/></svg></span><b>Connect Home Assistant</b><span>Create a user and token, then connect.</span></a>
+      <a class="sp-topic" href="help.html#controls"><span class="sp-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M20.5 9v2M20.5 13v2"/></svg></span><b>Buttons and controls</b><span>What each button and gesture does.</span></a>
+      <a class="sp-topic" href="help.html#voice"><span class="sp-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg></span><b>Voice</b><span>Hold Boot to talk, and spoken replies.</span></a>
+      <a class="sp-topic" href="help.html#battery"><span class="sp-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="18" height="10" rx="2.5"/><path d="M22 11v2M6 10v4M9.5 10v4"/></svg></span><b>Battery and charging</b><span>Charging and the time-left estimate.</span></a>
+      <a class="sp-topic" href="help.html#updates"><span class="sp-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></svg></span><b>Updates</b><span>How updates install, and checking for one.</span></a>
+      <a class="sp-topic" href="help.html#troubleshooting"><span class="sp-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg></span><b>Troubleshooting</b><span>Fixes for common problems.</span></a>
+    </div>
   </section>
-  <section class="block glass">
-    <h2>Policies and safety</h2>
-    <div class="topics"><a href="privacy.html">Privacy</a><a href="security.html">Security and updates</a><a href="terms.html">Terms of sale</a><a href="returns.html">Returns and warranty</a><a href="compliance.html">Statement of compliance</a></div>
+
+  <section class="sp-sec sp-more" aria-label="More help">
+    <div class="sp-list glass">
+      <a href="recovery.html"><span class="sp-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span><span><b>Software recovery</b><small>Reinstall PocketOS from a computer</small></span></a>
+      <a href="changes.html"><span class="sp-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg></span><span><b>What’s new</b><small>Changes in each software update</small></span></a>
+    </div>
+    <div class="sp-contact">
+      <span class="sp-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+      <div><b>Still need help?</b><span>Send us a message and we’ll reply by email.</span></div>
+      <a class="btn" href="contact.html">Contact us</a>
+    </div>
   </section>
 </main>
 
