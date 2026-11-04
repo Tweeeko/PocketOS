@@ -1,7 +1,7 @@
 {
   "name": "PocketOS",
   "short_name": "PocketOS",
-  "description": "The pocket-sized smart-home companion for Home Assistant.",
+  "description": "Your whole home, in your hand. The pocket-sized remote for Home Assistant.",
   "id": "/",
   "start_url": "/",
   "scope": "/",

@@ -1,6 +1,6 @@
 # PocketOS
 
-**Your home, at a glance.** PocketOS is a pocket-sized smart-home companion with a round
+**Your whole home, in your hand.** PocketOS is a pocket-sized remote for your smart home, with a round
 touchscreen. It connects to [Home Assistant](https://www.home-assistant.io) and puts every
 light, thermostat, lock and speaker in your hand, with a friendly companion on the home screen.
 
