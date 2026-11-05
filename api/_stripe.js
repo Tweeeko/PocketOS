@@ -20,8 +20,9 @@ const SITE = 'https://www.pocketos.co.uk';
 const PREORDER = {
   edition: 'first-edition',
   name: 'PocketOS First Edition',
-  description: 'Pre-order: one of the first 25 PocketOS, expected to be delivered by the end of April 2027.',
-  pricePence: 9999,
+  description: 'First Edition price: £59.99 (usually £99.99). One of the first 25 PocketOS, expected to be delivered by the end of April 2027.',
+  pricePence: 5999,                                 // First Edition price, £59.99
+  standardPence: 9999,                              // the usual price after the First Edition, £99.99
   deliveryPence: 499,                               // UK tracked delivery, £4.99
   limit: 25,
   closesAt: Date.parse('2027-01-31T23:59:59Z'),     // 23:59 UK time (GMT in January)

@@ -4,7 +4,7 @@
 touchscreen. It connects to [Home Assistant](https://www.home-assistant.io) and puts every
 light, thermostat, lock and speaker in your hand, with a friendly companion on the home screen.
 
-Designed and written by **Leeko**. Sold by Leeeko LTD in the UK (coming soon, £99.99).
+Designed and written by **Leeko**. Sold by Leeeko LTD in the UK (coming soon: First Edition £59.99, then £99.99).
 
 - **Website:** [www.pocketos.co.uk](https://www.pocketos.co.uk) — features, [try it in your browser](https://www.pocketos.co.uk/demo), setup and support
 - **What's new:** [CHANGELOG.md](CHANGELOG.md) and [Releases](https://github.com/Tweeeko/PocketOS/releases)

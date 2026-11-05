@@ -226,8 +226,9 @@
   preStatus().then(s => {
     if (!s || !s.ok) return;
     if (s.reason === 'open') document.querySelectorAll('.cta').forEach(a => { a.textContent = 'Pre-order'; a.setAttribute('aria-label', 'Pre-order the First Edition'); });
-    if (preLine && s.reason === 'open') preLine.textContent = 'First Edition now available to pre-order · only 25';
+    if (preLine && s.reason === 'open') preLine.textContent = 'Pre-orders open · only 25 at this price';
     else if (preLine && s.reason === 'sold_out') preLine.textContent = 'First Edition sold out';
+    if (s.reason === 'sold_out' || s.reason === 'closed') document.querySelectorAll('.pl-price').forEach(e => { e.textContent = '£99.99'; });
   }).catch(() => {});
 
   // Collapsible sections: a link to one opens it; "Open all" opens or closes every spec group

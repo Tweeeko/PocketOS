@@ -5,7 +5,7 @@
 - **Buy** shows **Pre-order First Edition** while pre-orders are open, and how many are left once 10 or
   fewer remain. The home page says pre-orders are open. Otherwise both stay "Coming soon".
 - The button opens **Stripe Checkout** (hosted by Stripe, on any device), for one PocketOS First
-  Edition at £99.99 plus UK delivery, with a UK address only.
+  Edition at the First Edition price of £59.99 (usually £99.99) plus UK delivery, with a UK address only.
 - After paying, the customer lands on `/order-confirmed`. It shows their order number, or that a bank
   payment is still clearing. Stripe emails the receipt.
 
@@ -41,7 +41,7 @@ Change the price, limit, deadline or delivery date in `PREORDER` in `api/_stripe
    The code doesn't fix the list. Stripe shows each customer the methods that suit them.
 5. **Tax → Settings**: set the head office address (Leeeko LTD's registered office). Leeeko LTD isn't
    registered for VAT, so **don't add a UK registration** yet: no VAT is charged. Prices are set as
-   VAT-inclusive, so if you register later and add the registration in Stripe, £99.99 stays £99.99 with
+   VAT-inclusive, so if you register later and add the registration in Stripe, the price stays the same with
    VAT inside it. Stripe's threshold monitoring (Tax → Locations) shows when registering might be
    needed. Check with your accountant.
 6. **Developers → API keys → Create restricted key** named "PocketOS website", with **Checkout

@@ -89,7 +89,7 @@ r, log = run([
 check(r["not set up"]["body"]["open"] is False and r["not set up"]["body"]["reason"] == "soon", "closed until keys and settings are in place")
 check(r["no delivery charge"]["body"]["open"] and r["no delivery charge"]["body"]["delivery_text"] == "£4.99", "delivery is £4.99 unless overridden")
 o = r["open"]["body"]
-check(o["open"] and o["remaining"] == 3 and o["price"] == "£99.99" and o["delivery_text"] == "£4.99", "counts paid and open checkouts for this edition only: 3 of 25 left")
+check(o["open"] and o["remaining"] == 3 and o["price"] == "£59.99" and o["standard_price"] == "£99.99" and o["delivery_text"] == "£4.99", "counts paid and open checkouts for this edition only: 3 of 25 left")
 check(r["after deadline"]["body"]["reason"] == "closed", "closes after 31 January 2027")
 key_hdr = [h for (_, path, _, h) in Stripe.requests if path == "/v1/checkout/sessions"][0]
 check(key_hdr.get("Stripe-Version") == "2026-10-28.endive" and key_hdr.get("Authorization") == "Bearer rk_test_x", "pinned API version, key only in the header")
@@ -102,7 +102,7 @@ r, log = run([
 check(r["buy"]["status"] == 200 and r["buy"]["body"]["url"].startswith("https://checkout.stripe.com/"), "returns the Stripe Checkout address")
 check(r["other site"]["status"] == 403, "other websites can't start checkouts")
 p = Stripe.created[-1]; g = lambda k: p.get(k, [None])[0]
-check(g("mode") == "payment" and g("line_items[0][quantity]") == "1" and g("line_items[0][price_data][unit_amount]") == "9999" and g("line_items[0][price_data][currency]") == "gbp", "one First Edition at £99.99")
+check(g("mode") == "payment" and g("line_items[0][quantity]") == "1" and g("line_items[0][price_data][unit_amount]") == "5999" and g("line_items[0][price_data][currency]") == "gbp", "one First Edition at £99.99")
 check(g("line_items[0][price_data][tax_behavior]") == "inclusive" and g("line_items[0][price_data][product_data][tax_code]") == "txcd_99999999", "price includes any VAT; tangible goods tax code")
 check(g("shipping_address_collection[allowed_countries][0]") == "GB" and g("shipping_options[0][shipping_rate_data][fixed_amount][amount]") == "499", "UK addresses only, £4.99 delivery")
 check(not any(k.startswith("payment_method_types") for k in p), "no payment_method_types (Stripe chooses payment methods)")

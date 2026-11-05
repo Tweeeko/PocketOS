@@ -46,6 +46,8 @@
   // Price and availability come from the same place as everywhere else
   const a0 = P.availability, pr = document.querySelector('[data-price]'), stt = document.querySelector('[data-status]'), rn = document.querySelector('[data-region-note]');
   if (pr) pr.textContent = a0.price;
+  // after the First Edition, show the usual price and drop the offer
+  const fullPrice = () => { if (pr) pr.textContent = a0.standardPrice; document.querySelectorAll('[data-offer]').forEach(e => { e.hidden = true; }); };
   if (stt) stt.textContent = a0.status;
   if (rn && a0.region) rn.textContent = 'Sold and delivered in the ' + (a0.region === 'UK only' ? 'UK only.' : a0.region + '.');
 
@@ -60,7 +62,9 @@
         preBtn.hidden = false; soon.hidden = true; box.hidden = false;
         if (pill) pill.textContent = s.remaining <= 10 ? `First Edition · ${s.remaining} left` : 'First Edition pre-order';
         if (ship && s.delivery_text) ship.textContent = s.delivery_text === 'Free' ? 'Free UK delivery.' : `Plus ${s.delivery_text} UK delivery. UK only.`;
-      } else if (s.reason === 'sold_out') { if (pill) pill.textContent = 'First Edition sold out'; soon.textContent = 'First Edition sold out'; }
+      }
+      if (s.reason === 'sold_out' || s.reason === 'closed') fullPrice();
+      if (s.reason === 'sold_out') { if (pill) pill.textContent = 'First Edition sold out'; soon.textContent = 'First Edition sold out'; }
       else if (s.reason === 'closed') { if (pill) pill.textContent = 'Pre-orders closed'; soon.textContent = 'Pre-orders closed'; }
     }).catch(() => {});
     preBtn.addEventListener('click', async () => {

@@ -48,7 +48,8 @@ window.POCKETOS_PRODUCT = {
   },
 
   availability: {
-    price: '£99.99',
+    price: '£59.99',
+    standardPrice: '£99.99',
     status: 'Coming soon',
     region: 'UK only',
     note: 'PocketOS isn’t on sale yet. Ordering details will appear here when it is. To begin with, PocketOS is sold and delivered in the United Kingdom only.',

@@ -32,7 +32,7 @@ function sessionParams(delivery, env, now) {
       price_data: {
         currency: 'gbp',
         unit_amount: PREORDER.pricePence,
-        tax_behavior: 'inclusive',                       // £99.99 is the price the customer pays
+        tax_behavior: 'inclusive',                       // the price the customer pays includes any VAT
         product_data: { name: PREORDER.name, description: PREORDER.description, images: [PREORDER.image], tax_code: PREORDER.taxCode, metadata: { edition: PREORDER.edition } },
       },
     }],
@@ -50,7 +50,7 @@ function sessionParams(delivery, env, now) {
     automatic_tax: env.STRIPE_AUTOMATIC_TAX === '1' ? { enabled: true } : undefined,
     consent_collection: env.STRIPE_TERMS_CONSENT === '1' ? { terms_of_service: 'required' } : undefined,
     custom_text: {
-      submit: { message: `You’re reserving one of only ${PREORDER.limit} PocketOS First Editions. Payment is taken today, and your PocketOS is expected to arrive by ${PREORDER.deliveryBy}. We’ll email you as soon as it’s on its way.` },
+      submit: { message: `You’re reserving one of only ${PREORDER.limit} PocketOS First Editions at the First Edition price of ${money(PREORDER.pricePence)} (usually ${money(PREORDER.standardPence)}). Payment is taken today, and your PocketOS is expected to arrive by ${PREORDER.deliveryBy}. We’ll email you as soon as it’s on its way.` },
       terms_of_service_acceptance: env.STRIPE_TERMS_CONSENT === '1' ? { message: `I agree to the [terms of sale](${SITE}/terms), including the pre-order terms.` } : undefined,
     },
     metadata: { edition: PREORDER.edition },
@@ -74,7 +74,7 @@ async function handler(req, res, env = process.env, now = Date.now()) {
         return reply(res, 200, { ok: true, status: s.status, payment_status: s.payment_status, order: orderNumber(s.id) });
       }
       const a = await availability(env, now);
-      return reply(res, 200, { ok: true, ...a, limit: PREORDER.limit, price: money(PREORDER.pricePence),
+      return reply(res, 200, { ok: true, ...a, limit: PREORDER.limit, price: money(PREORDER.pricePence), standard_price: money(PREORDER.standardPence),
         delivery_text: a.delivery == null ? null : (a.delivery ? money(a.delivery) : 'Free'), closes: new Date(PREORDER.closesAt).toISOString(), delivery_by: PREORDER.deliveryBy });
     }
     if (req.method !== 'POST') { res.setHeader('Allow', 'GET, POST'); return reply(res, 405, { ok: false, error: 'Not allowed.' }); }
