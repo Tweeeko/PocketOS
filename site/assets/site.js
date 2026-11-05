@@ -285,4 +285,15 @@
     addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
     update();
   });
+  // Home: short films play in place, one at a time, with sound and controls
+  document.querySelectorAll('.reel').forEach(fig => {
+    const v = fig.querySelector('video');
+    fig.querySelector('.reel-play').addEventListener('click', () => {
+      document.querySelectorAll('.reel video').forEach(o => { if (o !== v) o.pause(); });
+      v.controls = true; v.play().catch(() => {});
+    });
+    v.addEventListener('play', () => fig.classList.add('playing'));
+    v.addEventListener('ended', () => { fig.classList.remove('playing'); v.controls = false; v.load(); });
+  });
+
 })();
